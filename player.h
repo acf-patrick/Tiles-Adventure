@@ -28,12 +28,14 @@ private:
     int cur_image;
     Timer timer;
     bool allow_jump;
+    bool double_jump;
     const float JUMP_GRAVITY;
     const float JUMP_IMPULSE;
     const float MAX_FALL_SPEED;
 
     void respawn();
     void jump();
+    void update_images();
     void update_states();
     void update_keys();
     void update_xvel();

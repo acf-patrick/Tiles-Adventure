@@ -7,8 +7,8 @@
 Player::Player(Map* m, int _x, int _y, bool* k, const std::string& name) :
     With_mass(m, _x, _y), keys(k),
     state("Idle"), cur_image(0),
-    JUMP_GRAVITY(0.3), JUMP_IMPULSE(-7),
-    MAX_FALL_SPEED(10)
+    double_jump(false), JUMP_GRAVITY(0.3),
+    JUMP_IMPULSE(-7), MAX_FALL_SPEED(10)
 {
     rect.w = rect.h = 32;
     type.push_back("Player");
@@ -50,6 +50,7 @@ void Player::update()
         return;
     }
     image = images[direction][state];
+    update_images();
     update_states();
     update_keys();
     apply_gravity();
@@ -78,21 +79,38 @@ void Player::jump()
     y_vel = JUMP_IMPULSE;
 }
 
-void Player::update_states()
+void Player::update_images()
 {
-    if (timer.get_elapsed_ms() >= ((state == "Run")?std::abs(x_vel)*25:75))
+    int delay;
+    if (state == "Run")
+        delay = std::abs(x_vel)*25;
+    else
+        if (state == "Double Jump")
+            delay = 50;
+        else
+            delay = 75;
+    if (timer.get_elapsed_ms() >= delay)
     {
         cur_image++;
         timer.restart();
     }
+}
+
+void Player::update_states()
+{
     if (int(x_vel) == 0)
         state = "Idle";
     else
         state = "Run";
-    if (y_vel > 0)
-        state = "Fall";
-    else if (y_vel < 0)
-        state = "Jump";
+    if (double_jump)
+        state = "Double Jump";
+    else
+    {
+        if (y_vel > 0)
+            state = "Fall";
+        else if (y_vel < 0)
+            state = "Jump";
+    }
     cur_image %= (image->w/rect.w);
 }
 
@@ -118,6 +136,12 @@ void Player::update_keys()
             y += 2;
             if (m_map->collision_with(this))
                 jump();
+            else
+                if (!double_jump)
+                {
+                    double_jump = true;
+                    jump();
+                }
             y -= 2;
         }
     }
@@ -142,7 +166,10 @@ void Player::update_yvel()
         y_vel = MAX_FALL_SPEED;
     y += 2;
     if (m_map->collision_with(this))
+    {
+        double_jump = false;
         y_vel = 0;
+    }
     y -= 2;
     check_up = true;
     y -= 2;
