@@ -467,26 +467,36 @@ Rino::Rino(Map* m, int _x, int _y, Sprite* cible):
 void Rino::update()
 {
     image = images[direction][state];
-    if (timer.get_elapsed_ms() >= 100-std::abs(x_vel)*10)
+    int animation_delay(0);
+    if (state == "Hit Wall")
+        animation_delay = 30;
+    else
+        animation_delay = 100-std::abs(x_vel)*10;
+
+    if (timer.get_elapsed_ms() >= animation_delay)
     {
         cur_image = (cur_image+1);
         timer.restart();
     }
-
-    if (state.find("Hit") != state.npos)
-    {
-        if (cur_image >= image->w/rect.w)
-            kill();
+    if (erase())
         return;
-    }
+
     if (charge)
         direction = (x < target->get_x());
     apply_gravity();
     move(x_vel, y_vel);
     stop_falling();
 
+    if (state == "Hit Wall")
+    {
+        if (cur_image >= image->w/rect.w)
+            state = "Run";
+        else
+            return;
+    }
+
     SDL_Rect field;
-    field.w = 80;
+    field.w = 60;
     field.h = rect.h;
     field.x = Sint16(direction?get_right():(x-field.w));
     field.y = Sint16(y);
@@ -515,6 +525,9 @@ void Rino::update()
                 {
                     cur_image = 0;
                     state = "Hit Wall";
+                    charge = false;
+                    x_vel = -8*s;
+                    y_vel = -8;
                 }
                 else if (bound)
                     state = "Idle";
@@ -527,14 +540,16 @@ void Rino::update()
         }
         x -= 2*s;
     }
+
     if (state == "Idle")
     {
         charge = false;
         x_vel = 0;
     }
 
-    if (!charge)
-        wait();
+    if (state!="Hit Wall")
+        if (!charge)
+            wait();
     cur_image %= (image->w/rect.w);
 }
 
