@@ -67,6 +67,12 @@ void Player::draw(SDL_Surface* screen)
         show->draw(screen);
         return;
     }
+    if (state == "Double Jump")
+        if (first_impulse)
+        {
+            int foo;
+            foo = 5;
+        }
     rect.x = cur_image*rect.w;
     rect.y = 0;
     SDL_Rect pos = {Sint16(x-m_map->get_xshift()), Sint16(y-m_map->get_yshift())};

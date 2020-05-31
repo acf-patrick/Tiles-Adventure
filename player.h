@@ -3,6 +3,7 @@
 
 #include <map>
 #include <string>
+#include <sstream>
 #include "show.h"
 #include "base/with_mass.h"
 #include "base/map.h"
@@ -21,6 +22,27 @@ public:
     SDL_Surface* get_surface();
 
 private:
+    class Dust: public Sprite
+    {
+    public:
+        Dust(int m_x, int m_y)
+        {
+            for (int i=0; i<6; ++i)
+            {
+                std::stringstream file_name;
+                file_name << "images/Dust Particles/Jump 0";
+                file_name << i+1 << ".png";
+                images[i] = IMG_Load(file_name.str().c_str());
+                if (!images[i])
+                {
+                    std::cerr << IMG_GetError();
+                    exit(EXIT_FAILURE);
+                }
+            }
+        }
+    private:
+        SDL_Surface* images[6];
+    };
     Show* show;
     std::map<std::string, SDL_Surface*> images[2];
     bool* keys;
@@ -29,6 +51,7 @@ private:
     Timer timer;
     bool allow_jump;
     bool double_jump;
+    bool first_impulse;
     const float JUMP_GRAVITY;
     const float JUMP_IMPULSE;
     const float MAX_FALL_SPEED;
