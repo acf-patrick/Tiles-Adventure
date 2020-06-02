@@ -78,7 +78,7 @@ void Player::jump()
 {
     gravity = JUMP_GRAVITY;
     y_vel = JUMP_IMPULSE;
-    dust.add(new Dust(m_map->get_viewport(), get_centerx(), get_centery()));
+    dust.add(new Dust(m_map->get_viewport(), get_centerx(), get_centery()+3, "Jump"));
 }
 
 void Player::update_images()
@@ -170,6 +170,8 @@ void Player::update_yvel()
     if (m_map->collision_with(this))
     {
         double_jump = false;
+        if (y_vel>1)
+            dust.add(new Dust(m_map->get_viewport(), get_centerx(), get_centery()+3, "Fall"));
         y_vel = 0;
     }
     y -= 2;

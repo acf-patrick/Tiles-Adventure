@@ -26,15 +26,16 @@ private:
     class Dust: public Sprite
     {
     public:
-        Dust(SDL_Rect* v, int m_x, int m_y):
+        Dust(SDL_Rect* v, int m_x, int m_y, const std::string& effect):
             cur_image(0), viewport(v)
         {
-            for (int i=0; i<6; ++i)
+            int img_nbr = (effect != "Jump")?5:6;
+            for (int i=0; i<img_nbr; ++i)
             {
                 std::stringstream file_name;
-                file_name << "images/Dust Particles/Jump 0";
+                file_name << "images/Dust Particles/" << effect << " 0";
                 file_name << i+1 << ".png";
-                images[i] = IMG_Load(file_name.str().c_str());
+                images.push_back(IMG_Load(file_name.str().c_str()));
                 if (!images[i])
                 {
                     std::cerr << IMG_GetError();
@@ -53,7 +54,7 @@ private:
                 cur_image++;
                 timer.restart();
             }
-            if (cur_image >= 6)
+            if (cur_image >= (int)images.size())
                 kill();
         }
         void draw(SDL_Surface* screen)
@@ -66,7 +67,7 @@ private:
         int cur_image;
         SDL_Rect *viewport;
         Timer timer;
-        SDL_Surface* images[6];
+        std::vector<SDL_Surface*> images;
     };
     Show* show;
     std::map<std::string, SDL_Surface*> images[2];
