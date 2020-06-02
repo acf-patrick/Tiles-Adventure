@@ -104,15 +104,10 @@ void Player::update_states()
         state = "Idle";
     else
         state = "Run";
-    if (double_jump)
-        state = "Double Jump";
-    else
-    {
-        if (y_vel > 0)
-            state = "Fall";
-        else if (y_vel < 0)
-            state = "Jump";
-    }
+    if (y_vel > 0)
+        state = "Fall";
+    else if (y_vel < 0)
+        state = double_jump?"Double Jump":"Jump";
     cur_image %= (image->w/rect.w);
 }
 
@@ -170,7 +165,7 @@ void Player::update_yvel()
     if (m_map->collision_with(this))
     {
         double_jump = false;
-        if (y_vel>1)
+        if (y_vel>8)
             dust.add(new Dust(m_map->get_viewport(), get_centerx(), get_centery()+3, "Fall"));
         y_vel = 0;
     }

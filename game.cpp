@@ -7,7 +7,7 @@
 #include "show.h"
 #include "fruits.h"
 
-Game::Game(): App("new game project", 500, 400),
+Game::Game(): App("Tiles Adventure", 500, 400),
     indicateur("AngryPig", 0, 0, 0, "fonts/emulogic", NULL, 10, 5, 30),
     bg_timer(10)
 {

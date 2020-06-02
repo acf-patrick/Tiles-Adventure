@@ -49,7 +49,7 @@ private:
         void update()
         {
             image = images[cur_image];
-            if (timer.get_elapsed_ms() >= 50)
+            if (timer.get_elapsed_ms() >= 60)
             {
                 cur_image++;
                 timer.restart();
