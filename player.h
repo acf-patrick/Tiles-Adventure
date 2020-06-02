@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <SDL_image.h>
 #include "show.h"
 #include "base/with_mass.h"
 #include "base/map.h"
@@ -25,7 +26,8 @@ private:
     class Dust: public Sprite
     {
     public:
-        Dust(int m_x, int m_y)
+        Dust(SDL_Rect* v, int m_x, int m_y):
+            cur_image(0), viewport(v)
         {
             for (int i=0; i<6; ++i)
             {
@@ -39,8 +41,31 @@ private:
                     exit(EXIT_FAILURE);
                 }
             }
+            x = m_x-0.5*images[0]->w;
+            y = m_y-0.5*images[0]->h;
+            timer.restart();
+        }
+        void update()
+        {
+            image = images[cur_image];
+            if (timer.get_elapsed_ms() >= 50)
+            {
+                cur_image++;
+                timer.restart();
+            }
+            if (cur_image >= 6)
+                kill();
+        }
+        void draw(SDL_Surface* screen)
+        {
+            rect.x = Sint16(x-viewport->x);
+            rect.y = Sint16(y-viewport->y);
+            SDL_BlitSurface(image, NULL, screen, &rect);
         }
     private:
+        int cur_image;
+        SDL_Rect *viewport;
+        Timer timer;
         SDL_Surface* images[6];
     };
     Show* show;
@@ -55,6 +80,7 @@ private:
     const float JUMP_GRAVITY;
     const float JUMP_IMPULSE;
     const float MAX_FALL_SPEED;
+    Group dust;
 
     void respawn();
     void jump();

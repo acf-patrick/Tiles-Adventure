@@ -1,4 +1,3 @@
-#include <SDL_image.h>
 #include <cmath>
 #include "player.h"
 #include "base/func_tool.h"
@@ -49,6 +48,7 @@ void Player::update()
         show->update();
         return;
     }
+    dust.update();
     image = images[direction][state];
     update_images();
     update_states();
@@ -67,22 +67,18 @@ void Player::draw(SDL_Surface* screen)
         show->draw(screen);
         return;
     }
-    if (state == "Double Jump")
-        if (first_impulse)
-        {
-            int foo;
-            foo = 5;
-        }
     rect.x = cur_image*rect.w;
     rect.y = 0;
     SDL_Rect pos = {Sint16(x-m_map->get_xshift()), Sint16(y-m_map->get_yshift())};
     SDL_BlitSurface(image, &rect, screen, &pos);
+    dust.draw(screen);
 }
 
 void Player::jump()
 {
     gravity = JUMP_GRAVITY;
     y_vel = JUMP_IMPULSE;
+    dust.add(new Dust(m_map->get_viewport(), get_centerx(), get_centery()));
 }
 
 void Player::update_images()
