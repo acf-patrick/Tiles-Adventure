@@ -22,7 +22,7 @@ public:
 private:
     int numero;
     int cur_image;
-    int hit_cnt;
+    float hp;
     std::string state;
     Timer timer;
     std::map<std::string, SDL_Surface*> images;

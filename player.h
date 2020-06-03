@@ -21,6 +21,7 @@ public:
     void bump(const std::string& flag = "");
     bool collide_with(Sprite*);
     SDL_Surface* get_surface();
+    float *get_impulse();
 
 private:
     class Dust: public Sprite

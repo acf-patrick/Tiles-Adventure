@@ -48,6 +48,10 @@ public:
     int get_centerx();
     int get_centery();
     SDL_Rect get_rect();
+    /// Retourne la force qu'éxerce ce sprite sur un autre
+    /// sous forme de tableau à deux cases :
+    /// suivant 'x' et suivant 'y'
+    virtual float *get_impulse();
     virtual SDL_Surface* get_surface();
 
     void set_x(Sint16);

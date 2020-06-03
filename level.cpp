@@ -139,8 +139,9 @@ bool Level::collision_with(Sprite* sprite)
         if (box)
             if (box->is("Boxes") and sprite->check_down)
             {
-                sprite->bump("box repulsion");
-                box->bump();
+                std::stringstream oss;
+                oss << sprite->get_impulse()[1];
+                box->bump(oss.str());
                 if (!items["Boxes"].has(box))
                 {
                     std::string name[] = { "Apple", "Bananas", "Cherries", "Kiwi",
@@ -149,6 +150,7 @@ bool Level::collision_with(Sprite* sprite)
                     for (int i=0; i<n; ++i)
                         items["Fruits"].add(new Fruit(box->get_x(), box->get_y()-7, this, name[rand()%8], true));
                 }
+                sprite->bump("box repulsion");
             }
         if (bullet)
             if (bullet->is("Bullet"))

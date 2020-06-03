@@ -205,6 +205,14 @@ void Player::respawn()
     show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift());
 }
 
+float *Player::get_impulse()
+{
+    float* ret(Sprite::get_impulse());
+    ret[0] = x_vel;
+    ret[1] = y_vel;
+    return ret;
+}
+
 SDL_Surface* Player::get_surface()
 {
     SDL_Surface* s1 = SDL_CreateRGBSurface(SDL_HWSURFACE, rect.w, rect.h, 32,

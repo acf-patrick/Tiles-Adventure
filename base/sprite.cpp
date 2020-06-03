@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstdlib>
 #include "sprite.h"
 #include "func_tool.h"
 
@@ -46,6 +47,12 @@ int Sprite::get_centerx() { return x+rect.w/2.; }
 int Sprite::get_centery() { return y+rect.h/2.; }
 int Sprite::get_right() { return x+rect.w; }
 int Sprite::get_bottom() { return y+rect.h; }
+float *Sprite::get_impulse()
+{
+    float *ret = (float*)malloc(2*sizeof (float));
+    ret[0] = ret[1] = 0;
+    return ret;
+}
 SDL_Surface* Sprite::get_surface() { return image; }
 SDL_Rect Sprite::get_rect()
 {
