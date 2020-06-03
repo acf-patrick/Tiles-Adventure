@@ -143,10 +143,11 @@ bool Level::collision_with(Sprite* sprite)
                 box->bump();
                 if (!items["Boxes"].has(box))
                 {
-                    std::string name[] = { "Apple", "Bananas", "Cherries", "Kiwi", "Melon", "Orange", "Pineapple", "Strawberry" };
+                    std::string name[] = { "Apple", "Bananas", "Cherries", "Kiwi",
+                                        "Melon", "Orange", "Pineapple", "Strawberry" };
                     int n(randint(1, 5));
                     for (int i=0; i<n; ++i)
-                        items["Fruits"].add(new Fruit(box->get_x(), box->get_y()-5, this, name[rand()%8], true));
+                        items["Fruits"].add(new Fruit(box->get_x(), box->get_y()-7, this, name[rand()%8], true));
                 }
             }
         if (bullet)

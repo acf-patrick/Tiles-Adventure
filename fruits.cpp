@@ -22,7 +22,7 @@ Fruit::Fruit(int _x, int _y, Map* m, const std::string& name, bool hidden):
     if (hidden)
     {
         y_vel = -6;
-        x_vel = ((rand()%2)?1:-1)*6;
+        x_vel = ((rand()%2)?1:-1)*8;
     }
     type.push_back("Fruits");
     type.push_back(name);
