@@ -135,7 +135,11 @@ bool Level::collision_with(Sprite* sprite)
         if (checkpoint)
             checkpoint->bump();
         if (box)
-            box->bump();
+            if (sprite->check_down)
+            {
+                sprite->bump("box repulsion");
+                box->bump();
+            }
         if (bullet)
             if (bullet->is("Bullet"))
             {

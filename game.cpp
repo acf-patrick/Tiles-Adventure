@@ -5,6 +5,7 @@
 #include "checkpoints.h"
 #include "game.h"
 #include "show.h"
+#include "box.h"
 #include "fruits.h"
 
 Game::Game(): App("Tiles Adventure", 500, 400),
@@ -16,7 +17,7 @@ Game::Game(): App("Tiles Adventure", 500, 400),
     focus = true;
     item = NULL;
     bg = new Background;
-    sprites.add(new Player(&map, 60, 20, keys, "Virtual Guy"));
+    sprites.add(new Player(&map, 60, 20, keys, "Ninja Frog"));
     sprites.add(new Fps(Fps::DEFAULT, "fonts/Supercell-Magic_5"));
     headers[0] = new Text("Current item : ", 255, 255, 255, "fonts/Supercell-Magic_5",
                            NULL, 15, 5, indicateur.get_bottom());
@@ -53,13 +54,15 @@ void Game::update_events()
     else if (event.type == SDL_MOUSEBUTTONUP)
     {
         SDL_Color color = {0, 0, 0};
-        std::string items_name[] = {"Checkpoint", "End", "Start",
+        std::string items_name[] = {"Box1", "Box2", "Box3",
+                                    "Checkpoint", "End", "Start",
                                     "Apple", "Bananas", "Cherries", "Kiwi",
                                     "Melon", "Orange", "Pineapple", "Strawberry"
                                     };
         std::string enemies_name[] = {"AngryPig", "Bunny", "Chicken", "Chameleon", "Duck",
                              "Mushroom", "Trunk", "Plant", "Rino", "Turtle", "Skull"};
-        int nbr(11), n(11);
+        // Enemy, Item
+        int nbr(11), n(14);
         int x(event.button.x), y(event.button.y);
         if (event.button.button == SDL_BUTTON_LEFT)
         {
@@ -198,9 +201,8 @@ Sprite* Game::create_enemy(const std::string& name)
 
 Sprite* Game::create_item(const std::string& name, bool icon)
 {
-    SDL_Rect* viewport(NULL);
-    if (!icon)
-        viewport = map.get_viewport();
+    SDL_Rect* viewport(icon?NULL:map.get_viewport());
+    Map* m(icon?NULL:&map);
     int x(event.button.x+map.get_xshift()),
         y(event.button.y+map.get_yshift());
     if (name == "Checkpoint")
@@ -209,5 +211,11 @@ Sprite* Game::create_item(const std::string& name, bool icon)
         return new End(x, y, viewport);
     if (name == "Start")
         return new Start(x, y, viewport);
+    if (name == "Box1")
+        return new Box(m, x, y, 1);
+    if (name == "Box2")
+        return new Box(m, x, y, 2);
+    if (name == "Box3")
+        return new Box(m, x, y, 3);
     return new Fruit(x, y, viewport, name);
 }
