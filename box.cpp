@@ -2,7 +2,8 @@
 
 Box::Box(Map* m, int _x, int _y, int nbr):
     With_mass(m, _x, _y), numero(nbr),
-    cur_image(0), state("Idle")
+    cur_image(0), hit_cnt(0),
+    state("Idle")
 {
     type.push_back("Boxes");
     std::stringstream t;
@@ -52,5 +53,13 @@ void Box::bump(const std::string& flag)
     {
         cur_image = 0;
         state = "Hit";
+        hit_cnt++;
+        if (hit_cnt > numero)
+        {
+            state = "Break";
+            for (int i=0; i<4; ++i)
+                groups[0]->add(new BoxPiece(m_map, get_centerx(), get_centery(), numero, i));
+            kill();
+        }
     }
 }

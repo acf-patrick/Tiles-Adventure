@@ -49,6 +49,8 @@ void Group::add(std::vector<Sprite*> sprites)
         _add(sprites[i]);
 }
 
+bool Group::empty() { return sprite_list.empty(); }
+
 void Group::draw(SDL_Surface* screen)
 {
     for (int i=0; i<(int)sprite_list.size(); ++i)

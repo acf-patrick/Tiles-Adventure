@@ -20,6 +20,7 @@ public:
     void add(Sprite*);
     void add(std::vector<Sprite*>);
 
+    /// Verifie si le groupe est vide
     bool empty();
 
     /// Met-à-jour les sprites du groupe

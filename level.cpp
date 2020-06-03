@@ -1,4 +1,5 @@
 #include <fstream>
+#include <sstream>
 #include "level.h"
 
 typedef std::map< std::string, std::vector<SDL_Rect> >::iterator tab_iterator;
@@ -135,7 +136,7 @@ bool Level::collision_with(Sprite* sprite)
         if (checkpoint)
             checkpoint->bump();
         if (box)
-            if (sprite->check_down)
+            if (box->is("Boxes") and sprite->check_down)
             {
                 sprite->bump("box repulsion");
                 box->bump();

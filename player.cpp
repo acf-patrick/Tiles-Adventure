@@ -181,13 +181,16 @@ void Player::update_yvel()
 
 void Player::bump(const std::string& flag)
 {
-    y_vel = -5;
-    if (flag == "die")
-        show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift(), false);
-    else if (flag == "box repulsion")
+    if (flag == "box repulsion")
     {
         double_jump = false;
         y_vel = -8;
+    }
+    else
+    {
+        y_vel = -5;
+        if (flag == "die")
+            show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift(), false);
     }
 }
 

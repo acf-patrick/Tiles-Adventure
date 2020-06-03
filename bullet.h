@@ -59,18 +59,23 @@ class Bullet_Pieces: public Sprite
 
         void update()
         {
-            if (!x_vel and timer.get_elapsed_s() >= 3)
+            if (timer.get_elapsed_s() >= 3)
                 kill();
             apply_gravity();
             move(x_vel, y_vel);
-
+            if (y_vel>10)
+                y_vel = 10;
+            int s(sgn(x_vel));
+            if (s)
+            {
+                x += 2*s;
+                if (m_map->collision_with(this))
+                    x_vel = 0;
+                x -= 2*s;
+            }
             y += 2;
             if (m_map->collision_with(this))
-            {
                 x_vel = y_vel = 0;
-                if (x_vel)
-                    timer.restart();
-            }
             y -= 2;
         }
 
