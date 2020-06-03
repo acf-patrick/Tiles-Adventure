@@ -217,5 +217,5 @@ Sprite* Game::create_item(const std::string& name, bool icon)
         return new Box(m, x, y, 2);
     if (name == "Box3")
         return new Box(m, x, y, 3);
-    return new Fruit(x, y, viewport, name);
+    return new Fruit(x, y, m, name);
 }

@@ -1,12 +1,15 @@
 #include <SDL_image.h>
+#include <ctime>
+#include "base/func_tool.h"
 #include "base/app.h"
 #include "fruits.h"
 
-Fruit::Fruit(int _x, int _y, SDL_Rect* v, const std::string& name):
-    viewport(v),
-    collected(false), cur_image(0)
+Fruit::Fruit(int _x, int _y, Map* m, const std::string& name, bool hidden):
+    With_mass(m, _x, _y),
+    collected(false), cur_image(0),
+    static_item(!hidden)
 {
-    if (!v)
+    if (!m_map)
     {
         viewport = new SDL_Rect;
         viewport->x = 0;
@@ -14,10 +17,15 @@ Fruit::Fruit(int _x, int _y, SDL_Rect* v, const std::string& name):
         viewport->w = App::width;
         viewport->h = App::height;
     }
+    else
+        viewport = m_map->get_viewport();
+    if (hidden)
+    {
+        y_vel = -6;
+        x_vel = ((rand()%2)?1:-1)*6;
+    }
     type.push_back("Fruits");
     type.push_back(name);
-    x = _x;
-    y = _y;
     rect.w = rect.h = 32;
     std::string img_name("images/Items/Fruits/");
     img_name += name + ".png";
@@ -47,6 +55,17 @@ void Fruit::update()
     int n(image->w/rect.w);
     if (collected and cur_image>=n)
         kill();
+
+    if (!static_item)
+    {
+        apply_gravity();
+        move(x_vel, y_vel);
+        y += 2;
+        if (m_map->collision_with(this))
+            static_item = true;
+        y -= 2;
+    }
+
     cur_image %= n;
 }
 

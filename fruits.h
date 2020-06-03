@@ -1,14 +1,15 @@
 #ifndef FRUITS_H
 #define FRUITS_H
 
-#include "base/sprite.h"
+#include "base/with_mass.h"
 #include "base/timer.h"
+#include "base/map.h"
 #include <SDL.h>
 
-class Fruit: public Sprite
+class Fruit: public With_mass
 {
 public:
-    Fruit(int, int, SDL_Rect*, const std::string&);
+    Fruit(int, int, Map*, const std::string&, bool hidden = false);
     void draw(SDL_Surface*);
     void update();
     void bump(const std::string& flag = "");
@@ -17,6 +18,7 @@ private:
     SDL_Rect* viewport;
     bool collected;
     int cur_image;
+    bool static_item;
     Timer timer;
 };
 

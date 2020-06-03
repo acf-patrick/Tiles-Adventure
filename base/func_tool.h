@@ -32,7 +32,10 @@ std::string strip(const std::string&);
 std::vector<std::string> split(const std::string&, const std::string&);
 std::string join(const std::vector< std::string > &, const std::string&);
 
-int randint(int, int);
+/**
+Returns a random number in [a, b[
+*/
+int randint(int a, int b);
 
 /* Using grey mask */
 bool images_collide(int, int, SDL_Surface*, int, int, SDL_Surface*);

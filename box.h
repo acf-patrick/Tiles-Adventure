@@ -51,12 +51,12 @@ private:
             if (pos == BOTTOM_RIGHT or pos == TOP_RIGHT)
             {
                 x_vel = 2;
-                y_vel = (pos == TOP_RIGHT)?-4:-2;
+                y_vel = (pos == TOP_RIGHT)?-6:-2;
             }
             else if (pos == BOTTOM_LEFT or pos == TOP_LEFT)
             {
                 x_vel = -2;
-                y_vel = (pos == TOP_LEFT)?-4:-2;
+                y_vel = (pos == TOP_LEFT)?-6:-2;
             }
             timer.restart();
         }
