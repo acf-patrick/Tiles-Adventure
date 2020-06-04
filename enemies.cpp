@@ -469,7 +469,7 @@ void Rino::update()
     image = images[direction][state];
     int animation_delay(0);
     if (state == "Hit Wall")
-        animation_delay = 30;
+        animation_delay = 130;
     else
         animation_delay = 100-std::abs(x_vel)*10;
 
@@ -490,7 +490,10 @@ void Rino::update()
     if (state == "Hit Wall")
     {
         if (cur_image >= image->w/rect.w)
+        {
+            direction = !direction;
             state = "Run";
+        }
         else
             return;
     }
@@ -500,7 +503,7 @@ void Rino::update()
     field.h = rect.h;
     field.x = Sint16(direction?get_right():(x-field.w));
     field.y = Sint16(y);
-    if (target->collide_with(field))
+    if (state != "Hit Wall" and target->collide_with(field))
     {
         charge = true;
         state = "Run";
@@ -526,8 +529,8 @@ void Rino::update()
                     cur_image = 0;
                     state = "Hit Wall";
                     charge = false;
-                    x_vel = -8*s;
-                    y_vel = -8;
+                    x_vel = -3*s;
+                    y_vel = -6;
                 }
                 else if (bound)
                     state = "Idle";
@@ -637,23 +640,36 @@ void Skull::update()
             particle_timer.restart();
         }
     image = images[direction][state];
-    if (timer.get_elapsed_ms() >= 100-std::abs(x_vel)*10)
+    int animation_delay;
+    if (state.find("Hit Wall") != state.npos)
+        animation_delay = 110;
+    else
+        animation_delay = 100-std::abs(x_vel)*10;
+    if (timer.get_elapsed_ms() >= animation_delay)
     {
         cur_image++;
         timer.restart();
     }
 
-    if (state.find("Hit") != state.npos)
-    {
-        if (cur_image >= image->w/rect.w)
-            kill();
+    if (erase())
         return;
-    }
+
     if (charge)
         direction = (x < target->get_x());
     apply_gravity();
     move(x_vel, y_vel);
     stop_falling();
+
+    if (state.find("Hit Wall") != state.npos)
+    {
+        if (cur_image >= image->w/rect.w)
+        {
+            direction = !direction;
+            state = (state == "Hit Wall 1")?"Idle 1":"Idle 2";
+        }
+        else
+            return;
+    }
 
     field.w = 40;
     field.h = rect.h;
@@ -679,11 +695,13 @@ void Skull::update()
                 if (collision)
                 {
                     cur_image = 0;
+                    charge = false;
                     state = (state == "Idle 1")?"Hit Wall 1":"Hit Wall 2";
+                    x_vel = -2*s;
+                    y_vel = -6;
                 }
                 else
                 {
-                    charge = false;
                     direction = !direction;
                     x_vel *= -1;
                 }
@@ -697,13 +715,14 @@ void Skull::update()
         x -= 2*s;
     }
 
-    if (!charge)
-        if (state_timer.get_elapsed_s() >= delay)
-        {
-            state = (state == "Idle 1")?"Idle 2":"Idle 1";
-            delay = randint(5, 10);
-            state_timer.restart();
-        }
+    if (state.find("Hit Wall") == state.npos)
+        if (!charge)
+            if (state_timer.get_elapsed_s() >= delay)
+            {
+                state = (state == "Idle 1")?"Idle 2":"Idle 1";
+                delay = randint(5, 10);
+                state_timer.restart();
+            }
     cur_image %= (image->w/rect.w);
 }
 
