@@ -15,6 +15,7 @@ class Box: public With_mass
 {
 public:
     Box(Map*, int, int, int);
+    ~Box();
     void update();
     void draw(SDL_Surface*);
     void bump(const std::string& flag = "");

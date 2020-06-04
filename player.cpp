@@ -142,6 +142,8 @@ void Player::update_keys()
             y -= 2;
         }
     }
+    else if (keys[SDLK_DOWN])
+        gravity += 0.2;
     else
     {
         allow_jump = true;
@@ -184,6 +186,7 @@ void Player::bump(const std::string& flag)
     if (flag == "box repulsion")
     {
         double_jump = false;
+        gravity =  JUMP_GRAVITY;
         y_vel = -8;
     }
     else

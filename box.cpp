@@ -23,6 +23,17 @@ Box::Box(Map* m, int _x, int _y, int nbr):
     image = images["Idle"] = IMG_Load(img_name.c_str());
 }
 
+Box::~Box()
+{
+    for (int i=0; i<2; ++i)
+        for (std::map<std::string, SDL_Surface*>::iterator it=images[i].begin(); it!=images[i].end(); ++it)
+        {
+            SDL_FreeSurface(it->second);
+            images[i][it->first] = NULL;
+        }
+    image = NULL;
+}
+
 void Box::update()
 {
     image = images[state];
@@ -55,7 +66,7 @@ void Box::bump(const std::string& flag)
         cur_image = 0;
         state = "Hit";
         float impulse(0);
-        std::istringstream iss(flag);
+        std::stringstream iss(flag);
         iss >> impulse;
         hp -= impulse;
         if (hp <= 0)
