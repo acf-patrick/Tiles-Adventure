@@ -26,10 +26,10 @@ Box::Box(Map* m, int _x, int _y, int nbr):
 Box::~Box()
 {
     for (int i=0; i<2; ++i)
-        for (std::map<std::string, SDL_Surface*>::iterator it=images[i].begin(); it!=images[i].end(); ++it)
+        for (std::map<std::string, SDL_Surface*>::iterator it=images.begin(); it!=images.end(); ++it)
         {
             SDL_FreeSurface(it->second);
-            images[i][it->first] = NULL;
+            images[it->first] = NULL;
         }
     image = NULL;
 }
