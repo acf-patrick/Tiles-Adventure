@@ -1,30 +1,32 @@
 #include "base/timer.h"
 #include "base/with_mass.h"
+#include "game.h"
+#include "show.h"
 #include "player.h"
 #include "enemies.h"
 #include "checkpoints.h"
-#include "game.h"
-#include "show.h"
-#include "box.h"
 #include "fruits.h"
+#include "box.h"
+#include "traps.h"
 
 Game::Game(): App("Tiles Adventure", 500, 400),
     indicateur("AngryPig", 0, 0, 0, "fonts/emulogic", NULL, 10, 5, 30),
     bg_timer(10)
 {
-    cur_enemy = 0;
-    cur_item = 0;
-    focus = true;
-    item = NULL;
+    cur_enemy = cur_item = cur_trap = 0;
+    focus = ENEMY;
+    cursor = NULL;
     bg = new Background;
     sprites.add(new Player(&map, 60, 20, keys, "Ninja Frog"));
     sprites.add(new Fps(Fps::DEFAULT, "fonts/Supercell-Magic_5"));
-    headers[0] = new Text("Current item : ", 255, 255, 255, "fonts/Supercell-Magic_5",
+    headers[ITEM] = new Text("Current item : ", 255, 255, 255, "fonts/Supercell-Magic_5",
                            NULL, 15, 5, indicateur.get_bottom());
-    headers[1] = new Text("Current enemy : ", 255, 255, 255, "fonts/Supercell-Magic_5",
+    headers[ENEMY] = new Text("Current enemy : ", 255, 255, 255, "fonts/Supercell-Magic_5",
                            NULL, 15, 5, 5);
-    sprites.add(headers[0]);
-    sprites.add(headers[1]);
+    headers[TRAP] = new Text("Current trap : ", 255, 255, 255, "fonts/Supercell-Magic_5",
+                           NULL, 15, 5, 80);
+    for (int i=0; i<3; ++i)
+        sprites.add(headers[i]);
     Map::camera.x = width*.5 - 100;
     Map::camera.y = height*.5 + 10;
     Map::camera.w = 200;
@@ -48,87 +50,127 @@ void Game::update_events()
     App::update_events();
     if (event.type == SDL_MOUSEMOTION)
     {
-        if (item)
-            item->set_position(event.motion.x, event.motion.y);
+        if (cursor)
+            cursor->set_position(event.motion.x, event.motion.y);
     }
     else if (event.type == SDL_MOUSEBUTTONUP)
     {
         SDL_Color color = {0, 0, 0};
+        std::string traps_name[] = {"Arrow", "Blocks", "Falling Platforms",
+                                    "Fan", "Fire", "Platforms",
+                                    "Rock Head", "Saw", "Spike Head",
+                                    "Spiked Ball", "Spikes", "Trampoline"
+                                    };
         std::string items_name[] = {"Box1", "Box2", "Box3",
                                     "Checkpoint", "End", "Start",
-                                    "Apple", "Bananas", "Cherries", "Kiwi",
-                                    "Melon", "Orange", "Pineapple", "Strawberry"
+                                    "Apple", "Bananas", "Cherries",
+                                    "Kiwi", "Melon", "Orange",
+                                    "Pineapple", "Strawberry"
                                     };
-        std::string enemies_name[] = {"AngryPig", "Bunny", "Chicken", "Chameleon", "Duck",
-                             "Mushroom", "Trunk", "Plant", "Rino", "Turtle", "Skull"};
-        // Enemy, Item
-        int nbr(11), n(14);
+        std::string enemies_name[] = {"AngryPig", "Bunny", "Chicken",
+                                      "Chameleon", "Duck", "Mushroom",
+                                      "Trunk", "Plant", "Rino",
+                                      "Turtle", "Skull"
+                                      };
+        // Item, Enemy, Trap
+        int nbr[3] = {14, 11, 12};
         int x(event.button.x), y(event.button.y);
         if (event.button.button == SDL_BUTTON_LEFT)
         {
-            if (headers[0]->collide_with(x, y))
+            if (headers[ITEM]->collide_with(x, y))
             {
-                focus = false;
+                focus = ITEM;
                 indicateur.set(color, items_name[cur_item]);
-                delete item;
-                item = create_item(items_name[cur_item], true);
+                delete cursor;
+                cursor = create_item(items_name[cur_item], true);
             }
-            else if (headers[1]->collide_with(x, y))
+            else if (headers[ENEMY]->collide_with(x, y))
             {
-                focus = true;
+                focus = ENEMY;
                 indicateur.set(color, enemies_name[cur_enemy]);
-                delete item;
-                item = NULL;
+                delete cursor;
+                cursor = NULL;
+            }
+            else if (headers[TRAP]->collide_with(x, y))
+            {
+                focus = TRAP;
+                indicateur.set(color, traps_name[cur_trap]);
+                delete cursor;
+                cursor = create_trap(traps_name[cur_trap], true);
             }
             else
-            {
-                if (focus)
+                switch (focus)
+                {
+                case ITEM:
+                    if (cursor)
+                        map.add_item(create_item(cursor->get_type()));
+                    break;
+                case ENEMY:
                     map.add_enemies(create_enemy(enemies_name[cur_enemy]));
-                else
-                    if (item)
-                        map.add_item(create_item(item->get_type()));
-            }
+                    break;
+                case TRAP:
+                    if (cursor)
+                        map.add_traps(create_trap(cursor->get_type()));
+                    break;
+                default: ;
+                }
         }
+
         else if (event.button.button == SDL_BUTTON_RIGHT)
             map.delete_sprite_at(x, y);
+
         else if (event.button.button == SDL_BUTTON_WHEELUP)
-        {
-            if (focus)
+            switch (focus)
             {
-                cur_enemy = (cur_enemy+1)%nbr;
-                indicateur.set(color, enemies_name[cur_enemy]);
-                delete item;
-                item = NULL;
-            }
-            else
-            {
-                cur_item = (cur_item+1)%n;
+            case ITEM:
+                cur_item = (cur_item+1)%nbr[ITEM];
                 indicateur.set(color, items_name[cur_item]);
-                delete item;
-                item = create_item(items_name[cur_item], true);
-            }
-        }
-        else if (event.button.button == SDL_BUTTON_WHEELDOWN)
-        {
-            if (focus)
-            {
-                cur_enemy--;
-                if (cur_enemy<0)
-                    cur_enemy = nbr-1;
+                delete cursor;
+                cursor = create_item(items_name[cur_item], true);
+                break;
+            case ENEMY:
+                cur_enemy = (cur_enemy+1)%nbr[ENEMY];
                 indicateur.set(color, enemies_name[cur_enemy]);
-                delete item;
-                item = NULL;
+                delete cursor;
+                cursor = NULL;
+                break;
+            case TRAP:
+                cur_trap = (cur_trap+1)%nbr[TRAP];
+                indicateur.set(color, traps_name[cur_trap]);
+                delete cursor;
+                cursor = create_trap(traps_name[cur_trap], true);
+                break;
+            default: ;
             }
-            else
+        else if (event.button.button == SDL_BUTTON_WHEELDOWN)
+            switch (focus)
             {
+            case ITEM:
                 cur_item--;
                 if (cur_item<0)
-                    cur_item = n-1;
+                    cur_item = nbr[ITEM]-1;
                 indicateur.set(color, items_name[cur_item]);
-                delete item;
-                item = create_item(items_name[cur_item], true);
+                delete cursor;
+                cursor = create_item(items_name[cur_item], true);
+                break;
+            case ENEMY:
+                cur_enemy--;
+                if (cur_enemy<0)
+                    cur_enemy = nbr[ENEMY]-1;
+                indicateur.set(color, enemies_name[cur_enemy]);
+                delete cursor;
+                cursor = NULL;
+                break;
+            case TRAP:
+                cur_trap--;
+                if (cur_trap<0)
+                    cur_trap = nbr[TRAP]-1;
+                indicateur.set(color, traps_name[cur_trap]);
+                delete cursor;
+                cursor = create_trap(traps_name[cur_trap], true);
+                break;
+            default: ;
             }
-        }
         indicateur.set_position(5, headers[focus]->get_bottom());
     }
     else if (event.type == SDL_KEYDOWN)
@@ -147,7 +189,7 @@ void Game::draw()
     map.draw(screen);
     sprites.draw(screen);
     indicateur.draw(screen);
-    if (item) item->draw(screen);
+    if (cursor) cursor->draw(screen);
     SDL_Flip(screen);
 }
 
@@ -161,7 +203,7 @@ void Game::update()
     bg->update();
     map.update();
     map.center_on(sprites[0], Map::camera);
-    if (item) item->update();
+    if (cursor) cursor->update();
     if (bg_timer.out())
     {
         bg_timer.restart();
@@ -218,4 +260,13 @@ Sprite* Game::create_item(const std::string& name, bool icon)
     if (name == "Box3")
         return new Box(m, x, y, 3);
     return new Fruit(x, y, m, name);
+}
+
+Sprite* Game::create_trap(const std::string& name, bool icon)
+{
+    SDL_Rect* viewport(icon?NULL:map.get_viewport());
+    Map* m(icon?NULL:&map);
+    int x(event.button.x+map.get_xshift()),
+        y(event.button.y+map.get_yshift());
+    return new Arrow(viewport, x, y);
 }

@@ -48,6 +48,19 @@ Level::~Level()
         file << "\t}\n";
     }
     file << "}\n";
+
+    file << "Traps\n{\n";
+    for (tab_iterator it=traps_pos.begin();
+        it != traps_pos.end(); ++it)
+    {
+        file << '\t' << it->first << "\n\t{\n";
+        for (int i=0; i<(int)it->second.size(); ++i)
+        {
+            file << "\t\t" << it->second[i].x << ", " << it->second[i].y << std::endl;
+        }
+        file << "\t}\n";
+    }
+    file << "}\n";
 }
 
 void Level::add_enemies(Sprite* enemy)
@@ -65,6 +78,12 @@ void Level::add_item(Sprite* item)
     items[item->get_ancestor()].add(item);
     items_pos[item->get_ancestor()][item->get_type()].push_back(item->get_rect());
 }
+void Level::add_traps(Sprite* trap)
+{
+    traps.add(trap);
+    traps_pos[trap->get_type()].push_back(trap->get_rect());
+}
+
 void Level::delete_sprite_at(int x, int y)
 {
     x += viewport->x;
@@ -73,18 +92,25 @@ void Level::delete_sprite_at(int x, int y)
     if (sprite)
         enemies.remove(sprite);
     else
-        for (std::map<std::string, Group>::iterator it=items.begin();
-            it!=items.end(); ++it)
-        {
-            sprite = it->second.first_sprite_colliding_with(x, y);
-            if (sprite)
-                it->second.remove(sprite);
-        }
+    {
+        sprite = traps.first_sprite_colliding_with(x, y);
+        if (sprite)
+            traps.remove(sprite);
+        else
+            for (std::map<std::string, Group>::iterator it=items.begin();
+                it!=items.end(); ++it)
+            {
+                sprite = it->second.first_sprite_colliding_with(x, y);
+                if (sprite)
+                    it->second.remove(sprite);
+            }
+    }
 }
 
 void Level::update()
 {
     enemies.update();
+    traps.update();
     dying.update();
     bullets.update();
     for (std::map<std::string ,Group>::iterator it=items.begin();
@@ -96,6 +122,7 @@ void Level::draw(SDL_Surface* screen)
 {
     Map::draw(screen);
     enemies.draw(screen);
+    traps.draw(screen);
     dying.draw(screen);
     bullets.draw(screen);
     for (std::map<std::string ,Group>::iterator it=items.begin();
@@ -109,6 +136,7 @@ bool Level::collision_with(Sprite* sprite)
     {
         Sprite* enemy = enemies.first_sprite_colliding_with(sprite);
         Sprite* bullet = bullets.first_sprite_colliding_with(sprite);
+        Sprite* trap = traps.first_sprite_colliding_with(sprite);
         Sprite* fruit = items["Fruits"].first_sprite_colliding_with(sprite);
         Sprite* checkpoint = items["Checkpoints"].first_sprite_colliding_with(sprite);
         Sprite* box = items["Boxes"].first_sprite_colliding_with(sprite);
@@ -163,6 +191,14 @@ bool Level::collision_with(Sprite* sprite)
                     sprite->bump("die");
                 }
             }
+        if (trap)
+        {
+            if (trap->is("Arrow") and sprite->check_down)
+            {
+                trap->bump();
+                sprite->bump("arrow repulsion");
+            }
+        }
     }
     else if (!sprite->is("Plant") and !sprite->is("Trunk"))
         if (enemies.has(sprite))

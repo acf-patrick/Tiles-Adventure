@@ -20,17 +20,19 @@ private:
     void update();
     Sprite* create_enemy(const std::string&);
     Sprite* create_item(const std::string&, bool icon = false);
+    Sprite* create_trap(const std::string&, bool icon = false);
 
     Text indicateur;
     Level map;
     Group sprites;
     Background *bg;
-    int cur_enemy, cur_item;
+    int cur_enemy, cur_item, cur_trap;
 
-    // true: enemy, false: item
-    bool focus;
-    Text *headers[2];
-    Sprite* item;
+    enum { ITEM, ENEMY, TRAP };
+    int focus;
+
+    Text *headers[3];
+    Sprite *cursor;
     Chrono bg_timer;
 };
 
