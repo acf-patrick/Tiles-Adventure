@@ -85,6 +85,8 @@
 		<Unit filename="player.h" />
 		<Unit filename="show.cpp" />
 		<Unit filename="show.h" />
+		<Unit filename="traps.cpp" />
+		<Unit filename="traps.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

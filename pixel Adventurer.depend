@@ -210,14 +210,14 @@
 	<vector>
 	"base/group.h"
 
-1591215692 c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.h
+1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.h
 	<iostream>
 	<vector>
 	<map>
 	<SDL.h>
 	"sprite.h"
 
-1591216908 c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.h
+1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.h
 	<iostream>
 	<vector>
 	<map>
@@ -235,7 +235,7 @@
 	"begin_code.h"
 	"close_code.h"
 
-1591215692 c:\users\patrick miharisoa\desktop\pixel adventurer\base\func_tool.h
+1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\base\func_tool.h
 	<iostream>
 	<SDL.h>
 	<string>
@@ -265,7 +265,7 @@
 	<SDL_ttf.h>
 	"sprite.h"
 
-1591215692 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.cpp
+1591218727 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.cpp
 	<algorithm>
 	"group.h"
 
@@ -310,7 +310,7 @@
 	<SDL.h>
 	<vector>
 
-1591216819 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.cpp
+1591218727 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.cpp
 	<algorithm>
 	<cstdlib>
 	"sprite.h"
@@ -335,7 +335,7 @@
 	"timer.h"
 	"app.h"
 
-1591215692 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\with_mass.cpp
+1591218727 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\with_mass.cpp
 	<SDL_gfxPrimitives.h>
 	"with_mass.h"
 	"func_tool.h"
@@ -355,7 +355,7 @@
 	"base/func_tool.h"
 	"bullet.h"
 
-1591215692 c:\users\patrick miharisoa\desktop\pixel adventurer\bullet.h
+1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\bullet.h
 	"base/with_mass.h"
 	"base/timer.h"
 	<SDL_image.h>
@@ -397,7 +397,7 @@
 	<ctime>
 	"game.h"
 
-1586373036 c:\users\patrick miharisoa\desktop\pixel adventurer\game.h
+1591300623 c:\users\patrick miharisoa\desktop\pixel adventurer\game.h
 	"base/group.h"
 	"base/timer.h"
 	"base/text.h"
@@ -405,18 +405,18 @@
 	"background.h"
 	"level.h"
 
-1586348766 c:\users\patrick miharisoa\desktop\pixel adventurer\level.h
+1591289673 c:\users\patrick miharisoa\desktop\pixel adventurer\level.h
 	"base/map.h"
 	"base/group.h"
 	<map>
 
-1591217593 source:c:\users\patrick miharisoa\desktop\pixel adventurer\player.cpp
+1591300114 source:c:\users\patrick miharisoa\desktop\pixel adventurer\player.cpp
 	<cmath>
 	"player.h"
 	"base/func_tool.h"
 	"base/app.h"
 
-1591216725 c:\users\patrick miharisoa\desktop\pixel adventurer\player.h
+1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\player.h
 	<map>
 	<string>
 	<sstream>
@@ -451,41 +451,42 @@
 	<SDL.h>
 	<map>
 
-1591215692 source:c:\users\patrick miharisoa\desktop\pixel adventurer\fruits.cpp
+1591218727 source:c:\users\patrick miharisoa\desktop\pixel adventurer\fruits.cpp
 	<SDL_image.h>
 	<ctime>
 	"base/func_tool.h"
 	"base/app.h"
 	"fruits.h"
 
-1591215692 c:\users\patrick miharisoa\desktop\pixel adventurer\fruits.h
+1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\fruits.h
 	"base/with_mass.h"
 	"base/timer.h"
 	"base/map.h"
 	<SDL.h>
 
-1591217685 source:c:\users\patrick miharisoa\desktop\pixel adventurer\level.cpp
+1591300127 source:c:\users\patrick miharisoa\desktop\pixel adventurer\level.cpp
 	<fstream>
 	<sstream>
 	"fruits.h"
 	"level.h"
 
-1591215692 source:c:\users\patrick miharisoa\desktop\pixel adventurer\game.cpp
+1591299796 source:c:\users\patrick miharisoa\desktop\pixel adventurer\game.cpp
 	"base/timer.h"
 	"base/with_mass.h"
+	"game.h"
+	"show.h"
 	"player.h"
 	"enemies.h"
 	"checkpoints.h"
-	"game.h"
-	"show.h"
-	"box.h"
 	"fruits.h"
+	"box.h"
+	"traps.h"
 
-1591217513 source:c:\users\patrick miharisoa\desktop\pixel adventurer\box.cpp
+1591287449 source:c:\users\patrick miharisoa\desktop\pixel adventurer\box.cpp
 	<sstream>
 	"box.h"
 
-1591217786 c:\users\patrick miharisoa\desktop\pixel adventurer\box.h
+1591287449 c:\users\patrick miharisoa\desktop\pixel adventurer\box.h
 	<map>
 	<SDL.h>
 	<sstream>
@@ -495,4 +496,14 @@
 	"base/sprite.h"
 	"base/timer.h"
 	"base/map.h"
+
+1591300296 source:c:\users\patrick miharisoa\desktop\pixel adventurer\traps.cpp
+	<SDL_image.h>
+	"base/app.h"
+	"traps.h"
+
+1591288667 c:\users\patrick miharisoa\desktop\pixel adventurer\traps.h
+	<SDL.h>
+	"base/sprite.h"
+	"base/timer.h"
 

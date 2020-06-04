@@ -186,6 +186,11 @@ void Player::bump(const std::string& flag)
         double_jump = false;
         y_vel = -8;
     }
+    else if (flag == "arrow repulsion")
+    {
+        double_jump = false;
+        y_vel = -15;
+    }
     else
     {
         y_vel = -5;
