@@ -56,8 +56,8 @@ void Game::update_events()
     else if (event.type == SDL_MOUSEBUTTONUP)
     {
         SDL_Color color = {0, 0, 0};
-        std::string traps_name[] = {"Arrow", "Blocks", "Falling Platforms",
-                                    "Fan", "Fire", "Platforms",
+        std::string traps_name[] = {"Arrow", "Block", "Falling Platform",
+                                    "Fan", "Fire", "Platform",
                                     "Rock Head", "Saw", "Spike Head",
                                     "Spiked Ball", "Spikes", "Trampoline"
                                     };
@@ -268,5 +268,7 @@ Sprite* Game::create_trap(const std::string& name, bool icon)
     Map* m(icon?NULL:&map);
     int x(event.button.x+map.get_xshift()),
         y(event.button.y+map.get_yshift());
-    return new Arrow(viewport, x, y);
+    if (name == "Arrow")
+        return new Arrow(viewport, x, y);
+    return new Falling_platform(viewport, x, y);
 }
