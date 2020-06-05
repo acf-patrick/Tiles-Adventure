@@ -1,5 +1,6 @@
 #include <SDL_image.h>
 #include "base/app.h"
+#include "bubbles.h"
 #include "traps.h"
 
 Arrow::Arrow(SDL_Rect* v, int _x, int _y):
@@ -87,15 +88,14 @@ Falling_platform::Falling_platform(SDL_Rect* v, int _x, int _y):
 {
     if (!viewport)
     {
+        off = true;
         viewport = Arrow::create_static_viewport();
-        y_vel = 0;
     }
-    else
-        y_vel = 0.5;
     type.push_back("Falling Platform");
 
     x = _x;
     y0 = y = _y;
+    y_vel = 0.5;
     s_off = IMG_Load("images/Traps/Falling Platforms/Off.png");
     Arrow::check_image_existence(s_off);
     image = s_on = IMG_Load("images/Traps/Falling Platforms/On (32x10).png");
@@ -116,22 +116,29 @@ void Falling_platform::draw(SDL_Surface* screen)
     rect.y = 0;
     SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
     SDL_BlitSurface(image, &rect, screen, &pos);
+    bubbles.draw(screen);
 }
 
 void Falling_platform::update()
 {
-    image = off?s_off:s_on;
-    if (timer.get_elapsed_ms() >= 75)
+    if (off)
+        image = s_off;
+    else
     {
-        cur_image = (cur_image+1)%4;
-        timer.restart();
+        bubbles.update();
+        image = s_on;
+        if (timer.get_elapsed_ms() >= 50)
+        {
+            cur_image = (cur_image+1)%4;
+            if (!cur_image)
+                bubbles.add(new Bubbles(viewport, get_centerx(), get_bottom()));
+            timer.restart();
+        }
     }
-    if (y_vel)
-    {
-        if (y<=y0-5)
-            y_vel = 0.5;
-        else if (y>=y0+5)
-            y_vel = -0.5;
-    }
-    y += y_vel;
+
+    if (y<=y0-5 or y>=y0+5)
+        y_vel *= -1;
+
+    if (!off)
+        y += y_vel;
 }
