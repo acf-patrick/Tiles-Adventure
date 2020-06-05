@@ -120,9 +120,9 @@ void Level::update()
 
 void Level::draw(SDL_Surface* screen)
 {
+    traps.draw(screen);
     Map::draw(screen);
     enemies.draw(screen);
-    traps.draw(screen);
     dying.draw(screen);
     bullets.draw(screen);
     for (std::map<std::string ,Group>::iterator it=items.begin();
@@ -193,10 +193,13 @@ bool Level::collision_with(Sprite* sprite)
             }
         if (trap)
         {
-            if (trap->is("Arrow") and sprite->check_down)
+            if (sprite->check_down)
             {
+                if (trap->is("Arrow"))
+                    sprite->bump("arrow repulsion");
+                else  if (trap->is("Falling Platform"))
+                    sprite->bump("platform repulsion");
                 trap->bump();
-                sprite->bump("arrow repulsion");
             }
         }
     }

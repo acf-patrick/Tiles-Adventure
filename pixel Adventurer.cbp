@@ -66,6 +66,8 @@
 		<Unit filename="base/with_mass.h" />
 		<Unit filename="box.cpp" />
 		<Unit filename="box.h" />
+		<Unit filename="bubbles.cpp" />
+		<Unit filename="bubbles.h" />
 		<Unit filename="bullet.cpp" />
 		<Unit filename="bullet.h" />
 		<Unit filename="checkpoints.cpp" />

@@ -91,11 +91,13 @@ Falling_platform::Falling_platform(SDL_Rect* v, int _x, int _y):
         off = true;
         viewport = Arrow::create_static_viewport();
     }
+    m_static = !v;
     type.push_back("Falling Platform");
 
     x = _x;
     y0 = y = _y;
     y_vel = 0.5;
+    gravity = 0;
     s_off = IMG_Load("images/Traps/Falling Platforms/Off.png");
     Arrow::check_image_existence(s_off);
     image = s_on = IMG_Load("images/Traps/Falling Platforms/On (32x10).png");
@@ -116,13 +118,18 @@ void Falling_platform::draw(SDL_Surface* screen)
     rect.y = 0;
     SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
     SDL_BlitSurface(image, &rect, screen, &pos);
-    bubbles.draw(screen);
+    if (!off)
+        bubbles.draw(screen);
 }
 
 void Falling_platform::update()
 {
     if (off)
+    {
+        if (y>=viewport->y+viewport->h)
+            return kill();
         image = s_off;
+    }
     else
     {
         bubbles.update();
@@ -130,15 +137,31 @@ void Falling_platform::update()
         if (timer.get_elapsed_ms() >= 50)
         {
             cur_image = (cur_image+1)%4;
-            if (!cur_image)
+            if (cur_image%2)
                 bubbles.add(new Bubbles(viewport, get_centerx(), get_bottom()));
             timer.restart();
         }
+        if (y<=y0-5 or y>=y0+5)
+            y_vel *= -1;
     }
-
-    if (y<=y0-5 or y>=y0+5)
-        y_vel *= -1;
-
-    if (!off)
+    if (!m_static)
+    {
+        y_vel += gravity;
         y += y_vel;
+    }
+}
+
+void Falling_platform::bump(const std::string& flag)
+{
+    cur_image = 0;
+    y_vel = 1;
+    gravity = 0.1;
+    off = true;
+}
+
+bool Falling_platform::collide_with(Sprite* sprite)
+{
+    if (!sprite or off)
+        return false;
+    return Sprite::collide_with(sprite);
 }

@@ -33,13 +33,15 @@ public:
     ~Falling_platform();
     void update();
     void draw(SDL_Surface*);
+    void bump(const std::string& flag = "");
+    bool collide_with(Sprite*);
 
 private:
     SDL_Rect* viewport;
-    bool off;
+    bool off, m_static;
     int cur_image;
     int y0;
-    float y_vel;
+    float y_vel, gravity;
     SDL_Surface *s_off, *s_on;
     Timer timer;
     Group bubbles;

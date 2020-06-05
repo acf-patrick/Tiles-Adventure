@@ -183,16 +183,21 @@ void Player::update_yvel()
 
 void Player::bump(const std::string& flag)
 {
-    if (flag == "box repulsion")
+    if (flag.find("repulsion") != flag.npos)
     {
         double_jump = false;
-        gravity =  JUMP_GRAVITY;
-        y_vel = -8;
-    }
-    else if (flag == "arrow repulsion")
-    {
-        double_jump = false;
-        y_vel = -15;
+        if (flag == "box repulsion")
+        {
+            gravity =  JUMP_GRAVITY;
+            y_vel = -8;
+        }
+        else if (flag == "platform repulsion")
+        {
+            gravity =  JUMP_GRAVITY;
+            y_vel = -4;
+        }
+        else if (flag == "arrow repulsion")
+            y_vel = -15;
     }
     else
     {
