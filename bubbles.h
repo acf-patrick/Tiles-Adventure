@@ -8,7 +8,7 @@
 class Bubbles: public Sprite
 {
 public:
-    enum { BAS, HAUT, DROITE, GAUCHE };
+    enum { HAUT, DROITE, BAS, GAUCHE };
     /**
     * @param v : viewport de la map
     * @param fan_rect : boite englobante de l'objet Basic_fan
@@ -31,6 +31,7 @@ private:
     int l_bound, u_bound;
 
     int target;
+    bool cinematic;
 };
 
 #endif // BUBBLES_H

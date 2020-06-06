@@ -470,7 +470,7 @@
 	"base/timer.h"
 	"base/sprite.h"
 
-1591475028 c:\users\patrick miharisoa\desktop\pixel adventurer\traps.h
+1591480440 c:\users\patrick miharisoa\desktop\pixel adventurer\traps.h
 	<SDL.h>
 	"bubbles.h"
 	"base/sprite.h"
@@ -497,21 +497,22 @@
 	"base/func_tool.h"
 	"show.h"
 
-1591475023 source:c:\users\patrick miharisoa\desktop\pixel adventurer\traps.cpp
+1591480413 source:c:\users\patrick miharisoa\desktop\pixel adventurer\traps.cpp
 	<SDL_image.h>
+	<SDL_rotozoom.h>
 	"base/app.h"
 	"base/func_tool.h"
 	"traps.h"
 	"level.h"
 
-1591475527 source:c:\users\patrick miharisoa\desktop\pixel adventurer\bubbles.cpp
+1591479235 source:c:\users\patrick miharisoa\desktop\pixel adventurer\bubbles.cpp
 	<SDL_image.h>
 	<SDL_rotozoom.h>
 	<ctime>
 	"base/func_tool.h"
 	"bubbles.h"
 
-1591474861 c:\users\patrick miharisoa\desktop\pixel adventurer\bubbles.h
+1591479066 c:\users\patrick miharisoa\desktop\pixel adventurer\bubbles.h
 	<SDL.h>
 	"base/sprite.h"
 

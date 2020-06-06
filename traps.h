@@ -33,12 +33,14 @@ public:
     Basic_fan(SDL_Rect*, int, int);
     ~Basic_fan();
     virtual void update();
-    void draw(SDL_Surface*);
+    virtual void draw(SDL_Surface*);
+
     static Group* bubbles;
 
 protected:
     SDL_Rect* viewport;
-    bool off, ascendant;
+    bool off;
+    int sens;
     int cur_image;
     // hauteur des bulles
     int min_tar, max_tar;
@@ -47,6 +49,8 @@ protected:
 
     int animation_delay;
     bool extinction, demarrage;
+
+    // L'objet servira d'icone dans l'editeur de niveau
     bool m_static;
 };
 
@@ -68,8 +72,12 @@ private:
 class Fan: public Basic_fan
 {
 public:
-    Fan(SDL_Rect*, int, int, int sens = Bubbles::HAUT);
+    /**
+    * @param s : indique la direction où le ventilateur va souffler
+    */
+    Fan(SDL_Rect*, int, int, int s = Bubbles::GAUCHE);
     void update();
+    void draw(SDL_Surface*);
 
 private:
     Chrono switch_timer;

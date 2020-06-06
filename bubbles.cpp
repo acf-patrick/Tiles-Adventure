@@ -22,11 +22,11 @@ Bubbles::Bubbles(SDL_Rect* v, const SDL_Rect& fan_rect, int sens, int min_tar, i
     // vertical
     if (sens==HAUT or sens==BAS)
     {
-        if (sens)
+        if (sens == HAUT)
             y = fan_rect.y - rect.h;
         else
             y = fan_rect.y + fan_rect.h;
-        x_vel = 0.5;
+        x_vel = ((rand()%2)?1:-1)*0.5;
         y_vel = s*1.5;
         l_bound = fan_rect.x;
         u_bound = fan_rect.x+fan_rect.w - rect.w;
@@ -36,23 +36,25 @@ Bubbles::Bubbles(SDL_Rect* v, const SDL_Rect& fan_rect, int sens, int min_tar, i
     // horizontal
     else if (sens==GAUCHE or sens==DROITE)
     {
-        if (sens)
+        if (sens == DROITE)
             x = fan_rect.x+fan_rect.w;
         else
             x = fan_rect.x-rect.w;
         x_vel = s*1.5;
-        y_vel = 0.5;
+        y_vel = ((rand()%2)?1:-1)*0.5;
         l_bound = fan_rect.y;
         u_bound = fan_rect.y+fan_rect.h - rect.h;
         y = randint(l_bound, u_bound);
         target = x+s*randint(min_tar, max_tar);
     }
+
+    cinematic = (max_tar-min_tar <= 30);
 }
 
 void Bubbles::update()
 {
     if ( (m_sens==HAUT and y<=target) or (m_sens==BAS and y>=target) or
-        (m_sens==GAUCHE and x<=target) or (m_sens==DROITE and y>=target) )
+        (m_sens==GAUCHE and x<=target) or (m_sens==DROITE and x>=target) )
         kill();
     // vertical
     if (m_sens==HAUT or m_sens==BAS)
@@ -83,7 +85,7 @@ void Bubbles::draw(SDL_Surface* screen)
 
 bool Bubbles::collide_with(Sprite* sprite)
 {
-    if (m_sens == BAS and 100<=target and target<=130)
+    if (cinematic)
         return false;
     return Sprite::collide_with(sprite);
 }

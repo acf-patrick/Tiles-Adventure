@@ -1,4 +1,5 @@
 #include <SDL_image.h>
+#include <SDL_rotozoom.h>
 #include "base/app.h"
 #include "base/func_tool.h"
 #include "traps.h"
@@ -86,7 +87,7 @@ SDL_Rect* Arrow::create_static_viewport()
 Falling_platform::Falling_platform(SDL_Rect* v, int _x, int _y):
     Basic_fan(v, _x, _y)
 {
-    ascendant = false;
+    sens = Bubbles::BAS;
     type.push_back("Falling Platform");
 
     y0 = y;
@@ -195,7 +196,7 @@ void Basic_fan::update()
         {
             cur_image = (cur_image+1)%4;
             if (cur_image%2 and bubbles)
-                bubbles->add(new Bubbles(viewport, get_rect(), ascendant, min_tar, max_tar));
+                bubbles->add(new Bubbles(viewport, get_rect(), sens, min_tar, max_tar));
             timer.restart();
         }
     }
@@ -214,18 +215,18 @@ void Basic_fan::draw(SDL_Surface* screen)
     SDL_BlitSurface(image, &rect, screen, &pos);
 }
 
-Fan::Fan(SDL_Rect* v, int _x, int _y, int sens):
+Fan::Fan(SDL_Rect* v, int _x, int _y, int s):
     Basic_fan(v, _x, _y),
     switch_timer(randint(5, 10))
 {
     type.push_back("Fan");
-    ascendant = true;
-    rect.w = 24;
-    rect.h = 8;
-    s_off = IMG_Load("images/Traps/Fan/Off.png");
+    sens = s;
+    s_off = rotateSurface90Degrees(IMG_Load("images/Traps/Fan/Off.png"), sens);
     Arrow::check_image_existence(s_off);
-    s_on = IMG_Load("images/Traps/Fan/On (24x8).png");
+    s_on = rotateSurface90Degrees(IMG_Load("images/Traps/Fan/On (24x8).png"), sens);
     Arrow::check_image_existence(s_on);
+    rect.w = s_off->w;
+    rect.h = s_off->h;
     min_tar = 200;
     max_tar = 300;
 }
@@ -250,4 +251,33 @@ void Fan::update()
             switch_timer.restart(delay);
         }
     Basic_fan::update();
+}
+
+void Fan::draw(SDL_Surface* screen)
+{
+    if (off)
+        rect.x = rect.y = 0;
+    else
+        switch (sens)
+        {
+        case Bubbles::HAUT:
+            rect.x = cur_image*rect.w;
+            rect.y = 0;
+            break;
+        case Bubbles::BAS:
+            rect.x = (3-cur_image)*rect.w;
+            rect.y = 0;
+            break;
+        case Bubbles::GAUCHE:
+            rect.x = 0;
+            rect.y = (3-cur_image)*rect.h;
+            break;
+        case Bubbles::DROITE:
+            rect.x = 0;
+            rect.y = cur_image*rect.h;
+            break;
+        default: ;
+        }
+    SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
+    SDL_BlitSurface(image, &rect, screen, &pos);
 }
