@@ -735,6 +735,33 @@ void Skull::draw(SDL_Surface* screen)
     rectangleColor(screen, _x, _y, _x+field.w, _y+field.h, 0xff); */
 }
 
+Slime::Slime(Map* m, int _x, int _y):
+    Chicken(m, _x, _y)
+{
+    images[0].clear();
+    images[1].clear();
+    type.pop_back();
+    type.push_back("Slime");
+    rect.w = 44;
+    rect.h = 30;
+    std::vector<std::string> keys;
+    keys.push_back("Hit");
+    keys.push_back("Idle-Run");
+    load_images(keys);
+    for (int i=0; i<2; ++i)
+    {
+        images[i]["Idle"] = images[i]["Idle-Run"];
+        images[i]["Run"] = images[i]["Idle-Run"];
+        images[i].erase("Idle-Run");
+    }
+}
+
+void Slime::update()
+{
+    x_vel /= 2;
+    Chicken::update();
+}
+
 Ghost::Ghost(Map* m, int _x, int _y):
     Enemy(m, _x, _y, "Ghost", 44, 30),
     visible(false)
@@ -761,10 +788,12 @@ void Ghost::update()
     {
         int limite(image->w/rect.w);
         if (cur_image>=limite)
+        {
             if (state == "Appear")
                 state = "Idle";
             else
                 visible = false;
+        }
         cur_image %= limite;
     }
     if (erase())

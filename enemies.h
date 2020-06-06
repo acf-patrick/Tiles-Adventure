@@ -25,7 +25,7 @@ class Chicken : public Enemy
 {
 public:
     Chicken(Map*, int, int);
-    void update();
+    virtual void update();
 };
 
 class Chameleon: public Enemy
@@ -84,6 +84,13 @@ public:
 private:
     bool charge;
     Sprite* target;
+};
+
+class Slime: public Chicken
+{
+public:
+    Slime(Map*, int, int);
+    void update();
 };
 
 class Skull: public Enemy
