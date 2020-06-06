@@ -26,25 +26,44 @@ private:
 
 };
 
-class Falling_platform: public Sprite
+class Basic_fan: public Sprite
 {
 public:
-    Falling_platform(SDL_Rect*, int, int);
-    ~Falling_platform();
-    void update();
+    Basic_fan(SDL_Rect*, int, int);
+    ~Basic_fan();
+    virtual void update();
     void draw(SDL_Surface*);
-    void bump(const std::string& flag = "");
-    bool collide_with(Sprite*);
 
-private:
+protected:
     SDL_Rect* viewport;
-    bool off, m_static;
+    bool off, ascendant;
     int cur_image;
-    int y0;
-    float y_vel, gravity;
+    // hauteur des bulles
+    int min_tar, max_tar;
     SDL_Surface *s_off, *s_on;
     Timer timer;
     Group bubbles;
 };
+
+class Falling_platform: public Basic_fan
+{
+public:
+    Falling_platform(SDL_Rect*, int, int);
+    void update();
+    void bump(const std::string& flag = "");
+    bool collide_with(Sprite*);
+
+private:
+    bool m_static;
+    int y0;
+    float y_vel, gravity;
+};
+
+class Fan: public Basic_fan
+{
+public:
+    Fan(SDL_Rect*, int, int);
+};
+
 
 #endif // TRAPS_H

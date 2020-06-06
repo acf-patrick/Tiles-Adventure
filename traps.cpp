@@ -83,43 +83,21 @@ SDL_Rect* Arrow::create_static_viewport()
 }
 
 Falling_platform::Falling_platform(SDL_Rect* v, int _x, int _y):
-    viewport(v),
-    off(false), cur_image(0)
+    Basic_fan(v, _x, _y)
 {
-    if (!viewport)
-    {
-        off = true;
-        viewport = Arrow::create_static_viewport();
-    }
+    ascendant = false;
     m_static = !v;
     type.push_back("Falling Platform");
 
-    x = _x;
-    y0 = y = _y;
+    y0 = y;
     y_vel = 0.5;
     gravity = 0;
-    s_off = IMG_Load("images/Traps/Falling Platforms/Off.png");
-    Arrow::check_image_existence(s_off);
-    image = s_on = IMG_Load("images/Traps/Falling Platforms/On (32x10).png");
-    Arrow::check_image_existence(s_on);
     rect.w = 32;
     rect.h = 10;
-}
-Falling_platform::~Falling_platform()
-{
-    SDL_FreeSurface(s_off);
-    SDL_FreeSurface(s_on);
-    image = s_off = s_on = NULL;
-}
-
-void Falling_platform::draw(SDL_Surface* screen)
-{
-    rect.x = cur_image*rect.w;
-    rect.y = 0;
-    SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
-    SDL_BlitSurface(image, &rect, screen, &pos);
-    if (!off)
-        bubbles.draw(screen);
+    s_off = IMG_Load("images/Traps/Falling Platforms/Off.png");
+    Arrow::check_image_existence(s_off);
+    s_on = IMG_Load("images/Traps/Falling Platforms/On (32x10).png");
+    Arrow::check_image_existence(s_on);
 }
 
 void Falling_platform::update()
@@ -132,15 +110,7 @@ void Falling_platform::update()
     }
     else
     {
-        bubbles.update();
-        image = s_on;
-        if (timer.get_elapsed_ms() >= 50)
-        {
-            cur_image = (cur_image+1)%4;
-            if (cur_image%2)
-                bubbles.add(new Bubbles(viewport, get_centerx(), get_bottom()));
-            timer.restart();
-        }
+        Basic_fan::update();
         if (y<=y0-5 or y>=y0+5)
             y_vel *= -1;
     }
@@ -164,4 +134,69 @@ bool Falling_platform::collide_with(Sprite* sprite)
     if (!sprite or off)
         return false;
     return Sprite::collide_with(sprite);
+}
+
+Basic_fan::Basic_fan(SDL_Rect* v, int _x, int _y):
+    viewport(v), off(false),
+    cur_image(0)
+{
+    if (!viewport)
+    {
+        off = true;
+        viewport = Arrow::create_static_viewport();
+    }
+    type.push_back("Basic Fan");
+    x = _x;
+    y = _y;
+    min_tar = 100;
+    max_tar = 130;
+}
+Basic_fan::~Basic_fan()
+{
+    SDL_FreeSurface(s_off);
+    SDL_FreeSurface(s_on);
+    image = s_off = s_on = NULL;
+}
+
+void Basic_fan::update()
+{
+    if (!off)
+    {
+        bubbles.update();
+        image = s_on;
+        if (timer.get_elapsed_ms() >= 40)
+        {
+            cur_image = (cur_image+1)%4;
+            if (cur_image%2)
+                bubbles.add(new Bubbles(viewport, get_rect(), ascendant, min_tar, max_tar));
+            timer.restart();
+        }
+    }
+    else
+        image = s_off;
+}
+
+void Basic_fan::draw(SDL_Surface* screen)
+{
+    rect.x = cur_image*rect.w;
+    rect.y = 0;
+    SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
+    SDL_BlitSurface(image, &rect, screen, &pos);
+    if (!off)
+        bubbles.draw(screen);
+}
+
+Fan::Fan(SDL_Rect* v, int _x, int _y):
+    Basic_fan(v, _x, _y)
+{
+    type.push_back("Fan");
+    ascendant = true;
+    rect.w = 24;
+    rect.h = 8;
+    s_off = IMG_Load("images/Traps/Fan/Off.png");
+    Arrow::check_image_existence(s_off);
+    s_on = IMG_Load("images/Traps/Fan/On (24x8).png");
+    Arrow::check_image_existence(s_on);
+    min_tar = 200;
+    max_tar = 300;
 }

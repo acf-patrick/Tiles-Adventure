@@ -299,7 +299,7 @@ SDL_Surface* copy_surface(SDL_Surface* original)
 int randint(int a, int b)
 {
     if (a>b) return randint(b, a);
-    return (int)((rand()/(float)RAND_MAX)*(b-a)+a);
+    return ((rand()/(float)RAND_MAX)*(b-a)+a);
 }
 
 bool images_collide(int x1, int y1, SDL_Surface* s1, int x2, int y2, SDL_Surface* s2)

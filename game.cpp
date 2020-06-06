@@ -270,5 +270,7 @@ Sprite* Game::create_trap(const std::string& name, bool icon)
         y(event.button.y+map.get_yshift());
     if (name == "Arrow")
         return new Arrow(viewport, x, y);
+    else if (name == "Fan")
+        return new Fan(viewport, x, y);
     return new Falling_platform(viewport, x, y);
 }
