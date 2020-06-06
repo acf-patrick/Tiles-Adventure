@@ -43,6 +43,10 @@ protected:
     SDL_Surface *s_off, *s_on;
     Timer timer;
     Group bubbles;
+
+    int animation_delay;
+    bool extinction, demarrage;
+    bool m_static;
 };
 
 class Falling_platform: public Basic_fan
@@ -54,15 +58,20 @@ public:
     bool collide_with(Sprite*);
 
 private:
-    bool m_static;
     int y0;
     float y_vel, gravity;
+
+    void turn_off();
 };
 
 class Fan: public Basic_fan
 {
 public:
     Fan(SDL_Rect*, int, int);
+    void update();
+
+private:
+    Chrono switch_timer;
 };
 
 

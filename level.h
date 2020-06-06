@@ -3,6 +3,7 @@
 
 #include "base/map.h"
 #include "base/group.h"
+#include <cmath>
 #include <map>
 
 class Level: public Map
@@ -25,6 +26,23 @@ public:
 
     Group bullets;
 private:
+    class Poutre: public Sprite
+    {
+    public:
+        Poutre(int _x, int _y)
+        {
+            x = _x;
+            y = _y;
+            rect.w = rect.h = 16;
+        }
+        bool collide_with(Sprite* sprite)
+        {
+            if (!Sprite::collide_with(sprite))
+                return false;
+            return (std::abs(y-sprite->get_y()) <= 10 and
+                sprite->check_down);
+        }
+    };
     void remove_enemy(Sprite*);
 
     Group enemies, dying;

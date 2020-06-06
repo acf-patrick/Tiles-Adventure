@@ -93,6 +93,12 @@ void Group::remove(std::vector<Sprite*> sprite)
         _remove(sprite[i]);
 }
 
+void Group::clear()
+{
+    for (int i=0; i<(int)sprite_list.size(); ++i)
+        remove(sprite_list[i]);
+}
+
 std::vector<Sprite*> Group::sprites()
 {
     return sprite_list;

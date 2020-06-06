@@ -10,8 +10,6 @@
 #include "func_tool.h"
 #include "tileset.h"
 
-class Sprite;
-
 /// Cette classe gère les comportements de la carte de jeu
 class Map: public Loader
 {

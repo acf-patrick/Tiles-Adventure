@@ -210,7 +210,7 @@
 	<vector>
 	"base/group.h"
 
-1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.h
+1591457505 c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.h
 	<iostream>
 	<vector>
 	<map>
@@ -265,7 +265,7 @@
 	<SDL_ttf.h>
 	"sprite.h"
 
-1591218727 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.cpp
+1591457561 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.cpp
 	<algorithm>
 	"group.h"
 
@@ -280,7 +280,7 @@
 	<vector>
 	<SDL.h>
 
-1586111802 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\map.cpp
+1591408093 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\map.cpp
 	<SDL_image.h>
 	<fstream>
 	<sstream>
@@ -295,7 +295,7 @@
 	<math.h>
 	<SDL.h>
 
-1586089779 c:\users\patrick miharisoa\desktop\pixel adventurer\base\map.h
+1591408997 c:\users\patrick miharisoa\desktop\pixel adventurer\base\map.h
 	<iostream>
 	<vector>
 	<string>
@@ -448,9 +448,10 @@
 	"background.h"
 	"level.h"
 
-1591303771 c:\users\patrick miharisoa\desktop\pixel adventurer\level.h
+1591410018 c:\users\patrick miharisoa\desktop\pixel adventurer\level.h
 	"base/map.h"
 	"base/group.h"
+	<cmath>
 	<map>
 
 1586076042 c:\users\patrick miharisoa\desktop\pixel adventurer\show.h
@@ -469,12 +470,12 @@
 	"base/timer.h"
 	"base/sprite.h"
 
-1591406660 c:\users\patrick miharisoa\desktop\pixel adventurer\traps.h
+1591457262 c:\users\patrick miharisoa\desktop\pixel adventurer\traps.h
 	<SDL.h>
 	"base/sprite.h"
 	"base/timer.h"
 
-1591394341 source:c:\users\patrick miharisoa\desktop\pixel adventurer\level.cpp
+1591409729 source:c:\users\patrick miharisoa\desktop\pixel adventurer\level.cpp
 	<fstream>
 	<sstream>
 	"fruits.h"
@@ -495,13 +496,14 @@
 	"base/func_tool.h"
 	"show.h"
 
-1591406753 source:c:\users\patrick miharisoa\desktop\pixel adventurer\traps.cpp
+1591457153 source:c:\users\patrick miharisoa\desktop\pixel adventurer\traps.cpp
 	<SDL_image.h>
 	"base/app.h"
+	"base/func_tool.h"
 	"bubbles.h"
 	"traps.h"
 
-1591406627 source:c:\users\patrick miharisoa\desktop\pixel adventurer\bubbles.cpp
+1591406830 source:c:\users\patrick miharisoa\desktop\pixel adventurer\bubbles.cpp
 	<SDL_image.h>
 	<SDL_rotozoom.h>
 	<ctime>

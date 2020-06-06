@@ -1,5 +1,6 @@
 #include <SDL_image.h>
 #include "base/app.h"
+#include "base/func_tool.h"
 #include "bubbles.h"
 #include "traps.h"
 
@@ -86,7 +87,6 @@ Falling_platform::Falling_platform(SDL_Rect* v, int _x, int _y):
     Basic_fan(v, _x, _y)
 {
     ascendant = false;
-    m_static = !v;
     type.push_back("Falling Platform");
 
     y0 = y;
@@ -111,6 +111,9 @@ void Falling_platform::update()
     else
     {
         Basic_fan::update();
+        if (extinction)
+            if (animation_delay>=100)
+                turn_off();
         if (y<=y0-5 or y>=y0+5)
             y_vel *= -1;
     }
@@ -121,35 +124,43 @@ void Falling_platform::update()
     }
 }
 
-void Falling_platform::bump(const std::string& flag)
+void Falling_platform::turn_off()
 {
     cur_image = 0;
     y_vel = 1;
-    gravity = 0.1;
+    gravity = 0.5;
     off = true;
+}
+
+void Falling_platform::bump(const std::string& flag)
+{
+    extinction = true;
 }
 
 bool Falling_platform::collide_with(Sprite* sprite)
 {
-    if (!sprite or off)
+    if (!sprite or extinction)
         return false;
     return Sprite::collide_with(sprite);
 }
 
 Basic_fan::Basic_fan(SDL_Rect* v, int _x, int _y):
     viewport(v), off(false),
-    cur_image(0)
+    cur_image(0), extinction(false),
+    demarrage(true)
 {
     if (!viewport)
     {
         off = true;
         viewport = Arrow::create_static_viewport();
     }
+    m_static = !v;
     type.push_back("Basic Fan");
     x = _x;
     y = _y;
     min_tar = 100;
     max_tar = 130;
+    animation_delay = 100;
 }
 Basic_fan::~Basic_fan()
 {
@@ -160,11 +171,26 @@ Basic_fan::~Basic_fan()
 
 void Basic_fan::update()
 {
+    bubbles.update();
     if (!off)
     {
-        bubbles.update();
         image = s_on;
-        if (timer.get_elapsed_ms() >= 40)
+        if (demarrage)
+            if (animation_delay>40)
+                animation_delay--;
+            else
+                demarrage = false;
+        else if (extinction)
+        {
+            if (animation_delay>=200)
+            {
+                off = true;
+                extinction = false;
+            }
+            animation_delay += 2;
+        }
+
+        if (timer.get_elapsed_ms() >= animation_delay)
         {
             cur_image = (cur_image+1)%4;
             if (cur_image%2)
@@ -173,7 +199,10 @@ void Basic_fan::update()
         }
     }
     else
+    {
+        cur_image = 0;
         image = s_off;
+    }
 }
 
 void Basic_fan::draw(SDL_Surface* screen)
@@ -182,12 +211,13 @@ void Basic_fan::draw(SDL_Surface* screen)
     rect.y = 0;
     SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
     SDL_BlitSurface(image, &rect, screen, &pos);
-    if (!off)
-        bubbles.draw(screen);
+
+    bubbles.draw(screen);
 }
 
 Fan::Fan(SDL_Rect* v, int _x, int _y):
-    Basic_fan(v, _x, _y)
+    Basic_fan(v, _x, _y),
+    switch_timer(randint(5, 10))
 {
     type.push_back("Fan");
     ascendant = true;
@@ -199,4 +229,26 @@ Fan::Fan(SDL_Rect* v, int _x, int _y):
     Arrow::check_image_existence(s_on);
     min_tar = 200;
     max_tar = 300;
+}
+
+void Fan::update()
+{
+    if (!m_static)
+        if (switch_timer.out())
+        {
+            int delay;
+            if (off)
+            {
+                delay = randint(10, 20);
+                demarrage = true;
+                off = false;
+            }
+            else
+            {
+                delay = randint(5, 10);
+                extinction = true;
+            }
+            switch_timer.restart(delay);
+        }
+    Basic_fan::update();
 }

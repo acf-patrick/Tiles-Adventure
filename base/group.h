@@ -39,6 +39,10 @@ public:
     void remove(Sprite*);
     void remove(std::vector<Sprite*>);
 
+    /// Retire toute sprite de ce groupe
+    /// Néanmoins, les pointeurs ne seront pas liberés
+    void clear();
+
     /// Obtenir une liste des sprites du groupe
     std::vector<Sprite*> sprites();
 

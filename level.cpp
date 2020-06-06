@@ -12,7 +12,10 @@ Level::Level(): Map("map.txt")
             if (m_map[i][j])
             {
                 SDL_Rect r = {Sint16(j*tile_w), Sint16(i*tile_h), tile_w, tile_h};
-                sprites[i][j] = new Sprite(r);
+                if ((0<=i and i<=2) and (17<=j and j<=19))
+                    sprites[i][j] = new Poutre(r.x, r.y);
+                else
+                    sprites[i][j] = new Sprite(r);
             }
 }
 
