@@ -702,6 +702,7 @@ void Skull::update()
                 }
                 else
                 {
+                    charge = false;
                     direction = !direction;
                     x_vel *= -1;
                 }

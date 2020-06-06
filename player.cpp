@@ -200,7 +200,10 @@ void Player::bump(const std::string& flag)
             y_vel = -15;
     }
     else if (flag == "bubble impulse")
+    {
+        double_jump = false;
         y_vel = -3;
+    }
     else
     {
         y_vel = -5;

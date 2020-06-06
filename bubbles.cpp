@@ -49,3 +49,10 @@ void Bubbles::draw(SDL_Surface* screen)
     rect.y = Sint16(y-viewport->y);
     SDL_BlitSurface(image, NULL, screen, &rect);
 }
+
+bool Bubbles::collide_with(Sprite* sprite)
+{
+    if (!m_up)
+        return false;
+    return Sprite::collide_with(sprite);
+}

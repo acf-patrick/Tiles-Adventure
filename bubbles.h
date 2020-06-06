@@ -10,6 +10,7 @@ public:
     Bubbles(SDL_Rect*, const SDL_Rect&, bool up, int min_tar, int max_tar);
     void update();
     void draw(SDL_Surface*);
+    bool collide_with(Sprite*);
 
 private:
     int m_up;

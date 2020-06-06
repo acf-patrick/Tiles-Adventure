@@ -114,7 +114,14 @@ void Level::update()
 {
     enemies.update();
     traps.update();
-    bubbles.update();
+
+    std::vector<Sprite*> s_bubbles(bubbles.sprites());
+    for (int i=0; i<(int)s_bubbles.size(); ++i)
+        if (collision_with(s_bubbles[i]))
+            s_bubbles[i]->kill();
+        else
+            s_bubbles[i]->update();
+
     dying.update();
     bullets.update();
     for (std::map<std::string ,Group>::iterator it=items.begin();
