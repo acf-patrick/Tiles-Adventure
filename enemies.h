@@ -49,6 +49,17 @@ public:
     void update();
 };
 
+class Ghost: public Enemy
+{
+public:
+    Ghost(Map*, int, int);
+    void draw(SDL_Surface*);
+    void update();
+
+private:
+    bool visible;
+};
+
 class Mushroom: public Enemy
 {
 public:

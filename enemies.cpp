@@ -734,3 +734,63 @@ void Skull::draw(SDL_Surface* screen)
     /* int _x = field.x-m_map->get_xshift(), _y = field.y-m_map->get_yshift();
     rectangleColor(screen, _x, _y, _x+field.w, _y+field.h, 0xff); */
 }
+
+Ghost::Ghost(Map* m, int _x, int _y):
+    Enemy(m, _x, _y, "Ghost", 44, 30),
+    visible(false)
+{
+    std::vector<std::string> keys;
+    keys.push_back("Appear");
+    keys.push_back("Desappear");
+    state = "Appear";
+    load_images(keys);
+}
+
+void Ghost::draw(SDL_Surface* screen)
+{
+    if (visible)
+        Enemy::draw(screen);
+}
+
+void Ghost::update()
+{
+    update_image();
+    if (!visible)
+        cur_image = 0;
+    if (state.find("ppear") != state.npos)
+    {
+        int limite(image->w/rect.w);
+        if (cur_image>=limite)
+            if (state == "Appear")
+                state = "Idle";
+            else
+                visible = false;
+        cur_image %= limite;
+    }
+    if (erase())
+        return;
+    apply_gravity();
+    move(x_vel, y_vel);
+
+    y += 2;
+    if (m_map->collision_with(this))
+    {
+        if (state == "Appear")
+            visible = true;
+        y_vel = 0;
+    }
+    y -= 2;
+
+    int s(direction?1:-1);
+    x_vel = s;
+    x += 2*s;
+    int _x = direction?get_right():(x);
+    if (!m_map->get_tile_nbr(_x, get_bottom()) or m_map->collision_with(this))
+    {
+        x_vel *= -1;
+        direction = !direction;
+    }
+    x -= 2*s;
+
+    cur_image %= (image->w/rect.w);
+}

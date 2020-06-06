@@ -17,7 +17,7 @@ Bubbles::Bubbles(SDL_Rect* v, const SDL_Rect& fan_rect, bool up, int min_tar, in
     y_vel = s*1.5;
     acc = s*0.05;
 
-    image = rotozoomSurface(IMG_Load("images/Other/Dust Particle.png"), 0, 10.0/(randint(15, 30)), true);
+    image = rotozoomSurface(IMG_Load("images/Other/Dust Particle.png"), 0, 10.0/(randint(15, 25)), true);
     if (!image)
     {
         std::cerr << IMG_GetError();

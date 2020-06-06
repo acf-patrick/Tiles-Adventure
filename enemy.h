@@ -10,9 +10,15 @@
 #include <SDL.h>
 #include <map>
 
+/** Classe de base pour tous les enemmies dans dans le jeu */
 class Enemy : public With_mass
 {
 public:
+    /**
+    * @param Les trois premiers parametres sont les parametres de base de la classe With_mass.
+    * @param name : nom du personnage
+    * @param les deux derniers sont la taille du personnage
+    */
     Enemy(Map* ,int ,int ,const std::string& ,int ,int);
     virtual ~Enemy();
     virtual void bump(const std::string& flag = "");
@@ -35,6 +41,7 @@ protected:
     bool erase();
 };
 
+/** Classe de base pour les enemies utilisant quelconque projectile dans le jeu*/
 class Shot: public Enemy
 {
 public:

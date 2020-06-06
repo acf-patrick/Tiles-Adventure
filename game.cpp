@@ -69,12 +69,12 @@ void Game::update_events()
                                     "Pineapple", "Strawberry"
                                     };
         std::string enemies_name[] = {"AngryPig", "Bunny", "Chicken",
-                                      "Chameleon", "Duck", "Mushroom",
-                                      "Trunk", "Plant", "Rino",
-                                      "Turtle", "Skull"
+                                      "Chameleon", "Duck", "Ghost",
+                                      "Mushroom", "Trunk", "Plant",
+                                      "Rino", "Turtle", "Skull"
                                       };
         // Item, Enemy, Trap
-        int nbr[3] = {14, 11, 12};
+        int nbr[3] = {14, 12, 12};
         int x(event.button.x), y(event.button.y);
         if (event.button.button == SDL_BUTTON_LEFT)
         {
@@ -239,6 +239,8 @@ Sprite* Game::create_enemy(const std::string& name)
         return new Turtle(&map, x, y);
     if (name == "Skull")
         return new Skull(&map, x, y, sprites[0]);
+    if (name == "Ghost")
+        return new Ghost(&map, x, y);
     return NULL;
 }
 
