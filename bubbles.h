@@ -4,20 +4,33 @@
 #include <SDL.h>
 #include "base/sprite.h"
 
+/** Bulles crées lorsque les ventilos se mettent en marche */
 class Bubbles: public Sprite
 {
 public:
-    Bubbles(SDL_Rect*, const SDL_Rect&, bool up, int min_tar, int max_tar);
+    enum { BAS, HAUT, DROITE, GAUCHE };
+    /**
+    * @param v : viewport de la map
+    * @param fan_rect : boite englobante de l'objet Basic_fan
+    * @param sens : sens de propagation des bulles
+    * @param min_tar : distance minimale que la bulle doit parcourir
+    * @param max_tar : distance maximale que la bulle peut parcourir
+    */
+    Bubbles(SDL_Rect*, const SDL_Rect&, int sens, int min_tar, int max_tar);
     void update();
     void draw(SDL_Surface*);
     bool collide_with(Sprite*);
 
 private:
-    int m_up;
+    int m_sens;
     SDL_Rect* viewport;
     float x_vel, y_vel, acc;
-    int l_bound, r_bound;
-    int y_tar;
+
+    // la bulle rebondit quand elle atteint
+    // la position indiquée par ces paramètres
+    int l_bound, u_bound;
+
+    int target;
 };
 
 #endif // BUBBLES_H

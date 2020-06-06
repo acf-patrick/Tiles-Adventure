@@ -1,7 +1,6 @@
 #include <SDL_image.h>
 #include "base/app.h"
 #include "base/func_tool.h"
-#include "bubbles.h"
 #include "traps.h"
 #include "level.h"
 
@@ -215,7 +214,7 @@ void Basic_fan::draw(SDL_Surface* screen)
     SDL_BlitSurface(image, &rect, screen, &pos);
 }
 
-Fan::Fan(SDL_Rect* v, int _x, int _y):
+Fan::Fan(SDL_Rect* v, int _x, int _y, int sens):
     Basic_fan(v, _x, _y),
     switch_timer(randint(5, 10))
 {

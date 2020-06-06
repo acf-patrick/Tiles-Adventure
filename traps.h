@@ -2,6 +2,7 @@
 #define TRAPS_H
 
 #include <SDL.h>
+#include "bubbles.h"
 #include "base/sprite.h"
 #include "base/timer.h"
 
@@ -67,7 +68,7 @@ private:
 class Fan: public Basic_fan
 {
 public:
-    Fan(SDL_Rect*, int, int);
+    Fan(SDL_Rect*, int, int, int sens = Bubbles::HAUT);
     void update();
 
 private:
