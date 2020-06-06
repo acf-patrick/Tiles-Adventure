@@ -3,6 +3,7 @@
 #include "base/func_tool.h"
 #include "bubbles.h"
 #include "traps.h"
+#include "level.h"
 
 Arrow::Arrow(SDL_Rect* v, int _x, int _y):
     viewport(v), used(false),
@@ -144,6 +145,8 @@ bool Falling_platform::collide_with(Sprite* sprite)
     return Sprite::collide_with(sprite);
 }
 
+Group *Basic_fan::bubbles(NULL);
+
 Basic_fan::Basic_fan(SDL_Rect* v, int _x, int _y):
     viewport(v), off(false),
     cur_image(0), extinction(false),
@@ -171,7 +174,6 @@ Basic_fan::~Basic_fan()
 
 void Basic_fan::update()
 {
-    bubbles.update();
     if (!off)
     {
         image = s_on;
@@ -193,8 +195,8 @@ void Basic_fan::update()
         if (timer.get_elapsed_ms() >= animation_delay)
         {
             cur_image = (cur_image+1)%4;
-            if (cur_image%2)
-                bubbles.add(new Bubbles(viewport, get_rect(), ascendant, min_tar, max_tar));
+            if (cur_image%2 and bubbles)
+                bubbles->add(new Bubbles(viewport, get_rect(), ascendant, min_tar, max_tar));
             timer.restart();
         }
     }
@@ -211,8 +213,6 @@ void Basic_fan::draw(SDL_Surface* screen)
     rect.y = 0;
     SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
     SDL_BlitSurface(image, &rect, screen, &pos);
-
-    bubbles.draw(screen);
 }
 
 Fan::Fan(SDL_Rect* v, int _x, int _y):

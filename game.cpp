@@ -13,6 +13,7 @@ Game::Game(): App("Tiles Adventure", 500, 400),
     indicateur("AngryPig", 0, 0, 0, "fonts/emulogic", NULL, 10, 5, 30),
     bg_timer(10)
 {
+    Basic_fan::bubbles = &map.bubbles;
     cur_enemy = cur_item = cur_trap = 0;
     focus = ENEMY;
     cursor = NULL;

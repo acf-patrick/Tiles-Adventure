@@ -199,6 +199,8 @@ void Player::bump(const std::string& flag)
         else if (flag == "arrow repulsion")
             y_vel = -15;
     }
+    else if (flag == "bubble impulse")
+        y_vel = -3;
     else
     {
         y_vel = -5;

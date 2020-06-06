@@ -33,6 +33,7 @@ public:
     ~Basic_fan();
     virtual void update();
     void draw(SDL_Surface*);
+    static Group* bubbles;
 
 protected:
     SDL_Rect* viewport;
@@ -42,7 +43,6 @@ protected:
     int min_tar, max_tar;
     SDL_Surface *s_off, *s_on;
     Timer timer;
-    Group bubbles;
 
     int animation_delay;
     bool extinction, demarrage;

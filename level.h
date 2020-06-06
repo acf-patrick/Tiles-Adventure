@@ -25,6 +25,7 @@ public:
     bool collision_with(Sprite*);
 
     Group bullets;
+    Group bubbles;
 private:
     class Poutre: public Sprite
     {

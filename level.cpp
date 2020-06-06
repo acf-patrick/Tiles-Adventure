@@ -114,6 +114,7 @@ void Level::update()
 {
     enemies.update();
     traps.update();
+    bubbles.update();
     dying.update();
     bullets.update();
     for (std::map<std::string ,Group>::iterator it=items.begin();
@@ -124,6 +125,7 @@ void Level::update()
 void Level::draw(SDL_Surface* screen)
 {
     traps.draw(screen);
+    bubbles.draw(screen);
     Map::draw(screen);
     enemies.draw(screen);
     dying.draw(screen);
@@ -139,6 +141,7 @@ bool Level::collision_with(Sprite* sprite)
     {
         Sprite* enemy = enemies.first_sprite_colliding_with(sprite);
         Sprite* bullet = bullets.first_sprite_colliding_with(sprite);
+        Sprite* bubble = bubbles.first_sprite_colliding_with(sprite);
         Sprite* trap = traps.first_sprite_colliding_with(sprite);
         Sprite* fruit = items["Fruits"].first_sprite_colliding_with(sprite);
         Sprite* checkpoint = items["Checkpoints"].first_sprite_colliding_with(sprite);
@@ -194,6 +197,8 @@ bool Level::collision_with(Sprite* sprite)
                     sprite->bump("die");
                 }
             }
+        if (bubble)
+            sprite->bump("bubble impulse");
         if (trap)
         {
             if (sprite->check_down)
