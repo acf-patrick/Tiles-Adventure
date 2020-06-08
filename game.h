@@ -8,6 +8,16 @@
 #include "background.h"
 #include "level.h"
 
+class Header: public Text
+{
+public:
+    Header(const std::string&, int, int, bool*);
+    void draw(SDL_Surface*);
+
+private:
+    bool *show;
+};
+
 class Game : public App
 {
 public:
@@ -31,9 +41,12 @@ private:
     enum { ITEM, ENEMY, TRAP };
     int focus;
 
-    Text *headers[3];
+    Sprite *headers[3];
     Sprite *cursor;
     Chrono bg_timer;
+
+    bool edit;
+    int fan_orientation;
 };
 
 #endif // GAME_H

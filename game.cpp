@@ -9,9 +9,13 @@
 #include "box.h"
 #include "traps.h"
 
+Header::Header(const std::string& content, int _x, int _y, bool* s): Text(content, 255, 255, 255, "fonts/Supercell-Magic_5", NULL, 15, _x, _y), show(s) {}
+void Header::draw(SDL_Surface* screen) { if (*show) Text::draw(screen); }
+
 Game::Game(): App("Tiles Adventure", 500, 400),
     indicateur("AngryPig", 0, 0, 0, "fonts/emulogic", NULL, 10, 5, 30),
-    bg_timer(10)
+    bg_timer(10), edit(true),
+    fan_orientation(Bubbles::HAUT)
 {
     Basic_fan::bubbles = &map.bubbles;
     cur_enemy = cur_item = cur_trap = 0;
@@ -20,12 +24,9 @@ Game::Game(): App("Tiles Adventure", 500, 400),
     bg = new Background;
     sprites.add(new Player(&map, 60, 20, keys, "Ninja Frog"));
     sprites.add(new Fps(Fps::DEFAULT, "fonts/Supercell-Magic_5"));
-    headers[ITEM] = new Text("Current item : ", 255, 255, 255, "fonts/Supercell-Magic_5",
-                           NULL, 15, 5, indicateur.get_bottom());
-    headers[ENEMY] = new Text("Current enemy : ", 255, 255, 255, "fonts/Supercell-Magic_5",
-                           NULL, 15, 5, 5);
-    headers[TRAP] = new Text("Current trap : ", 255, 255, 255, "fonts/Supercell-Magic_5",
-                           NULL, 15, 5, 80);
+    headers[ITEM] = new Header("Current item : ", 5, indicateur.get_bottom(), &edit);
+    headers[ENEMY] = new Header("Current enemy : ", 5, 5, &edit);
+    headers[TRAP] = new Header("Currrent trap : ", 5, 80, &edit);
     for (int i=0; i<3; ++i)
         sprites.add(headers[i]);
     Map::camera.x = width*.5 - 100;
@@ -54,7 +55,7 @@ void Game::update_events()
         if (cursor)
             cursor->set_position(event.motion.x, event.motion.y);
     }
-    else if (event.type == SDL_MOUSEBUTTONUP)
+    else if (edit and event.type == SDL_MOUSEBUTTONUP)
     {
         SDL_Color color = {0, 0, 0};
         std::string traps_name[] = {"Arrow", "Block", "Falling Platform",
@@ -177,10 +178,32 @@ void Game::update_events()
     }
     else if (event.type == SDL_KEYDOWN)
     {
-        if (event.key.keysym.sym == SDLK_SPACE)
+        switch (event.key.keysym.sym)
+        {
+        case SDLK_SPACE:
             pause();
-        else if (event.key.keysym.sym == SDLK_b)
+            break;
+        case SDLK_b:
             With_mass::showBoundingBox = !With_mass::showBoundingBox;
+            break;
+        case SDLK_e:
+            edit = !edit;
+            break;
+        case SDLK_KP4:
+            if (cursor) if (!cursor->is("Fan")) break;
+            fan_orientation--;
+            if (fan_orientation<0) fan_orientation = 3;
+            delete cursor;
+            cursor = create_trap("Fan", true);
+            break;
+        case SDLK_KP6:
+            if (cursor) if (!cursor->is("Fan")) break;
+            fan_orientation = (fan_orientation+1)%4;
+            delete cursor;
+            cursor = create_trap("Fan", true);
+            break;
+        default: ;
+        }
     }
 }
 
@@ -190,8 +213,11 @@ void Game::draw()
     // rectangleColor(screen, camera.x, camera.y, camera.x+camera.w, camera.y+camera.h, 0xff);
     map.draw(screen);
     sprites.draw(screen);
-    indicateur.draw(screen);
-    if (cursor) cursor->draw(screen);
+    if (edit)
+    {
+        indicateur.draw(screen);
+        if (cursor) cursor->draw(screen);
+    }
     SDL_Flip(screen);
 }
 
@@ -205,7 +231,9 @@ void Game::update()
     bg->update();
     map.update();
     map.center_on(sprites[0], Map::camera);
-    if (cursor) cursor->update();
+    if (edit)
+        if (cursor)
+            cursor->update();
     if (bg_timer.out())
     {
         bg_timer.restart();
@@ -277,6 +305,6 @@ Sprite* Game::create_trap(const std::string& name, bool icon)
     if (name == "Arrow")
         return new Arrow(viewport, x, y);
     else if (name == "Fan")
-        return new Fan(viewport, x, y);
+        return new Fan(viewport, x, y, fan_orientation);
     return new Falling_platform(viewport, x, y);
 }

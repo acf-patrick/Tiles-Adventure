@@ -4,7 +4,7 @@
 #include "base/func_tool.h"
 #include "bubbles.h"
 
-Bubbles::Bubbles(SDL_Rect* v, const SDL_Rect& fan_rect, int sens, int min_tar, int max_tar):
+Bubbles::Bubbles(SDL_Rect* v, SDL_Rect fan_rect, int sens, int min_tar, int max_tar):
     m_sens(sens), viewport(v)
 {
     int s = ((sens==DROITE or sens==BAS)?1:-1);
@@ -22,6 +22,8 @@ Bubbles::Bubbles(SDL_Rect* v, const SDL_Rect& fan_rect, int sens, int min_tar, i
     // vertical
     if (sens==HAUT or sens==BAS)
     {
+        fan_rect.w = 32;
+        fan_rect.h = 8;
         if (sens == HAUT)
             y = fan_rect.y - rect.h;
         else
@@ -36,6 +38,8 @@ Bubbles::Bubbles(SDL_Rect* v, const SDL_Rect& fan_rect, int sens, int min_tar, i
     // horizontal
     else if (sens==GAUCHE or sens==DROITE)
     {
+        fan_rect.w = 8;
+        fan_rect.h = 32;
         if (sens == DROITE)
             x = fan_rect.x+fan_rect.w;
         else

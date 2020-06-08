@@ -75,7 +75,7 @@ public:
     /**
     * @param s : indique la direction où le ventilateur va souffler
     */
-    Fan(SDL_Rect*, int, int, int s = Bubbles::GAUCHE);
+    Fan(SDL_Rect*, int, int, int s = Bubbles::DROITE);
     void update();
     void draw(SDL_Surface*);
 

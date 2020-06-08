@@ -16,7 +16,7 @@ public:
     * @param min_tar : distance minimale que la bulle doit parcourir
     * @param max_tar : distance maximale que la bulle peut parcourir
     */
-    Bubbles(SDL_Rect*, const SDL_Rect&, int sens, int min_tar, int max_tar);
+    Bubbles(SDL_Rect*, SDL_Rect, int sens, int min_tar, int max_tar);
     void update();
     void draw(SDL_Surface*);
     bool collide_with(Sprite*);
