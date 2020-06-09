@@ -215,9 +215,10 @@ void Basic_fan::draw(SDL_Surface* screen)
     SDL_BlitSurface(image, &rect, screen, &pos);
 }
 
-Fan::Fan(SDL_Rect* v, int _x, int _y, int s):
+Fan::Fan(SDL_Rect* v, int _x, int _y, Sprite* cible, int s):
     Basic_fan(v, _x, _y),
-    switch_timer(randint(5, 10))
+    switch_timer(randint(5, 10)),
+    target(cible)
 {
     type.push_back("Fan");
     sens = s;

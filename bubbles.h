@@ -20,6 +20,7 @@ public:
     void update();
     void draw(SDL_Surface*);
     bool collide_with(Sprite*);
+    float* get_impulse();
 
 private:
     int m_sens;

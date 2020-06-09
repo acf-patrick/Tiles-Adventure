@@ -1,4 +1,5 @@
 #include <cmath>
+#include <sstream>
 #include "player.h"
 #include "base/func_tool.h"
 #include "base/app.h"
@@ -183,7 +184,13 @@ void Player::update_yvel()
 
 void Player::bump(const std::string& flag)
 {
-    if (flag.find("repulsion") != flag.npos)
+    if (flag.empty())
+    {
+        y_vel = -5;
+        if (flag == "die")
+            show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift(), false);
+    }
+    else if (flag.find("repulsion") != flag.npos)
     {
         double_jump = false;
         if (flag == "box repulsion")
@@ -199,16 +206,18 @@ void Player::bump(const std::string& flag)
         else if (flag == "arrow repulsion")
             y_vel = -15;
     }
-    else if (flag == "bubble impulse")
+    else if (flag.find("bubble impulse")!=flag.npos)
     {
         double_jump = false;
-        y_vel = -3;
-    }
-    else
-    {
-        y_vel = -5;
-        if (flag == "die")
-            show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift(), false);
+        std::istringstream iss(flag);
+        std::string buffer;
+        float x_imp, y_imp;
+        getline(iss, buffer);
+        iss >> x_imp;
+        iss >> y_imp;
+        x_vel += x_imp;
+        if (y_imp != 0)
+            y_vel = y_imp;
     }
 }
 

@@ -205,7 +205,12 @@ bool Level::collision_with(Sprite* sprite)
                 }
             }
         if (bubble)
-            sprite->bump("bubble impulse");
+        {
+            std::stringstream oss;
+            float* force(bubble->get_impulse());
+            oss << "bubble impulse : " << std::endl << force[0] << ' ' << force[1];
+            sprite->bump(oss.str());
+        }
         if (trap)
         {
             if (sprite->check_down)

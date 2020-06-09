@@ -189,14 +189,14 @@ void Game::update_events()
         case SDLK_e:
             edit = !edit;
             break;
-        case SDLK_KP4:
+        case SDLK_KP1:
             if (cursor) if (!cursor->is("Fan")) break;
             fan_orientation--;
             if (fan_orientation<0) fan_orientation = 3;
             delete cursor;
             cursor = create_trap("Fan", true);
             break;
-        case SDLK_KP6:
+        case SDLK_KP3:
             if (cursor) if (!cursor->is("Fan")) break;
             fan_orientation = (fan_orientation+1)%4;
             delete cursor;
@@ -305,6 +305,6 @@ Sprite* Game::create_trap(const std::string& name, bool icon)
     if (name == "Arrow")
         return new Arrow(viewport, x, y);
     else if (name == "Fan")
-        return new Fan(viewport, x, y, fan_orientation);
+        return new Fan(viewport, x, y, sprites[0], fan_orientation);
     return new Falling_platform(viewport, x, y);
 }
