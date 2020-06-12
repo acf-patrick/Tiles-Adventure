@@ -35,7 +35,9 @@ public:
     virtual void update();
     virtual void draw(SDL_Surface*);
 
-    static Group* bubbles;
+    static void draw_bubbles(SDL_Surface*);
+    static void update_bubbles(Map*);
+    static void destroy_bubbles();
 
 protected:
     SDL_Rect* viewport;
@@ -52,6 +54,9 @@ protected:
 
     // L'objet servira d'icone dans l'editeur de niveau
     bool m_static;
+
+private:
+    static Group *bubbles;
 };
 
 class Falling_platform: public Basic_fan
@@ -82,6 +87,7 @@ public:
 private:
     Chrono switch_timer;
     Sprite* target;
+    SDL_Rect field;
 };
 
 

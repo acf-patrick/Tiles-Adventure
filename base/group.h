@@ -46,7 +46,6 @@ public:
     /// Obtenir une liste des sprites du groupe
     std::vector<Sprite*> sprites();
 
-    Sprite* get(int);
     Sprite* operator[](int);
 
     /// @return Liste des sprites du groupe qui entrent en collision avec le sprite passé en paramètre
@@ -75,6 +74,7 @@ private:
     bool _has(Sprite*);
     void _remove(Sprite*);
     void _add(Sprite*);
+    Sprite* get(int);
     static std::vector<Sprite*> buffer;
 };
 

@@ -185,10 +185,11 @@ void Player::update_yvel()
 void Player::bump(const std::string& flag)
 {
     if (flag.empty())
+        y_vel = -5;
+    else if (flag == "die")
     {
         y_vel = -5;
-        if (flag == "die")
-            show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift(), false);
+        show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift(), false);
     }
     else if (flag.find("repulsion") != flag.npos)
     {

@@ -14,7 +14,7 @@ public:
 
     /// Pour inserer les objets dans le jeu
     /// A enlever quand la conception de cette
-    /// classe sera terminée.
+    /// classe sera terminï¿½e.
     void add_enemies(Sprite*);
     void add_item(Sprite*);
     void add_traps(Sprite*);
@@ -25,7 +25,6 @@ public:
     bool collision_with(Sprite*);
 
     Group bullets;
-    Group bubbles;
 private:
     class Poutre: public Sprite
     {
@@ -53,6 +52,7 @@ private:
     std::map< std::string, std::vector<SDL_Rect> > enemies_pos;
     std::map< std::string, std::vector<SDL_Rect> > traps_pos;
     std::map< std::string, std::map< std::string, std::vector<SDL_Rect> > > items_pos;
+
 };
 
 #endif

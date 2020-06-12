@@ -86,36 +86,3 @@ void Bubbles::draw(SDL_Surface* screen)
     rect.y = Sint16(y-viewport->y);
     SDL_BlitSurface(image, NULL, screen, &rect);
 }
-
-bool Bubbles::collide_with(Sprite* sprite)
-{
-    if (cinematic)
-        return false;
-    return Sprite::collide_with(sprite);
-}
-
-float* Bubbles::get_impulse()
-{
-    float *ret(Sprite::get_impulse());
-    switch (m_sens)
-    {
-    case HAUT:
-        ret[0] = 0;
-        ret[1] = -3;
-        break;
-    case BAS:
-        ret[0] = 0;
-        ret[1] = 3;
-        break;
-    case GAUCHE:
-        ret[0] = -3;
-        ret[1] = 0;
-        break;
-    case DROITE:
-        ret[0] = 3;
-        ret[1] = 0;
-        break;
-    default: ;
-    }
-    return ret;
-}

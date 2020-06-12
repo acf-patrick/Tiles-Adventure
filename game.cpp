@@ -12,12 +12,11 @@
 Header::Header(const std::string& content, int _x, int _y, bool* s): Text(content, 255, 255, 255, "fonts/Supercell-Magic_5", NULL, 15, _x, _y), show(s) {}
 void Header::draw(SDL_Surface* screen) { if (*show) Text::draw(screen); }
 
-Game::Game(): App("Tiles Adventure", 500, 400),
+Game::Game(): App("Tiles Adventure", 480, 360),
     indicateur("AngryPig", 0, 0, 0, "fonts/emulogic", NULL, 10, 5, 30),
     bg_timer(10), edit(true),
     fan_orientation(Bubbles::HAUT)
 {
-    Basic_fan::bubbles = &map.bubbles;
     cur_enemy = cur_item = cur_trap = 0;
     focus = ENEMY;
     cursor = NULL;

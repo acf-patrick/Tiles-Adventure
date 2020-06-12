@@ -19,8 +19,6 @@ public:
     Bubbles(SDL_Rect*, SDL_Rect, int sens, int min_tar, int max_tar);
     void update();
     void draw(SDL_Surface*);
-    bool collide_with(Sprite*);
-    float* get_impulse();
 
 private:
     int m_sens;

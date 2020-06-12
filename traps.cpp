@@ -1,9 +1,11 @@
 #include <SDL_image.h>
 #include <SDL_rotozoom.h>
+#include <SDL_gfxPrimitives.h>
 #include "base/app.h"
+#include "base/map.h"
 #include "base/func_tool.h"
+#include "base/with_mass.h"
 #include "traps.h"
-#include "level.h"
 
 Arrow::Arrow(SDL_Rect* v, int _x, int _y):
     viewport(v), used(false),
@@ -145,7 +147,7 @@ bool Falling_platform::collide_with(Sprite* sprite)
     return Sprite::collide_with(sprite);
 }
 
-Group *Basic_fan::bubbles(NULL);
+Group* Basic_fan::bubbles = new Group;
 
 Basic_fan::Basic_fan(SDL_Rect* v, int _x, int _y):
     viewport(v), off(false),
@@ -195,7 +197,7 @@ void Basic_fan::update()
         if (timer.get_elapsed_ms() >= animation_delay)
         {
             cur_image = (cur_image+1)%4;
-            if (cur_image%2 and bubbles)
+            if (cur_image%2)
                 bubbles->add(new Bubbles(viewport, get_rect(), sens, min_tar, max_tar));
             timer.restart();
         }
@@ -215,6 +217,24 @@ void Basic_fan::draw(SDL_Surface* screen)
     SDL_BlitSurface(image, &rect, screen, &pos);
 }
 
+void Basic_fan::draw_bubbles(SDL_Surface* screen) { bubbles->draw(screen); }
+void Basic_fan::update_bubbles(Map* m)
+{
+    std::vector<Sprite*> bulles(bubbles->sprites());
+    for (int i=0; i<(int)bulles.size(); ++i)
+    {
+        if (m->collision_with(bulles[i]))
+            bulles[i]->kill();
+        else
+            bulles[i]->update();
+    }
+}
+void Basic_fan::destroy_bubbles()
+{
+    delete bubbles;
+    bubbles = NULL;
+}
+
 Fan::Fan(SDL_Rect* v, int _x, int _y, Sprite* cible, int s):
     Basic_fan(v, _x, _y),
     switch_timer(randint(5, 10)),
@@ -230,6 +250,26 @@ Fan::Fan(SDL_Rect* v, int _x, int _y, Sprite* cible, int s):
     rect.h = s_off->h;
     min_tar = 200;
     max_tar = 300;
+    field.x = x;
+    field.y = y;
+    if (sens==Bubbles::HAUT or sens==Bubbles::BAS)
+    {
+        field.w = rect.w;
+        field.h = 250;
+    }
+    else if (sens==Bubbles::GAUCHE or sens==Bubbles::DROITE)
+    {
+        field.w = 250;
+        field.h = rect.h;
+    }
+    if (sens == Bubbles::HAUT)
+        field.y -= field.h;
+    else if (sens == Bubbles::BAS)
+        field.y += rect.h;
+    else if (sens == Bubbles::GAUCHE)
+        field.x -= field.w;
+    else if (sens == Bubbles::DROITE)
+        field.x += rect.w;
 }
 
 void Fan::update()
@@ -256,6 +296,7 @@ void Fan::update()
 
 void Fan::draw(SDL_Surface* screen)
 {
+    SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
     if (off)
         rect.x = rect.y = 0;
     else
@@ -279,6 +320,9 @@ void Fan::draw(SDL_Surface* screen)
             break;
         default: ;
         }
-    SDL_Rect pos = { Sint16(x-viewport->x), Sint16(y-viewport->y) };
     SDL_BlitSurface(image, &rect, screen, &pos);
+    pos.x = field.x-viewport->x;
+    pos.y = field.y-viewport->y;
+    if (!m_static and With_mass::showBoundingBox)
+        rectangleRGBA(screen, pos.x, pos.y, pos.x+field.w, pos.y+field.h, 0, 0, 222, 255);
 }

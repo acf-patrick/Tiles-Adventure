@@ -1,7 +1,9 @@
 #include <fstream>
 #include <sstream>
+#include <SFML/Graphics.hpp>
 #include "fruits.h"
 #include "level.h"
+#include "traps.h"
 
 typedef std::map< std::string, std::vector<SDL_Rect> >::iterator tab_iterator;
 
@@ -64,6 +66,7 @@ Level::~Level()
         file << "\t}\n";
     }
     file << "}\n";
+    Basic_fan::destroy_bubbles();
 }
 
 void Level::add_enemies(Sprite* enemy)
@@ -114,14 +117,7 @@ void Level::update()
 {
     enemies.update();
     traps.update();
-
-    std::vector<Sprite*> s_bubbles(bubbles.sprites());
-    for (int i=0; i<(int)s_bubbles.size(); ++i)
-        if (collision_with(s_bubbles[i]))
-            s_bubbles[i]->kill();
-        else
-            s_bubbles[i]->update();
-
+    Basic_fan::update_bubbles(this);
     dying.update();
     bullets.update();
     for (std::map<std::string ,Group>::iterator it=items.begin();
@@ -132,7 +128,7 @@ void Level::update()
 void Level::draw(SDL_Surface* screen)
 {
     traps.draw(screen);
-    bubbles.draw(screen);
+    Basic_fan::draw_bubbles(screen);
     Map::draw(screen);
     enemies.draw(screen);
     dying.draw(screen);
@@ -148,7 +144,6 @@ bool Level::collision_with(Sprite* sprite)
     {
         Sprite* enemy = enemies.first_sprite_colliding_with(sprite);
         Sprite* bullet = bullets.first_sprite_colliding_with(sprite);
-        Sprite* bubble = bubbles.first_sprite_colliding_with(sprite);
         Sprite* trap = traps.first_sprite_colliding_with(sprite);
         Sprite* fruit = items["Fruits"].first_sprite_colliding_with(sprite);
         Sprite* checkpoint = items["Checkpoints"].first_sprite_colliding_with(sprite);
@@ -204,13 +199,6 @@ bool Level::collision_with(Sprite* sprite)
                     sprite->bump("die");
                 }
             }
-        if (bubble)
-        {
-            std::stringstream oss;
-            float* force(bubble->get_impulse());
-            oss << "bubble impulse : " << std::endl << force[0] << ' ' << force[1];
-            sprite->bump(oss.str());
-        }
         if (trap)
         {
             if (sprite->check_down)
