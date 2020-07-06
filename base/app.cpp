@@ -3,8 +3,8 @@
 #include "app.h"
 #include "func_tool.h"
 
-int App::width(0);
-int App::height(0);
+int App::width(0), App::height(0);
+SDL_Event App::event;
 
 App::App(std::string app_title, int w, int h):
     paused(false), running(true)
@@ -25,8 +25,6 @@ App::App(std::string app_title, int w, int h):
 
     for (int i=0; i<SDLK_LAST; ++i)
         keys[i] = false;
-    for (int i=0; i<6; ++i)
-        button[i] = false;
 }
 
 App::~App()
@@ -77,12 +75,6 @@ void App::update_events()
         break;
     case SDL_KEYUP:
         keys[event.key.keysym.sym] = false;
-        break;
-    case SDL_MOUSEBUTTONUP:
-        button[event.button.button] = false;
-        break;
-    case SDL_MOUSEBUTTONDOWN:
-        button[event.button.button] = true;
         break;
     default: ;
     }

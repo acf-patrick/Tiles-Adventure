@@ -18,8 +18,8 @@ Sprite::Sprite(SDL_Surface* surface):
         rect.w = 0;
         rect.h = 0;
     }
-    x = 0;
-    y = 0;
+    rect.x = x = 0;
+    rect.y = y = 0;
     type.push_back("basic_sprite");
 }
 

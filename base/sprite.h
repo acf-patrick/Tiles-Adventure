@@ -56,10 +56,10 @@ public:
 
     void set_x(Sint16);
     void set_y(Sint16);
-    void set_position(int, int);
     void set_right(Sint16);
     void set_bottom(Sint16);
     void set_center(Sint16, Sint16);
+    virtual void set_position(int, int);
     virtual void move(int, int);
 
     // Utilisée pour les coinBox ou les boites à items

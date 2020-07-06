@@ -5,11 +5,12 @@
 #include <vector>
 #include <SDL.h>
 
-/// Classe de base
+/// Template
 class App
 {
 public:
     static int width, height;
+    static SDL_Event event;
 
     App(std::string app_title = "App", int w = 480, int h = 360);
     virtual ~App();
@@ -24,12 +25,7 @@ protected:
     bool paused;
     bool running;
     SDL_Surface* screen;
-    SDL_Event event;
     bool keys[SDLK_LAST];
-
-    // true: pressed
-    // false: released
-    bool button[6];
 
     virtual void update_events();
 };

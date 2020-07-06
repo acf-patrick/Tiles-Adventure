@@ -1,11 +1,11 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "background.h"
 #include "base/group.h"
 #include "base/timer.h"
 #include "base/text.h"
 #include "base/app.h"
-#include "background.h"
 #include "level.h"
 
 class Header: public Text

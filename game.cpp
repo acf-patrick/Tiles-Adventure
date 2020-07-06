@@ -1,13 +1,14 @@
-#include "base/timer.h"
 #include "base/with_mass.h"
+#include "checkpoints.h"
+#include "base/timer.h"
+#include "enemies.h"
+#include "fruits.h"
+#include "player.h"
+#include "widget.h"
+#include "traps.h"
 #include "game.h"
 #include "show.h"
-#include "player.h"
-#include "enemies.h"
-#include "checkpoints.h"
-#include "fruits.h"
 #include "box.h"
-#include "traps.h"
 
 Header::Header(const std::string& content, int _x, int _y, bool* s): Text(content, 255, 255, 255, "fonts/Supercell-Magic_5", NULL, 15, _x, _y), show(s) {}
 void Header::draw(SDL_Surface* screen) { if (*show) Text::draw(screen); }
@@ -28,6 +29,7 @@ Game::Game(): App("Tiles Adventure", 480, 360),
     headers[TRAP] = new Header("Currrent trap : ", 5, 80, &edit);
     for (int i=0; i<3; ++i)
         sprites.add(headers[i]);
+    sprites.add(new Button("Salut tout le monde!\nJe m'appelle ACF et j'adore programmer!"));
     Map::camera.x = width*.5 - 100;
     Map::camera.y = height*.5 + 10;
     Map::camera.w = 200;
