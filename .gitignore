@@ -4,3 +4,4 @@ images/Terrain/sans-titre.tmx
 level*
 obj/
 *.py
+.vscode/

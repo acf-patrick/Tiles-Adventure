@@ -74,6 +74,7 @@ void Game::update_events()
                                       "Rino", "Turtle", "Skull",
                                       "Slime"
                                       };
+
         // Item, Enemy, Trap
         int nbr[3] = {14, 13, 12};
         int x(event.button.x), y(event.button.y);

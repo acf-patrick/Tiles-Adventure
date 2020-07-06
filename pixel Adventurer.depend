@@ -210,14 +210,14 @@
 	<vector>
 	"base/group.h"
 
-1591682737 c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.h
+1592772629 c:\users\patrick miharisoa\desktop\pixel adventurer\base\group.h
 	<iostream>
 	<vector>
 	<map>
 	<SDL.h>
 	"sprite.h"
 
-1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.h
+1592772820 c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.h
 	<iostream>
 	<vector>
 	<map>
@@ -310,7 +310,7 @@
 	<SDL.h>
 	<vector>
 
-1591218727 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.cpp
+1593535145 source:c:\users\patrick miharisoa\desktop\pixel adventurer\base\sprite.cpp
 	<algorithm>
 	<cstdlib>
 	"sprite.h"
@@ -400,7 +400,7 @@
 	"enemies.h"
 	"bullet.h"
 
-1591453229 c:\users\patrick miharisoa\desktop\pixel adventurer\enemies.h
+1592772607 c:\users\patrick miharisoa\desktop\pixel adventurer\enemies.h
 	<SDL_rotozoom.h>
 	<SDL_image.h>
 	"enemy.h"
@@ -428,7 +428,7 @@
 	"base/map.h"
 	<SDL.h>
 
-1591723752 source:c:\users\patrick miharisoa\desktop\pixel adventurer\game.cpp
+1592061694 source:c:\users\patrick miharisoa\desktop\pixel adventurer\game.cpp
 	"base/timer.h"
 	"base/with_mass.h"
 	"game.h"
@@ -440,7 +440,7 @@
 	"box.h"
 	"traps.h"
 
-1591595947 c:\users\patrick miharisoa\desktop\pixel adventurer\game.h
+1592061612 c:\users\patrick miharisoa\desktop\pixel adventurer\game.h
 	"base/group.h"
 	"base/timer.h"
 	"base/text.h"
@@ -448,7 +448,7 @@
 	"background.h"
 	"level.h"
 
-1591674427 c:\users\patrick miharisoa\desktop\pixel adventurer\level.h
+1591997740 c:\users\patrick miharisoa\desktop\pixel adventurer\level.h
 	"base/map.h"
 	"base/group.h"
 	<cmath>
@@ -459,7 +459,7 @@
 	"base/sprite.h"
 	<SDL.h>
 
-1591218727 c:\users\patrick miharisoa\desktop\pixel adventurer\player.h
+1592037431 c:\users\patrick miharisoa\desktop\pixel adventurer\player.h
 	<map>
 	<string>
 	<sstream>
@@ -476,18 +476,19 @@
 	"base/sprite.h"
 	"base/timer.h"
 
-1591723501 source:c:\users\patrick miharisoa\desktop\pixel adventurer\level.cpp
+1592772895 source:c:\users\patrick miharisoa\desktop\pixel adventurer\level.cpp
 	<fstream>
 	<sstream>
+	<SFML/Graphics.hpp>
 	"fruits.h"
 	"level.h"
 	"traps.h"
 
-1590438517 source:c:\users\patrick miharisoa\desktop\pixel adventurer\main.cpp
+1593534934 source:c:\users\patrick miharisoa\desktop\pixel adventurer\main.cpp
 	<ctime>
 	"game.h"
 
-1591723863 source:c:\users\patrick miharisoa\desktop\pixel adventurer\player.cpp
+1592037964 source:c:\users\patrick miharisoa\desktop\pixel adventurer\player.cpp
 	<cmath>
 	<sstream>
 	"player.h"
@@ -519,4 +520,314 @@
 1591674407 c:\users\patrick miharisoa\desktop\pixel adventurer\bubbles.h
 	<SDL.h>
 	"base/sprite.h"
+
+1585833447 source:c:\users\patrick miharisoa\desktop\tiles adventurer\background.cpp
+	<SDL_image.h>
+	<ctime>
+	"base/app.h"
+	"background.h"
+
+1585903381 c:\users\patrick miharisoa\desktop\tiles adventurer\base\app.h
+	<iostream>
+	<vector>
+	<SDL.h>
+
+1585833338 c:\users\patrick miharisoa\desktop\tiles adventurer\background.h
+	<vector>
+	"base/group.h"
+
+1592772629 c:\users\patrick miharisoa\desktop\tiles adventurer\base\group.h
+	<iostream>
+	<vector>
+	<map>
+	<SDL.h>
+	"sprite.h"
+
+1593545296 c:\users\patrick miharisoa\desktop\tiles adventurer\base\sprite.h
+	<iostream>
+	<vector>
+	<map>
+	<SDL.h>
+	"group.h"
+
+1591460100 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\func_tool.cpp
+	<SDL_image.h>
+	<fstream>
+	<sstream>
+	<numeric>
+	<cmath>
+	<ctime>
+	"func_tool.h"
+	"timer.h"
+
+1591460100 c:\users\patrick miharisoa\desktop\tiles adventurer\base\func_tool.h
+	<iostream>
+	<SDL.h>
+	<string>
+	<vector>
+
+1586372950 c:\users\patrick miharisoa\desktop\tiles adventurer\base\timer.h
+	<SDL.h>
+	<SDL_framerate.h>
+	"text.h"
+
+1594048625 c:\users\patrick miharisoa\desktop\tiles adventurer\base\text.h
+	<string>
+	<SDL.h>
+	<SDL_ttf.h>
+	"sprite.h"
+
+1591460100 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\group.cpp
+	<algorithm>
+	"group.h"
+
+1585832821 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\loader.cpp
+	<fstream>
+	<vector>
+	"loader.h"
+	"func_tool.h"
+
+1584211559 c:\users\patrick miharisoa\desktop\tiles adventurer\base\loader.h
+	<iostream>
+	<vector>
+	<SDL.h>
+
+1591408093 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\map.cpp
+	<SDL_image.h>
+	<fstream>
+	<sstream>
+	<utility>
+	<algorithm>
+	<SDL_rotozoom.h>
+	"map.h"
+	"app.h"
+	"func_tool.h"
+
+1591460100 c:\users\patrick miharisoa\desktop\tiles adventurer\base\map.h
+	<iostream>
+	<vector>
+	<string>
+	<SDL.h>
+	"loader.h"
+	"sprite.h"
+	"func_tool.h"
+	"tileset.h"
+
+1585691055 c:\users\patrick miharisoa\desktop\tiles adventurer\base\tileset.h
+	<string>
+	<SDL.h>
+	<vector>
+
+1593535145 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\sprite.cpp
+	<algorithm>
+	<cstdlib>
+	"sprite.h"
+	"func_tool.h"
+
+1586006096 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\tileset.cpp
+	"tileset.h"
+	"func_tool.h"
+	<SDL_image.h>
+	<iostream>
+	<fstream>
+	<sstream>
+
+1586373002 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\timer.cpp
+	<sstream>
+	"timer.h"
+	"app.h"
+
+1591369855 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\with_mass.cpp
+	<SDL_gfxPrimitives.h>
+	"with_mass.h"
+	"func_tool.h"
+
+1591117693 c:\users\patrick miharisoa\desktop\tiles adventurer\base\with_mass.h
+	<SDL.h>
+	"sprite.h"
+	"map.h"
+
+1591303477 source:c:\users\patrick miharisoa\desktop\tiles adventurer\box.cpp
+	<sstream>
+	"box.h"
+
+1591303477 c:\users\patrick miharisoa\desktop\tiles adventurer\box.h
+	<map>
+	<SDL.h>
+	<sstream>
+	<SDL_image.h>
+	"base/with_mass.h"
+	"base/func_tool.h"
+	"base/sprite.h"
+	"base/timer.h"
+	"base/map.h"
+
+1591674401 source:c:\users\patrick miharisoa\desktop\tiles adventurer\bubbles.cpp
+	<SDL_image.h>
+	<SDL_rotozoom.h>
+	<ctime>
+	"base/func_tool.h"
+	"bubbles.h"
+
+1591674407 c:\users\patrick miharisoa\desktop\tiles adventurer\bubbles.h
+	<SDL.h>
+	"base/sprite.h"
+
+1586207320 source:c:\users\patrick miharisoa\desktop\tiles adventurer\bullet.cpp
+	<SDL_image.h>
+	<SDL.h>
+	"base/func_tool.h"
+	"bullet.h"
+
+1591218727 c:\users\patrick miharisoa\desktop\tiles adventurer\bullet.h
+	"base/with_mass.h"
+	"base/timer.h"
+	<SDL_image.h>
+	"base/map.h"
+
+1586347862 source:c:\users\patrick miharisoa\desktop\tiles adventurer\checkpoints.cpp
+	"base/func_tool.h"
+	"checkpoints.h"
+	"base/app.h"
+	<SDL_image.h>
+	<sstream>
+
+1586293225 c:\users\patrick miharisoa\desktop\tiles adventurer\checkpoints.h
+	"base/sprite.h"
+	"base/timer.h"
+	<vector>
+	<SDL.h>
+	<map>
+
+1594048517 source:c:\users\patrick miharisoa\desktop\tiles adventurer\enemies.cpp
+	"base/func_tool.h"
+	<SDL_image.h>
+	<algorithm>
+	<SDL_gfxPrimitives.h>
+	<ctime>
+	<cmath>
+	"enemies.h"
+	"bullet.h"
+
+1592772607 c:\users\patrick miharisoa\desktop\tiles adventurer\enemies.h
+	<SDL_rotozoom.h>
+	<SDL_image.h>
+	"enemy.h"
+
+1591462242 c:\users\patrick miharisoa\desktop\tiles adventurer\enemy.h
+	"base/with_mass.h"
+	"base/sprite.h"
+	"base/timer.h"
+	"base/group.h"
+	"base/map.h"
+	<vector>
+	<SDL.h>
+	<map>
+
+1591218727 source:c:\users\patrick miharisoa\desktop\tiles adventurer\fruits.cpp
+	<SDL_image.h>
+	<ctime>
+	"base/func_tool.h"
+	"base/app.h"
+	"fruits.h"
+
+1591218727 c:\users\patrick miharisoa\desktop\tiles adventurer\fruits.h
+	"base/with_mass.h"
+	"base/timer.h"
+	"base/map.h"
+	<SDL.h>
+
+1594048747 source:c:\users\patrick miharisoa\desktop\tiles adventurer\game.cpp
+	"base/timer.h"
+	"base/with_mass.h"
+	"game.h"
+	"show.h"
+	"player.h"
+	"enemies.h"
+	"checkpoints.h"
+	"fruits.h"
+	"box.h"
+	"traps.h"
+
+1592061612 c:\users\patrick miharisoa\desktop\tiles adventurer\game.h
+	"base/group.h"
+	"base/timer.h"
+	"base/text.h"
+	"base/app.h"
+	"background.h"
+	"level.h"
+
+1591997740 c:\users\patrick miharisoa\desktop\tiles adventurer\level.h
+	"base/map.h"
+	"base/group.h"
+	<cmath>
+	<map>
+
+1586076042 c:\users\patrick miharisoa\desktop\tiles adventurer\show.h
+	"base/timer.h"
+	"base/sprite.h"
+	<SDL.h>
+
+1592037431 c:\users\patrick miharisoa\desktop\tiles adventurer\player.h
+	<map>
+	<string>
+	<sstream>
+	<SDL_image.h>
+	"show.h"
+	"base/with_mass.h"
+	"base/map.h"
+	"base/timer.h"
+	"base/sprite.h"
+
+1591721055 c:\users\patrick miharisoa\desktop\tiles adventurer\traps.h
+	<SDL.h>
+	"bubbles.h"
+	"base/sprite.h"
+	"base/timer.h"
+
+1593534934 source:c:\users\patrick miharisoa\desktop\tiles adventurer\main.cpp
+	<ctime>
+	"game.h"
+
+1592037964 source:c:\users\patrick miharisoa\desktop\tiles adventurer\player.cpp
+	<cmath>
+	<sstream>
+	"player.h"
+	"base/func_tool.h"
+	"base/app.h"
+
+1586076944 source:c:\users\patrick miharisoa\desktop\tiles adventurer\show.cpp
+	<SDL_image.h>
+	"base/func_tool.h"
+	"show.h"
+
+1591721849 source:c:\users\patrick miharisoa\desktop\tiles adventurer\traps.cpp
+	<SDL_image.h>
+	<SDL_rotozoom.h>
+	<SDL_gfxPrimitives.h>
+	"base/app.h"
+	"base/map.h"
+	"base/func_tool.h"
+	"base/with_mass.h"
+	"traps.h"
+
+1593993038 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\app.cpp
+	<SDL.h>
+	<SDL_ttf.h>
+	"app.h"
+	"func_tool.h"
+
+1594048636 source:c:\users\patrick miharisoa\desktop\tiles adventurer\base\text.cpp
+	<vector>
+	"app.h"
+	"text.h"
+	"func_tool.h"
+
+1594048545 source:c:\users\patrick miharisoa\desktop\tiles adventurer\level.cpp
+	<fstream>
+	<sstream>
+	<SFML/Graphics.hpp>
+	"fruits.h"
+	"level.h"
+	"traps.h"
 

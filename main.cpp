@@ -1,6 +1,5 @@
 #include <ctime>
 #include "game.h"
-// hello world
 
 int main(int argc, char** argv)
 {

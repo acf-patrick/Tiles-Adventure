@@ -256,7 +256,7 @@ bool Player::collide_with(Sprite* sprite)
 {
     if (sprite->is("Enemy"))
     {
-        // laisse la classe Chameleon gêrer la collision
+        // laisse la classe Chameleon gï¿½rer la collision
         if (sprite->is("Chameleon"))
             return true;
 

@@ -45,6 +45,7 @@ private:
             }
             x = m_x-0.5*images[0]->w;
             y = m_y-0.5*images[0]->h;
+            
             timer.restart();
         }
         void update()

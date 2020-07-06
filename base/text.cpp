@@ -3,7 +3,7 @@
 #include "text.h"
 #include "func_tool.h"
 
-Text::Text(const std::string& content, int r, int g, int b, std::string font_name, SDL_Rect* _viewport, int char_size, int _x, int _y)
+Text::Text(const std::string& content, int r, int g, int b, const std::string& font_name, SDL_Rect* _viewport, int char_size, int _x, int _y)
 {
     if (_viewport)
         viewport = _viewport;
@@ -23,8 +23,8 @@ Text::Text(const std::string& content, int r, int g, int b, std::string font_nam
             exit(EXIT_FAILURE);
         }
     }
-    font_name += ".ttf";
-    font = TTF_OpenFont(font_name.c_str(), char_size);
+    std::string tmp(font_name+".ttf");
+    font = TTF_OpenFont(tmp.c_str(), char_size);
     if (!font)
     {
         std::cerr << TTF_GetError();
@@ -81,6 +81,18 @@ void Text::set(SDL_Color _color, const std::string& content)
         SDL_FreeSurface(image);
         image = TTF_RenderText_Solid(font, content.c_str(), color);
     }
+}
+
+void Text::setFont(const std::string& font_name, int textSize)
+{
+    int prevSize(TTF_FontHeight(font));
+    if (!textSize)
+        textSize = prevSize;
+    if (textSize == prevSize and std::string(TTF_FontFaceFamilyName(font)) == font_name)
+        return;
+    TTF_Font* f(TTF_OpenFont(font_name.c_str(), textSize));
+    font = f;
+    set(color, text);
 }
 
 void Text::draw(SDL_Surface* screen)
