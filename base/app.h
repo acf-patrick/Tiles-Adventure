@@ -11,11 +11,13 @@ class App
 public:
     static int width, height;
     static SDL_Event event;
+    static App* instance;
 
     App(std::string app_title = "App", int w = 480, int h = 360);
     virtual ~App();
     void run();
     void pause();
+    void end();
 
 protected:
     virtual void manage_events();

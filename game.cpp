@@ -4,14 +4,10 @@
 #include "enemies.h"
 #include "fruits.h"
 #include "player.h"
-#include "widget.h"
 #include "traps.h"
 #include "game.h"
 #include "show.h"
 #include "box.h"
-
-Header::Header(const std::string& content, int _x, int _y, bool* s): Text(content, 255, 255, 255, "fonts/Supercell-Magic_5", NULL, 15, _x, _y), show(s) {}
-void Header::draw(SDL_Surface* screen) { if (*show) Text::draw(screen); }
 
 Game::Game(): App("Tiles Adventure", 480, 360),
     indicateur("AngryPig", 0, 0, 0, "fonts/emulogic", NULL, 10, 5, 30),
@@ -29,11 +25,15 @@ Game::Game(): App("Tiles Adventure", 480, 360),
     headers[TRAP] = new Header("Currrent trap : ", 5, 80, &edit);
     for (int i=0; i<3; ++i)
         sprites.add(headers[i]);
-    sprites.add(new Button("Salut tout le monde!\nJe m'appelle ACF et j'adore programmer!"));
     Map::camera.x = width*.5 - 100;
     Map::camera.y = height*.5 + 10;
     Map::camera.w = 200;
     Map::camera.h = 120;
+}
+Game::~Game()
+{
+    delete bg; bg = NULL;
+    delete cursor; cursor = NULL;
 }
 
 void Game::manage_events()
@@ -239,9 +239,13 @@ void Game::update()
     if (bg_timer.out())
     {
         bg_timer.restart();
-        delete bg;
-        bg = new Background;
+        change_background();
     }
+}
+void Game::change_background()
+{
+    delete bg;
+    bg = new Background;
 }
 
 Sprite* Game::create_enemy(const std::string& name)

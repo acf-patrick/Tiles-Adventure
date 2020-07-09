@@ -2,13 +2,16 @@
 #include <SDL_ttf.h>
 #include "app.h"
 #include "func_tool.h"
+#include "widget.h"
 
 int App::width(0), App::height(0);
 SDL_Event App::event;
+App* App::instance(NULL);
 
 App::App(std::string app_title, int w, int h):
     paused(false), running(true)
 {
+    instance = this;
     width = w;
     height = h;
 
@@ -66,7 +69,8 @@ void App::update_events()
     switch(event.type)
     {
     case SDL_QUIT:
-        running = false;
+        if (confirm("Quitter?"))
+            end();
         break;
     case SDL_KEYDOWN:
         keys[event.key.keysym.sym] = true;
@@ -81,3 +85,4 @@ void App::update_events()
 }
 
 void App::pause() { paused = !paused; }
+void App::end() { running = false; }

@@ -16,24 +16,18 @@ Text::Text(const std::string& content, int r, int g, int b, const std::string& f
         viewport->h = App::height;
     }
     if (!TTF_WasInit())
-    {
         if (TTF_Init())
         {
             std::cerr << TTF_GetError();
             exit(EXIT_FAILURE);
         }
-    }
-    std::string tmp(font_name+".ttf");
-    font = TTF_OpenFont(tmp.c_str(), char_size);
-    if (!font)
-    {
-        std::cerr << TTF_GetError();
-        exit(EXIT_FAILURE);
-    }
-    SDL_Color _color = {Uint8(r), Uint8(g), Uint8(b)};
-    set(_color, content);
     x = _x;
     y = _y;
+    text = content;
+    color.r = r;
+    color.g = g;
+    color.b = b;
+    setFont(font_name, char_size);
     rect.w = image->w;
     rect.h = image->h;
     type.push_back("text");
@@ -85,14 +79,26 @@ void Text::set(SDL_Color _color, const std::string& content)
 
 void Text::setFont(const std::string& font_name, int textSize)
 {
-    int prevSize(TTF_FontHeight(font));
-    if (!textSize)
-        textSize = prevSize;
-    if (textSize == prevSize and std::string(TTF_FontFaceFamilyName(font)) == font_name)
-        return;
-    TTF_Font* f(TTF_OpenFont(font_name.c_str(), textSize));
-    font = f;
+    std::string ft(font_name+".ttf");
+    TTF_Font* f(TTF_OpenFont(ft.c_str(), textSize));
+    if (f)
+    {
+        fontName = font_name;
+        font = f;
+    }
+    else if (!font)
+    {
+        std::cerr << TTF_GetError();
+        exit(EXIT_FAILURE);
+    }
     set(color, text);
+}
+
+void Text::setSize(float e)
+{
+    setFont(fontName, e*TTF_FontHeight(font));
+    rect.w = image->w;
+    rect.h = image->h;
 }
 
 void Text::draw(SDL_Surface* screen)

@@ -19,6 +19,8 @@
     #define RMASK 0x000000ff
 #endif
 
+#define createSurface(w, h) SDL_CreateRGBSurface(SDL_HWSURFACE, w, h, 32, RMASK, GMASK, BMASK, AMASK)
+
 int sgn(double);
 
 typedef struct

@@ -16,13 +16,14 @@ public:
     void draw(SDL_Surface*);
     void set(SDL_Color, const std::string& content = "");
     void setFont(const std::string& font_name, int textSize = 0);
+    void setSize(float);
 
 protected:
 
-    std::string text;
+    SDL_Rect* viewport;
+    std::string text, fontName;
     SDL_Color color;
     TTF_Font* font;
-    SDL_Rect* viewport;
 };
 
 #endif

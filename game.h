@@ -8,22 +8,22 @@
 #include "base/app.h"
 #include "level.h"
 
-class Header: public Text
-{
-public:
-    Header(const std::string&, int, int, bool*);
-    void draw(SDL_Surface*);
-
-private:
-    bool *show;
-};
-
 class Game : public App
 {
 public:
     Game();
+    ~Game();
+    void change_background();
 
 private:
+    class Header: public Text
+    {
+    public:
+        Header(const std::string& content, int _x, int _y, bool* s): Text(content, 255, 255, 255, "fonts/Supercell-Magic_5", NULL, 15, _x, _y), show(s) {}
+        void draw(SDL_Surface* screen) { if (*show) Text::draw(screen); }
+    private:
+        bool *show;
+    };
     void manage_events();
     void update_events();
     void draw();
