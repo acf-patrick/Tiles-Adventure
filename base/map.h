@@ -10,7 +10,41 @@
 #include "func_tool.h"
 #include "tileset.h"
 
-/// Cette classe gère les comportements de la carte de jeu
+/*
+        === MAP FILE STRUCTURE ===
+    
+    // basic informations
+    [header]
+    width=
+    height=
+    tilewidth=
+    tileheight
+
+    // tilesets informations
+    [tilesets]
+    tileset="path to the image ressource","tiles width","tiles height",0,0
+    .
+    .
+    .
+
+    // layers
+    [layer]
+    type="name of the current layer"
+    data="a very long list of numbers"
+
+    // another layer
+    [layer]
+    type=
+    data=
+    .
+    .
+    .
+    // and so on... 
+*/
+
+/**
+ * This class implements many of a game map functionalities
+ */
 class Map: public Loader
 {
 public:
