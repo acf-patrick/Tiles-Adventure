@@ -226,8 +226,10 @@ void Player::respawn()
 {
     do
     {
-        x = m_map->get_xshift() + randint(0, App::width);
-        y = m_map->get_yshift() + randint(0, 0.5*App::height);
+        int ww, wh;
+        App::instance->window_size(&ww, &wh);
+        x = m_map->get_xshift() + randint(0, ww);
+        y = m_map->get_yshift() + randint(0, 0.5*wh);
     } while(m_map->collision_with(this));
     m_map->center_on(this);
     show = new Show(x+rect.w*.5-m_map->get_xshift(), y+rect.h*.5-m_map->get_yshift());

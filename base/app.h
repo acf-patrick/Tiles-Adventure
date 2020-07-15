@@ -9,8 +9,6 @@
 class App
 {
 public:
-    static int width, height;
-    static SDL_Event event;
     static App* instance;
 
     App(std::string app_title = "App", int w = 480, int h = 360);
@@ -18,6 +16,8 @@ public:
     void run();
     void pause();
     void end();
+    SDL_Event* get_event();
+    void window_size(int*, int*);
 
 protected:
     virtual void manage_events();
@@ -27,6 +27,7 @@ protected:
     bool paused;
     bool running;
     SDL_Surface* screen;
+    SDL_Event event;
     bool keys[SDLK_LAST];
 
     virtual void update_events();

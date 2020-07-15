@@ -14,8 +14,10 @@ Fruit::Fruit(int _x, int _y, Map* m, const std::string& name, bool hidden):
         viewport = new SDL_Rect;
         viewport->x = 0;
         viewport->y = 0;
-        viewport->w = App::width;
-        viewport->h = App::height;
+        int ww, wh;
+        App::instance->window_size(&ww, &wh);
+        viewport->w = ww;
+        viewport->h = wh;
     }
     else
         viewport = m_map->get_viewport();

@@ -33,9 +33,12 @@ const int Fps::DEFAULT(30);
 const int Fps::UPPER_LIMIT(200);
 
 Fps::Fps(Uint32 _rate, const std::string& font_name):
-    Text("FPS : ", 255, 0, 0, font_name, NULL, 10, App::width-200, App::height-50),
+    Text("FPS : ", 255, 0, 0, font_name, NULL, 10, -200, -50),
     rate(_rate)
 {
+    int _x, _y;
+    App::instance->window_size(&_x, &_y);
+    x += _x; y += _y;
     rate_ticks = 1000./rate;
     frame_count = frames = 0;
     base_ticks = SDL_GetTicks()+1;

@@ -34,8 +34,8 @@ protected:
     Timer timer;
     Timer state_timer;
 
+    virtual void update_image();
     void load_images(const std::vector<std::string>&);
-    void update_image();
     void stop_falling();
     void wait();
     bool erase();

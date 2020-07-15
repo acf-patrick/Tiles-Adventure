@@ -27,8 +27,10 @@ Map::Map(const std::string& map_file_name, SDL_Rect* rect):
         viewport = new SDL_Rect;
         viewport->x = 0;
         viewport->y = 0;
-        viewport->w = App::width;
-        viewport->h = App::height;
+        int ww, wh;
+        App::instance->window_size(&ww, &wh);
+        viewport->w = ww;
+        viewport->h = wh;
     }
     init_tilesets();
     for (int i=0; i<(int)m_tileset.size(); ++i)

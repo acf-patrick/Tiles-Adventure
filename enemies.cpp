@@ -748,14 +748,28 @@ Slime::Slime(Map* m, int _x, int _y):
     keys.push_back("Hit");
     keys.push_back("Idle-Run");
     load_images(keys);
-    for (int i=0; i<2; ++i)
-    {
-        images[i]["Idle"] = images[i]["Idle-Run"];
-        images[i]["Run"] = images[i]["Idle-Run"];
-        images[i].erase("Idle-Run");
-    }
 }
 
+SDL_Surface* Slime::get_surface()
+{
+    std::string s(state);
+    if (state != "Hit")
+        state = "Idle-Run";
+    SDL_Surface* ret(Enemy::get_surface());
+    state = s;
+    return ret;
+}
+
+void Slime::update_image()
+{
+    std::string s((state=="Idle" or state=="Run")?"Idle-Run":state);
+    image = images[direction][s];
+    if (timer.get_elapsed_ms() >= 50)
+    {
+        cur_image = (cur_image+1);
+        timer.restart();
+    }
+}
 void Slime::update()
 {
     x_vel /= 2;

@@ -81,8 +81,10 @@ SDL_Rect* Arrow::create_static_viewport()
     if (!ret)
         return NULL;
     ret->x = ret->y = 0;
-    ret->w = App::width;
-    ret->h = App::height;
+    int ww, wh;
+    App::instance->window_size(&ww, &wh);
+    ret->w = ww;
+    ret->h = wh;
     return ret;
 }
 

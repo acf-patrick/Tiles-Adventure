@@ -4,16 +4,19 @@
 #include "func_tool.h"
 #include "widget.h"
 
-int App::width(0), App::height(0);
-SDL_Event App::event;
 App* App::instance(NULL);
+
+SDL_Event* App::get_event() { return &event; }
+void App::window_size(int* w, int* h)
+{
+    if (w) *w = screen->w;
+    if (h) *h = screen->h;
+}
 
 App::App(std::string app_title, int w, int h):
     paused(false), running(true)
 {
     instance = this;
-    width = w;
-    height = h;
 
     SDL_Init(SDL_INIT_VIDEO);
     SDL_putenv("SDL_VIDEO_CENTERED=1");

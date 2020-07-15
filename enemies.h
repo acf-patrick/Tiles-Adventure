@@ -91,6 +91,10 @@ class Slime: public Chicken
 public:
     Slime(Map*, int, int);
     void update();
+    SDL_Surface* get_surface();
+
+protected:
+    void update_image();
 };
 
 class Skull: public Enemy

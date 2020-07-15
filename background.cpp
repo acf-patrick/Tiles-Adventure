@@ -14,8 +14,9 @@ Background::Background()
         std::cerr << IMG_GetError();
         exit(EXIT_FAILURE);
     }
-    int i;
-    for (i=0; i<App::height+image->h; i+=image->h)
+    int i, window_height;
+    App::instance->window_size(NULL, &window_height);
+    for (i=0; i<window_height+image->h; i+=image->h)
         ys.push_back(i);
 }
 
@@ -31,7 +32,9 @@ void Background::update()
 
 void Background::draw(SDL_Surface* screen)
 {
-    for (int i=0; i<App::width; i+=image->w)
+    int window_width;
+    App::instance->window_size(&window_width, NULL);
+    for (int i=0; i<window_width; i+=image->w)
     {
         for (int j=0; j<(int)ys.size(); ++j)
         {

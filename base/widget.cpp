@@ -6,9 +6,9 @@ bool confirm(const std::string& message)
 {
     SDL_Surface* screen(SDL_GetVideoSurface());
     Confirm widget(message);
-    while (widget.result<0)
+    while (widget.result < 0)
     {
-        SDL_PollEvent(&App::event);
+        SDL_PollEvent(App::instance->get_event());
         widget.update();
         widget.draw(screen);
         SDL_Flip(screen);
@@ -76,19 +76,21 @@ void __button__::draw(SDL_Surface* screen)
 
 void __button__::update()
 {
-    int bx(App::event.motion.x), by(App::event.motion.y);
+    int bx, by;
+    SDL_GetMouseState(&bx, &by);
+    SDL_Event* event(App::instance->get_event());
     if (collide_with(bx, by))
     {
-        if (App::event.button.button == SDL_BUTTON_LEFT)
+        if (event->button.button == SDL_BUTTON_LEFT)
         {
-            if (App::event.type == SDL_MOUSEBUTTONDOWN)
+            if (event->type == SDL_MOUSEBUTTONDOWN)
                 state = CLICKED;
             else
             {
-                if (App::event.type == SDL_MOUSEBUTTONUP)
+                if (event->type == SDL_MOUSEBUTTONUP)
                     if (state == CLICKED)
                     {
-                        SDL_PollEvent(&App::event);
+                        event->type = SDL_USEREVENT;
                         action();
                     }
                 state = HOVER;
@@ -137,8 +139,10 @@ Confirm::Confirm(const std::string& text): result(-1)
     int diff(0.5*(msg_rect.w-rect.w));
     if (diff >= 0) rect.w += 2*(10+diff);
     rect.h = msg_rect.h+ok_rect.h+40;
-    x = 0.5*(App::width-rect.w);
-    y = 0.5*(App::height-rect.h);
+    int ww, wh;
+    App::instance->window_size(&ww, &wh);
+    x = 0.5*(ww-rect.w);
+    y = 0.5*(wh-rect.h);
 
     /* mise en place des composants */
     ok->set_x(10);

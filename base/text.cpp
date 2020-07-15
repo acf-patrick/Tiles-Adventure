@@ -12,8 +12,10 @@ Text::Text(const std::string& content, int r, int g, int b, const std::string& f
         viewport = new SDL_Rect;
         viewport->x = 0;
         viewport->y = 0;
-        viewport->w = App::width;
-        viewport->h = App::height;
+        int ww, wh;
+        App::instance->window_size(&ww, &wh);
+        viewport->w = ww;
+        viewport->h = wh;
     }
     if (!TTF_WasInit())
         if (TTF_Init())

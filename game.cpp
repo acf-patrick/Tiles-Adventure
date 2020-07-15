@@ -25,8 +25,8 @@ Game::Game(): App("Tiles Adventure", 480, 360),
     headers[TRAP] = new Header("Currrent trap : ", 5, 80, &edit);
     for (int i=0; i<3; ++i)
         sprites.add(headers[i]);
-    Map::camera.x = width*.5 - 100;
-    Map::camera.y = height*.5 + 10;
+    Map::camera.x = screen->w*.5 - 100;
+    Map::camera.y = screen->h*.5 + 10;
     Map::camera.w = 200;
     Map::camera.h = 120;
 }
@@ -79,7 +79,8 @@ void Game::update_events()
 
         // Item, Enemy, Trap
         int nbr[3] = {14, 13, 12};
-        int x(event.button.x), y(event.button.y);
+        int x, y;
+        SDL_GetMouseState(&x, &y);
         if (event.button.button == SDL_BUTTON_LEFT)
         {
             if (headers[ITEM]->collide_with(x, y))
@@ -250,8 +251,9 @@ void Game::change_background()
 
 Sprite* Game::create_enemy(const std::string& name)
 {
-    int x(event.button.x+map.get_xshift()),
-        y(event.button.y+map.get_yshift());
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    x += map.get_xshift(); y += map.get_yshift();
     if (name == "AngryPig")
         return new AngryPig(&map, x, y);
     if (name == "Bunny")
@@ -285,8 +287,9 @@ Sprite* Game::create_item(const std::string& name, bool icon)
 {
     SDL_Rect* viewport(icon?NULL:map.get_viewport());
     Map* m(icon?NULL:&map);
-    int x(event.button.x+map.get_xshift()),
-        y(event.button.y+map.get_yshift());
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    x += map.get_xshift(); y += map.get_yshift();
     if (name == "Checkpoint")
         return new Checkpoint(x, y, viewport);
     if (name == "End")
@@ -306,8 +309,9 @@ Sprite* Game::create_trap(const std::string& name, bool icon)
 {
     SDL_Rect* viewport(icon?NULL:map.get_viewport());
     Map* m(icon?NULL:&map);
-    int x(event.button.x+map.get_xshift()),
-        y(event.button.y+map.get_yshift());
+    int x, y;
+    SDL_GetMouseState(&x, &y);
+    x += map.get_xshift(); y += map.get_yshift();
     if (name == "Arrow")
         return new Arrow(viewport, x, y);
     else if (name == "Fan")

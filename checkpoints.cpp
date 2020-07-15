@@ -12,8 +12,10 @@ Checkpoints::Checkpoints(const std::string& name, int _x, int _y, SDL_Rect* v):
         viewport = new SDL_Rect;
         viewport->x = 0;
         viewport->y = 0;
-        viewport->w = App::width;
-        viewport->h = App::height;
+        int ww, wh;
+        App::instance->window_size(&ww, &wh);
+        viewport->w = ww;
+        viewport->h = wh;
     }
     type.push_back("Checkpoints");
     type.push_back(name);
