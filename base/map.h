@@ -10,7 +10,7 @@
 #include "func_tool.h"
 #include "tileset.h"
 
-/*
+/**
         === MAP FILE STRUCTURE ===
     
     // basic informations
@@ -40,10 +40,8 @@
     .
     .
     // and so on... 
-*/
 
-/**
- * This class implements many of a game map functionalities
+  @brief This class implements many of a game map functionalities
  */
 class Map: public Loader
 {
@@ -121,8 +119,8 @@ protected:
     // pour avoir une image plus nette des tiles
     std::vector<SDL_Surface*> original_spritesheet;
 
-    // attribut faite pour les sprites statiques
-    // pour des sprites animées ,creer une groupe
+    // Attribut faite pour les sprites statiques.
+    // Pour des sprites animées ,creer une groupe
     // gérant le type de sprite en utilisant la
     // classe de base Group
     std::vector< std::vector<Sprite*> > sprites;
