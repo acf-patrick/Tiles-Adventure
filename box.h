@@ -7,7 +7,7 @@
 #include <SDL_image.h>
 #include "base/with_mass.h"
 #include "base/func_tool.h"
-#include "base/sprite.h"
+#include "base/object.h"
 #include "base/timer.h"
 #include "base/map.h"
 
@@ -80,12 +80,12 @@ private:
                 x_vel = y_vel = 0;
             y -= 2;
         }
-        bool collide_with(Sprite* sprite)
+        bool collide_with(GameObject* sprite)
         {
             if (!sprite)
                 return false;
             if (sprite->is("Player"))
-                return Sprite::collide_with(sprite);
+                return GameObject::collide_with(sprite);
             SDL_Surface* surface = SDL_CreateRGBSurface(SDL_HWSURFACE, rect.w, rect.h, 32,
                                                         image->format->Rmask, image->format->Bmask,
                                                         image->format->Bmask, image->format->Amask);

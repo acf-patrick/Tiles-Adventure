@@ -3,10 +3,10 @@
 
 #include <SDL.h>
 #include "bubbles.h"
-#include "base/sprite.h"
+#include "base/object.h"
 #include "base/timer.h"
 
-class Arrow: public Sprite
+class Arrow: public GameObject
 {
 public:
     Arrow(SDL_Rect*, int, int);
@@ -27,7 +27,7 @@ private:
 
 };
 
-class Basic_fan: public Sprite
+class Basic_fan: public GameObject
 {
 public:
     Basic_fan(SDL_Rect*, int, int);
@@ -65,7 +65,7 @@ public:
     Falling_platform(SDL_Rect*, int, int);
     void update();
     void bump(const std::string& flag = "");
-    bool collide_with(Sprite*);
+    bool collide_with(GameObject*);
 
 private:
     int y0;
@@ -80,13 +80,13 @@ public:
     /**
     * @param s : indique la direction où le ventilateur va souffler
     */
-    Fan(SDL_Rect*, int, int, Sprite*, int s = Bubbles::DROITE);
+    Fan(SDL_Rect*, int, int, GameObject*, int s = Bubbles::DROITE);
     void update();
     void draw(SDL_Surface*);
 
 private:
     Chrono switch_timer;
-    Sprite* target;
+    GameObject* target;
     SDL_Rect field;
 };
 

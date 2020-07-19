@@ -45,7 +45,7 @@ Loader::Loader(const string& file_path)
             {
                 vector<string> ligne(split(lignes[i_line], ","));
                 for (int i=0; i<world_x; ++i)
-                    _layers[_layers.size()-1].push_back(to_int(ligne[i]));
+                    _layers.back().push_back(to_int(ligne[i]));
                 i_line ++;
             }
         }

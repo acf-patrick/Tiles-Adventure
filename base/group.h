@@ -5,9 +5,9 @@
 #include <vector>
 #include <map>
 #include <SDL.h>
-#include "sprite.h"
+#include "object.h"
 
-class Sprite;
+class GameObject;
 
 /// Classe conteneur des sprites
 class Group
@@ -17,65 +17,65 @@ public:
     static void clear_buffer();
 
     /// Ajoute le sprite dans le groupe
-    void add(Sprite*);
-    void add(std::vector<Sprite*>);
+    void add(GameObject*);
+    void add(std::vector<GameObject*>);
 
     /// Verifie si le groupe est vide
     bool empty();
 
     /// Met-à-jour les sprites du groupe
-    /// Cette méthode appelle Sprite::update
+    /// Cette méthode appelle GameObject::update
     virtual void update();
 
     /// Déssine les sprites du groupe
-    /// Cette méthode appelle Sprite::draw
+    /// Cette méthode appelle GameObject::draw
     void draw(SDL_Surface*);
 
     /// Demande si le groupe contient le sprite
-    bool has(Sprite*);
-    bool has(std::vector<Sprite*>);
+    bool has(GameObject*);
+    bool has(std::vector<GameObject*>);
 
     /// Retire un sprite du groupe
-    void remove(Sprite*);
-    void remove(std::vector<Sprite*>);
+    void remove(GameObject*);
+    void remove(std::vector<GameObject*>);
 
     /// Retire toute sprite de ce groupe
     /// Néanmoins, les pointeurs ne seront pas liberés
     void clear();
 
     /// Obtenir une liste des sprites du groupe
-    std::vector<Sprite*> sprites();
+    std::vector<GameObject*> sprites();
 
-    Sprite* operator[](int);
+    GameObject* operator[](int);
 
     /// @return Liste des sprites du groupe qui entrent en collision avec le sprite passé en paramètre
     /// @param bool _kill : on retire les sprites trouvés du groupe si _kill vaut true
-    std::vector<Sprite*> sprites_colliding_with(Sprite*, bool _kill = false);
+    std::vector<GameObject*> sprites_colliding_with(GameObject*, bool _kill = false);
 
     /// Retourne le premier sprite trouvé ,qui entre en collision avec le sprite donné en paramètre
-    Sprite* first_sprite_colliding_with(Sprite*);
+    GameObject* first_sprite_colliding_with(GameObject*);
     // Rect
-    Sprite* first_sprite_colliding_with(SDL_Rect);
+    GameObject* first_sprite_colliding_with(SDL_Rect);
     // Point
-    Sprite* first_sprite_colliding_with(int, int);
+    GameObject* first_sprite_colliding_with(int, int);
 
     /// @brief Teste la collision entre deux groupes de sprites
     /// @param bool _kill : on retire les sprites trouvés du groupe si ce paramètre vaut true
     /// @param bool __kill: on retire les sprites trouvés du groupe passé en paramètre si __kill vaut true
     /// @return map addméttant les sprites du groupe comme clés et les sprites du groupe passé en paramètre comme valeur
-    std::map< Sprite*, std::vector<Sprite*> > collide_with(Group*, bool _kill = false, bool __kill = false);
+    std::map< GameObject*, std::vector<GameObject*> > collide_with(Group*, bool _kill = false, bool __kill = false);
 
 protected:
     /// Liste des sprites contenus dans le groupe
-    std::vector<Sprite*> sprite_list;
+    std::vector<GameObject*> sprite_list;
 
 private:
 
-    bool _has(Sprite*);
-    void _remove(Sprite*);
-    void _add(Sprite*);
-    Sprite* get(int);
-    static std::vector<Sprite*> buffer;
+    bool _has(GameObject*);
+    void _remove(GameObject*);
+    void _add(GameObject*);
+    GameObject* get(int);
+    static std::vector<GameObject*> buffer;
 };
 
 #endif

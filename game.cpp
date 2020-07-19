@@ -249,7 +249,7 @@ void Game::change_background()
     bg = new Background;
 }
 
-Sprite* Game::create_enemy(const std::string& name)
+GameObject* Game::create_enemy(const std::string& name)
 {
     int x, y;
     SDL_GetMouseState(&x, &y);
@@ -283,7 +283,7 @@ Sprite* Game::create_enemy(const std::string& name)
     return NULL;
 }
 
-Sprite* Game::create_item(const std::string& name, bool icon)
+GameObject* Game::create_item(const std::string& name, bool icon)
 {
     SDL_Rect* viewport(icon?NULL:map.get_viewport());
     Map* m(icon?NULL:&map);
@@ -305,7 +305,7 @@ Sprite* Game::create_item(const std::string& name, bool icon)
     return new Fruit(x, y, m, name);
 }
 
-Sprite* Game::create_trap(const std::string& name, bool icon)
+GameObject* Game::create_trap(const std::string& name, bool icon)
 {
     SDL_Rect* viewport(icon?NULL:map.get_viewport());
     Map* m(icon?NULL:&map);

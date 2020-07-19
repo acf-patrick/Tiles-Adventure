@@ -42,7 +42,7 @@ void With_mass::set_map(Map* m) { m_map = m; }
 void With_mass::move(int x_offset, int y_offset)
 {
     if (!m_map)
-        return Sprite::move(x_offset, y_offset);
+        return GameObject::move(x_offset, y_offset);
     if (x_offset >= m_map->get_tile_w() or y_offset >= m_map->get_tile_h())
     {
         move(x_offset/2, y_offset/2);

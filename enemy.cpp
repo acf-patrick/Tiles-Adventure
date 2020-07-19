@@ -127,7 +127,7 @@ SDL_Surface* Enemy::get_surface()
 }
 
 Shot::Shot(const std::string& name, Map* m, int _x, int _y,
-           int w, int h, Sprite* cible, Group* bullets_group):
+           int w, int h, GameObject* cible, Group* bullets_group):
     Enemy(m, _x, _y, name, w, h),
     target(cible), bullets(bullets_group)
 {

@@ -69,7 +69,7 @@ void __button__::define_bg(SDL_Surface* hover, SDL_Surface* clicked, SDL_Surface
 void __button__::draw(SDL_Surface* screen)
 {
     image = background[state];
-    Sprite::draw(screen);
+    GameObject::draw(screen);
     image = NULL;
     innerText->draw(screen);
 }
@@ -105,7 +105,7 @@ void __button__::update()
 
 void __button__::set_position(int _x, int _y)
 {
-    Sprite::set_position(_x, _y);
+    GameObject::set_position(_x, _y);
     innerText->set_center(get_centerx(), get_centery());
 }
 
@@ -176,7 +176,7 @@ void Confirm::update()
 }
 void Confirm::draw(SDL_Surface* screen)
 {
-    Sprite::draw(screen);
+    GameObject::draw(screen);
     ok->draw(screen);
     cancel->draw(screen);
     message->draw(screen);

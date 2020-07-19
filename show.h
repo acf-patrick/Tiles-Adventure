@@ -2,10 +2,10 @@
 #define SHOW_H
 
 #include "base/timer.h"
-#include "base/sprite.h"
+#include "base/object.h"
 #include <SDL.h>
 
-class Show: public Sprite
+class Show: public GameObject
 {
 public:
     static int instance;

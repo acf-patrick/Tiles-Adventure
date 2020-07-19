@@ -2,10 +2,10 @@
 #define BUBBLES_H
 
 #include <SDL.h>
-#include "base/sprite.h"
+#include "base/object.h"
 
 /** Bulles crées lorsque les ventilos se mettent en marche */
-class Bubbles: public Sprite
+class Bubbles: public GameObject
 {
 public:
     enum { HAUT, DROITE, BAS, GAUCHE };

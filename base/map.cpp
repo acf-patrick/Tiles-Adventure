@@ -98,7 +98,7 @@ void Map::scale(float zoom)
     tile_w *= zoom;
     tile_h *= zoom;
     std::cout << "tile size : " << tile_w << ", " << tile_h << std::endl;
-    std::cout << "Spritesheets size : \n";
+    std::cout << "GameObjectsheets size : \n";
     for (int i=0; i<(int)tileset.size(); ++i)
         std::cout << tileset[i]->surface->w << ", " << tileset[i]->surface->h << std::endl;
 }
@@ -240,9 +240,9 @@ void Map::draw_sprites(SDL_Surface* screen)
         }
 }
 
-bool Map::collision_with(Sprite* sprite)
+bool Map::collision_with(GameObject* sprite)
 {
-    Sprite* cur_sprite(NULL);
+    GameObject* cur_sprite(NULL);
 
     int x(sprite->get_x()),
         y(sprite->get_y()),
@@ -272,18 +272,18 @@ bool Map::collision_with(Sprite* sprite)
     return false;
 }
 
-bool Map::groups_collide_with(Sprite* sprite)
+bool Map::groups_collide_with(GameObject* sprite)
 {
     // override
     return false;
 }
 
-bool Map::sprites_collide(Sprite* sprite, Sprite* cur_sprite)
+bool Map::sprites_collide(GameObject* sprite, GameObject* cur_sprite)
 {
     return true;
 }
 
-void Map::center_on(Sprite* sprite)
+void Map::center_on(GameObject* sprite)
 {
     if (!sprite)
         return;
@@ -300,7 +300,7 @@ void Map::clamp_shift_coords()
     if (viewport->y+viewport->h >= world_y*tile_h) viewport->y = world_y*tile_h-viewport->h;
 }
 
-void Map::center_on(Sprite* sprite, SDL_Rect limit)
+void Map::center_on(GameObject* sprite, SDL_Rect limit)
 {
     if (!sprite)
         return;

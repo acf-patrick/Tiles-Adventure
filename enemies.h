@@ -10,7 +10,7 @@ class AngryPig: public Enemy
 public:
     AngryPig(Map*, int, int);
     void bump(const std::string& flag = "");
-    bool collide_with(Sprite*);
+    bool collide_with(GameObject*);
     void update();
 };
 
@@ -31,14 +31,14 @@ public:
 class Chameleon: public Enemy
 {
 public:
-    Chameleon(Map*, int, int, Sprite*);
+    Chameleon(Map*, int, int, GameObject*);
     void update();
     void draw(SDL_Surface*);
     SDL_Surface* get_surface();
-    bool collide_with(Sprite*);
+    bool collide_with(GameObject*);
 
 private:
-    Sprite* target;
+    GameObject* target;
     SDL_Rect img_rect;
 };
 
@@ -70,7 +70,7 @@ public:
 class Plant: public Shot
 {
 public:
-    Plant(Map*, int, int, Sprite*, Group*);
+    Plant(Map*, int, int, GameObject*, Group*);
     void update();
 
 };
@@ -78,12 +78,12 @@ public:
 class Rino: public Enemy
 {
 public:
-    Rino(Map* ,int, int, Sprite*);
+    Rino(Map* ,int, int, GameObject*);
     void update();
 
 private:
     bool charge;
-    Sprite* target;
+    GameObject* target;
 };
 
 class Slime: public Chicken
@@ -99,7 +99,7 @@ protected:
 
 class Skull: public Enemy
 {
-    class Particle: public Sprite
+    class Particle: public GameObject
     {
     public:
         Particle(int source_x, int source_y, SDL_Rect* v):
@@ -150,13 +150,13 @@ class Skull: public Enemy
     };
 
 public:
-    Skull(Map*, int, int, Sprite*);
+    Skull(Map*, int, int, GameObject*);
     void update();
     void draw(SDL_Surface*);
 
 private:
     bool charge;
-    Sprite* target;
+    GameObject* target;
     SDL_Rect field;
     Group particles;
     Timer particle_timer;
@@ -165,7 +165,7 @@ private:
 class Trunk: public Shot
 {
 public:
-    Trunk(Map*, int, int, Sprite*, Group*);
+    Trunk(Map*, int, int, GameObject*, Group*);
     void update();
 };
 

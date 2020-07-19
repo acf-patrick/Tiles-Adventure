@@ -237,7 +237,7 @@ void Player::respawn()
 
 float *Player::get_impulse()
 {
-    float* ret(Sprite::get_impulse());
+    float* ret(GameObject::get_impulse());
     ret[0] = x_vel;
     ret[1] = y_vel;
     return ret;
@@ -254,7 +254,7 @@ SDL_Surface* Player::get_surface()
     return s1;
 }
 
-bool Player::collide_with(Sprite* sprite)
+bool Player::collide_with(GameObject* sprite)
 {
     if (sprite->is("Enemy"))
     {
@@ -269,5 +269,5 @@ bool Player::collide_with(Sprite* sprite)
         SDL_FreeSurface(s2);
         return ret;
     }
-    return Sprite::collide_with(sprite);
+    return GameObject::collide_with(sprite);
 }

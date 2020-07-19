@@ -2,7 +2,7 @@
 #define ENEMY_H
 
 #include "base/with_mass.h"
-#include "base/sprite.h"
+#include "base/object.h"
 #include "base/timer.h"
 #include "base/group.h"
 #include "base/map.h"
@@ -45,11 +45,11 @@ protected:
 class Shot: public Enemy
 {
 public:
-    Shot(const std::string&, Map*, int, int, int, int, Sprite*, Group*);
+    Shot(const std::string&, Map*, int, int, int, int, GameObject*, Group*);
     void draw(SDL_Surface*);
 
 protected:
-    Sprite* target;
+    GameObject* target;
     void fire();
 
 private:

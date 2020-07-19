@@ -9,7 +9,7 @@
 #include "base/with_mass.h"
 #include "base/map.h"
 #include "base/timer.h"
-#include "base/sprite.h"
+#include "base/object.h"
 
 class Player: public With_mass
 {
@@ -19,12 +19,12 @@ public:
     void update();
     void draw(SDL_Surface*);
     void bump(const std::string& flag = "");
-    bool collide_with(Sprite*);
+    bool collide_with(GameObject*);
     SDL_Surface* get_surface();
     float *get_impulse();
 
 private:
-    class Dust: public Sprite
+    class Dust: public GameObject
     {
     public:
         Dust(SDL_Rect* v, int m_x, int m_y, const std::string& effect):
@@ -45,7 +45,7 @@ private:
             }
             x = m_x-0.5*images[0]->w;
             y = m_y-0.5*images[0]->h;
-            
+
             timer.restart();
         }
         void update()

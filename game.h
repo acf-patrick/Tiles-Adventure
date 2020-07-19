@@ -28,9 +28,9 @@ private:
     void update_events();
     void draw();
     void update();
-    Sprite* create_enemy(const std::string&);
-    Sprite* create_item(const std::string&, bool icon = false);
-    Sprite* create_trap(const std::string&, bool icon = false);
+    GameObject* create_enemy(const std::string&);
+    GameObject* create_item(const std::string&, bool icon = false);
+    GameObject* create_trap(const std::string&, bool icon = false);
 
     Text indicateur;
     Level map;
@@ -41,8 +41,8 @@ private:
     enum { ITEM, ENEMY, TRAP };
     int focus;
 
-    Sprite *headers[3];
-    Sprite *cursor;
+    GameObject *headers[3];
+    GameObject *cursor;
     Chrono bg_timer;
 
     bool edit;

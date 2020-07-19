@@ -15,18 +15,18 @@ public:
     /// Pour inserer les objets dans le jeu
     /// A enlever quand la conception de cette
     /// classe sera termin�e.
-    void add_enemies(Sprite*);
-    void add_item(Sprite*);
-    void add_traps(Sprite*);
+    void add_enemies(GameObject*);
+    void add_item(GameObject*);
+    void add_traps(GameObject*);
 
     void delete_sprite_at(int, int);
     void draw(SDL_Surface*);
     void update();
-    bool collision_with(Sprite*);
+    bool collision_with(GameObject*);
 
     Group bullets;
 private:
-    class Poutre: public Sprite
+    class Poutre: public GameObject
     {
     public:
         Poutre(int _x, int _y)
@@ -35,15 +35,15 @@ private:
             y = _y;
             rect.w = rect.h = 16;
         }
-        bool collide_with(Sprite* sprite)
+        bool collide_with(GameObject* sprite)
         {
-            if (!Sprite::collide_with(sprite))
+            if (!GameObject::collide_with(sprite))
                 return false;
             return (std::abs(y-sprite->get_y()) <= 10 and
                 sprite->check_down);
         }
     };
-    void remove_enemy(Sprite*);
+    void remove_enemy(GameObject*);
 
     Group enemies, dying;
     Group traps;

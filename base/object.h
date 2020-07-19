@@ -10,12 +10,12 @@
 class Group;
 
 /// Classe de base pour les objets du jeu
-class Sprite
+class GameObject
 {
 public:
-    Sprite(SDL_Surface* surface = NULL);
-    Sprite(SDL_Rect);
-    virtual ~Sprite();
+    GameObject(SDL_Surface* surface = NULL);
+    GameObject(SDL_Rect);
+    virtual ~GameObject();
 
     /// Demande si le sprite appartient au moins à un groupe
     bool alive();
@@ -26,7 +26,7 @@ public:
     /// Test si les sprites entrent en collision
     /// @see rects_collide
     /// @see circle_n_rect_collide
-    virtual bool collide_with(Sprite*);
+    virtual bool collide_with(GameObject*);
     bool collide_with(SDL_Rect);
     bool collide_with(int, int);
 
