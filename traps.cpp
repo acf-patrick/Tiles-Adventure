@@ -142,11 +142,11 @@ void Falling_platform::bump(const std::string& flag)
     extinction = true;
 }
 
-bool Falling_platform::collide_with(Sprite* sprite)
+bool Falling_platform::collide_with(GameObject* sprite)
 {
     if (!sprite or extinction)
         return false;
-    return Sprite::collide_with(sprite);
+    return GameObject::collide_with(sprite);
 }
 
 Group* Basic_fan::bubbles = new Group;
@@ -222,7 +222,7 @@ void Basic_fan::draw(SDL_Surface* screen)
 void Basic_fan::draw_bubbles(SDL_Surface* screen) { bubbles->draw(screen); }
 void Basic_fan::update_bubbles(Map* m)
 {
-    std::vector<Sprite*> bulles(bubbles->sprites());
+    std::vector<GameObject*> bulles(bubbles->sprites());
     for (int i=0; i<(int)bulles.size(); ++i)
     {
         if (m->collision_with(bulles[i]))
@@ -237,7 +237,7 @@ void Basic_fan::destroy_bubbles()
     bubbles = NULL;
 }
 
-Fan::Fan(SDL_Rect* v, int _x, int _y, Sprite* cible, int s):
+Fan::Fan(SDL_Rect* v, int _x, int _y, GameObject* cible, int s):
     Basic_fan(v, _x, _y),
     switch_timer(randint(5, 10)),
     target(cible)

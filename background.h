@@ -4,7 +4,7 @@
 #include <vector>
 #include "base/group.h"
 
-class Background: public Sprite
+class Background: public GameObject
 {
 public:
     Background();

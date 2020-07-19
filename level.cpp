@@ -17,7 +17,7 @@ Level::Level(): Map("map.txt")
                 if ((0<=i and i<=2) and (17<=j and j<=19))
                     sprites[i][j] = new Poutre(r.x, r.y);
                 else
-                    sprites[i][j] = new Sprite(r);
+                    sprites[i][j] = new GameObject(r);
             }
 }
 
@@ -69,12 +69,12 @@ Level::~Level()
     Basic_fan::destroy_bubbles();
 }
 
-void Level::add_enemies(Sprite* enemy)
+void Level::add_enemies(GameObject* enemy)
 {
     enemies.add(enemy);
     enemies_pos[enemy->get_type()].push_back(enemy->get_rect());
 }
-void Level::add_item(Sprite* item)
+void Level::add_item(GameObject* item)
 {
     if (item->is("Checkpoints"))
     {
@@ -84,7 +84,7 @@ void Level::add_item(Sprite* item)
     items[item->get_ancestor()].add(item);
     items_pos[item->get_ancestor()][item->get_type()].push_back(item->get_rect());
 }
-void Level::add_traps(Sprite* trap)
+void Level::add_traps(GameObject* trap)
 {
     traps.add(trap);
     traps_pos[trap->get_type()].push_back(trap->get_rect());
@@ -94,7 +94,7 @@ void Level::delete_sprite_at(int x, int y)
 {
     x += viewport->x;
     y += viewport->y;
-    Sprite* sprite = enemies.first_sprite_colliding_with(x, y);
+    GameObject* sprite = enemies.first_sprite_colliding_with(x, y);
     if (sprite)
         enemies.remove(sprite);
     else
@@ -138,16 +138,16 @@ void Level::draw(SDL_Surface* screen)
         it->second.draw(screen);
 }
 
-bool Level::collision_with(Sprite* sprite)
+bool Level::collision_with(GameObject* sprite)
 {
     if (sprite->is("Player"))
     {
-        Sprite* enemy = enemies.first_sprite_colliding_with(sprite);
-        Sprite* bullet = bullets.first_sprite_colliding_with(sprite);
-        Sprite* trap = traps.first_sprite_colliding_with(sprite);
-        Sprite* fruit = items["Fruits"].first_sprite_colliding_with(sprite);
-        Sprite* checkpoint = items["Checkpoints"].first_sprite_colliding_with(sprite);
-        Sprite* box = items["Boxes"].first_sprite_colliding_with(sprite);
+        GameObject* enemy = enemies.first_sprite_colliding_with(sprite);
+        GameObject* bullet = bullets.first_sprite_colliding_with(sprite);
+        GameObject* trap = traps.first_sprite_colliding_with(sprite);
+        GameObject* fruit = items["Fruits"].first_sprite_colliding_with(sprite);
+        GameObject* checkpoint = items["Checkpoints"].first_sprite_colliding_with(sprite);
+        GameObject* box = items["Boxes"].first_sprite_colliding_with(sprite);
         if (enemy)
         {
             // Spikes out
@@ -214,7 +214,7 @@ bool Level::collision_with(Sprite* sprite)
     else if (!sprite->is("Plant") and !sprite->is("Trunk"))
         if (enemies.has(sprite))
         {
-            Sprite* bullet = bullets.first_sprite_colliding_with(sprite);
+            GameObject* bullet = bullets.first_sprite_colliding_with(sprite);
             if (bullet)
             {
                 bullet->bump();
@@ -227,7 +227,7 @@ bool Level::collision_with(Sprite* sprite)
     return Map::collision_with(sprite);
 }
 
-void Level::remove_enemy(Sprite* enemy)
+void Level::remove_enemy(GameObject* enemy)
 {
     enemy->bump();
     enemies.remove(enemy);

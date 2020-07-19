@@ -1,13 +1,13 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
-#include "sprite.h"
+#include "object.h"
 #include "text.h"
 #include "app.h"
 #include <SDL.h>
 
 // les fonctionnalités d'un boutton sont encapsulés dans cette classe
-class __button__: public Sprite
+class __button__: public GameObject
 {
 public:
     virtual ~__button__();
@@ -37,7 +37,7 @@ protected:
 
 bool confirm(const std::string&);
 
-class Confirm: public Sprite
+class Confirm: public GameObject
 {
 public:
     Confirm(const std::string&);
@@ -78,7 +78,7 @@ private:
 };
 
 /*
-class TextArea: public Sprite
+class TextArea: public GameObject
 {
 public:
     TextArea(SDL_Rect);

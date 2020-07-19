@@ -20,7 +20,7 @@ private:
     static Timer last_instanciation;
 };
 
-class Bullet_Pieces: public Sprite
+class Bullet_Pieces: public GameObject
 {
     class Bullet_Piece: public With_mass
     {
@@ -87,7 +87,7 @@ class Bullet_Pieces: public Sprite
             SDL_BlitSurface(image, &sub, screen, &rect);
         }
 
-        bool collide_with(Sprite* sprite)
+        bool collide_with(GameObject* sprite)
         {
             if (!sprite)
                 return false;

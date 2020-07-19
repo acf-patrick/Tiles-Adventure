@@ -6,7 +6,7 @@
 #include <string>
 #include <SDL.h>
 #include "loader.h"
-#include "sprite.h"
+#include "object.h"
 #include "func_tool.h"
 #include "tileset.h"
 
@@ -39,16 +39,17 @@
     .
     .
     .
+
     // and so on... 
 */
 
 /**
- * This class implements many of a game map functionalities
+  \brief This class implements many of a game map functionalities
  */
 class Map: public Loader
 {
 public:
-    /// Creer la carte Ã  partir des fichiers de configuration et de la carte du jeu
+    /// Creer la carte à partir des fichiers de configuration et de la carte du jeu
     Map(const std::string&, SDL_Rect* viewport_rect = NULL);
     virtual ~Map();
 
@@ -56,7 +57,7 @@ public:
     virtual void draw(SDL_Surface*, bool layer_by_layer = true);
     virtual void draw_decor(SDL_Surface*);
 
-    /// Met-Ã -jour la carte du jeu Ã  chaque frame
+    /// Met-à-jour la carte du jeu à chaque frame
     virtual void update();
 
     /// Modifier la taille des tiles
@@ -65,11 +66,11 @@ public:
     /// Fait bouger la camera
     void move(int, int);
 
-    /// DÃ©tÃ©ction des collisions
-    virtual bool collision_with(Sprite*);
-    virtual bool groups_collide_with(Sprite*);
+    /// Détéction des collisions
+    virtual bool collision_with(GameObject*);
+    virtual bool groups_collide_with(GameObject*);
 
-    // AccÃ©sseurs
+    // Accésseurs
     int get_xshift();
     int get_yshift();
     int get_tile_w();
@@ -77,60 +78,60 @@ public:
     SDL_Rect* get_viewport();
     SDL_Surface* get_spritesheet(const std::string&);
 
-    /// @param coordonnÃ©es du tile DANS LE MAP
-    /// @param layer_index : choisi 'm_map' si non spÃ©cifiÃ©
+    /// \param coordonnées du tile DANS LE MAP
+    /// \param layer_index : choisi 'm_map' si non spécifié
     std::string get_tile(int, int, int layer_index = -1);
     int get_tile_nbr(int, int, int layer_index = -1);
 
 
-    /// obtenir les coordonnÃ©es du tile en quÃ©stion dans sa spritesheet associÃ©e
-    /// @return (-1, -1) si le nom du tile n'y figure pas
+    /// obtenir les coordonnées du tile en quéstion dans sa spritesheet associée
+    /// \return (-1, -1) si le nom du tile n'y figure pas
     std::pair<int, int> get_tile_coordinate(const std::string& );
 
     int get_tile_index(const std::string&);
 
     /// recharge les spritesheet
-    /// @param indice du spritesheet, recharge tout si nÃ©gatif
+    /// \param indice du spritesheet, recharge tout si négatif
     void reset_spritesheet(int index = -1);
 
-    void center_on(Sprite*);
-    void center_on(Sprite*, SDL_Rect);
+    void center_on(GameObject*);
+    void center_on(GameObject*, SDL_Rect);
     void set(int, int, int);
 
     static SDL_Rect camera;
 
 protected:
     void draw_decor(SDL_Surface*, const std::vector< std::vector<int> >&);
-    /// On dÃ©fini dedans si le sprite n'interagit pas
+    /// On défini dedans si le sprite n'interagit pas
     /// avec les personnages
     virtual bool is_decor(const std::string&);
 
-    /// MÃ©thode utilisÃ©e dans la mÃ©thode ''colision_with''
-    /// pour dÃ©finir que faire avec les sprites du map
-    virtual bool sprites_collide(Sprite*, Sprite*);
+    /// Méthode utilisée dans la méthode ''colision_with''
+    /// pour définir que faire avec les sprites du map
+    virtual bool sprites_collide(GameObject*, GameObject*);
 
-    /// Corrige les coordonnÃ©es de la camÃ©ra
+    /// Corrige les coordonnées de la caméra
     void clamp_shift_coords();
 
-    /// Supprime le tile corrÃ©spondant
+    /// Supprime le tile corréspondant
     void clear(int, int);
 
     SDL_Rect* viewport;
     std::vector<Tileset*> tileset;
-    // utilisÃ© lors de l'appel de la mÃ©thode scale
+    // utilisé lors de l'appel de la méthode scale
     // pour avoir une image plus nette des tiles
     std::vector<SDL_Surface*> original_spritesheet;
 
-    // attribut faite pour les sprites statiques
-    // pour des sprites animÃ©es ,creer une groupe
-    // gÃ©rant le type de sprite en utilisant la
+    // Attribut faite pour les sprites statiques.
+    // Pour des sprites animées ,creer une groupe
+    // gérant le type de sprite en utilisant la
     // classe de base Group
-    std::vector< std::vector<Sprite*> > sprites;
+    std::vector< std::vector<GameObject*> > sprites;
 
     // cette attribut facilitera le reperage entre chaque spritesheet
     std::vector< std::pair<int, int> > intervals;
-    // noms des tiles
-    // par dÃ©faut les cases vides du spritesheet s'appeleront 'blank'
+    // noms des tuiles
+    // par défaut les cases vides du spritesheet s'appeleront 'blank'
     std::vector<std::string> names;
 
 private:

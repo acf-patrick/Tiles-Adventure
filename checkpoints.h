@@ -1,13 +1,13 @@
 #ifndef CHECKPOINTS_H
 #define CHECKPOINTS_H
 
-#include "base/sprite.h"
+#include "base/object.h"
 #include "base/timer.h"
 #include <vector>
 #include <SDL.h>
 #include <map>
 
-class Checkpoints : public Sprite
+class Checkpoints : public GameObject
 {
 public:
     Checkpoints(const std::string&, int, int, SDL_Rect*);

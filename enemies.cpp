@@ -113,12 +113,12 @@ AngryPig::AngryPig(Map* m, int _x, int _y):
     load_images(std::vector<std::string> (1, "Walk"));
 }
 
-bool AngryPig::collide_with(Sprite* sprite)
+bool AngryPig::collide_with(GameObject* sprite)
 {
     if (sprite)
         if ((state == "Walk" or state == "Idle") and sprite->is("Player"))
             return false;
-    return Sprite::collide_with(sprite);
+    return GameObject::collide_with(sprite);
 }
 
 void AngryPig::bump(const std::string& flag)
@@ -172,7 +172,7 @@ void AngryPig::update()
     cur_image %= (image->w/rect.w);
 }
 
-Chameleon::Chameleon(Map* m, int _x, int _y, Sprite* cible):
+Chameleon::Chameleon(Map* m, int _x, int _y, GameObject* cible):
     Enemy(m, _x, _y, "Chameleon", 84, 38), target(cible)
 {
     load_images(std::vector<std::string>(1, "Attack"));
@@ -260,7 +260,7 @@ void Chameleon::update()
     cur_image %= (image->w/img_rect.w);
 }
 
-bool Chameleon::collide_with(Sprite* sprite)
+bool Chameleon::collide_with(GameObject* sprite)
 {
     if (!sprite)
         return NULL;
@@ -276,7 +276,7 @@ bool Chameleon::collide_with(Sprite* sprite)
         SDL_FreeSurface(s2);
         return ret;
     }
-    return Sprite::collide_with(sprite);
+    return GameObject::collide_with(sprite);
 }
 
 Duck::Duck(Map* m, int _x, int _y):
@@ -376,7 +376,7 @@ void Mushroom::update()
     cur_image %= (image->w/rect.w);
 }
 
-Trunk::Trunk(Map* m, int _x, int _y, Sprite* cible, Group* bullets_group):
+Trunk::Trunk(Map* m, int _x, int _y, GameObject* cible, Group* bullets_group):
     Shot("Trunk", m, _x, _y, 64, 32, cible, bullets_group)
 {
     load_images(std::vector<std::string>(1, "Attack"));
@@ -431,7 +431,7 @@ void Trunk::update()
 
 }
 
-Plant::Plant(Map* m, int _x, int _y, Sprite* cible, Group* bullets_group):
+Plant::Plant(Map* m, int _x, int _y, GameObject* cible, Group* bullets_group):
     Shot("Plant", m, _x, _y, 44, 42, cible, bullets_group)
 {}
 
@@ -457,7 +457,7 @@ void Plant::update()
     cur_image %= (image->w/rect.w);
 }
 
-Rino::Rino(Map* m, int _x, int _y, Sprite* cible):
+Rino::Rino(Map* m, int _x, int _y, GameObject* cible):
     Enemy(m, _x, _y, "Rino", 52, 34),
     charge(0), target(cible)
 {
@@ -615,7 +615,7 @@ void Turtle::update()
     check_up = (state != "Idle 2");
 }
 
-Skull::Skull(Map* m, int _x, int _y, Sprite* cible):
+Skull::Skull(Map* m, int _x, int _y, GameObject* cible):
     Enemy(m, _x, _y, "Skull", 52, 54),
     charge(false), target(cible)
 {

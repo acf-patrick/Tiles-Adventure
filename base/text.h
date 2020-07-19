@@ -4,9 +4,9 @@
 #include <string>
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include "sprite.h"
+#include "object.h"
 
-class Text: public Sprite
+class Text: public GameObject
 {
 public:
     Text(const std::string& content, int r, int g, int b, const std::string& font_name,

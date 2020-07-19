@@ -1,7 +1,7 @@
 #include <algorithm>
 #include "group.h"
 
-std::vector<Sprite*> Group::buffer;
+std::vector<GameObject*> Group::buffer;
 
 Group::~Group()
 {
@@ -27,7 +27,7 @@ void Group::clear_buffer()
     }
 }
 
-void Group::_add(Sprite* sprite)
+void Group::_add(GameObject* sprite)
 {
     if (!sprite)
         return;
@@ -39,11 +39,11 @@ void Group::_add(Sprite* sprite)
     if (buffer.end() == std::find(buffer.begin(), buffer.end(), sprite))
         buffer.push_back(sprite);
 }
-void Group::add(Sprite* sprite)
+void Group::add(GameObject* sprite)
 {
     _add(sprite);
 }
-void Group::add(std::vector<Sprite*> sprites)
+void Group::add(std::vector<GameObject*> sprites)
 {
     for (int i=0; i<(int)sprites.size(); ++i)
         _add(sprites[i]);
@@ -57,17 +57,17 @@ void Group::draw(SDL_Surface* screen)
         sprite_list[i]->draw(screen);
 }
 
-bool Group::_has(Sprite* sprite)
+bool Group::_has(GameObject* sprite)
 {
     return (sprite_list.end() != std::find(sprite_list.begin(), sprite_list.end(), sprite));
 }
 
-bool Group::has(Sprite* sprite)
+bool Group::has(GameObject* sprite)
 {
     return _has(sprite);
 }
 
-bool Group::has(std::vector<Sprite*> sprites)
+bool Group::has(std::vector<GameObject*> sprites)
 {
     for (int i=0; i<(int)sprites.size(); ++i)
         if (!_has(sprites[i]))
@@ -75,19 +75,19 @@ bool Group::has(std::vector<Sprite*> sprites)
     return true;
 }
 
-void Group::_remove(Sprite* sprite)
+void Group::_remove(GameObject* sprite)
 {
     sprite_list.erase(std::remove(sprite_list.begin(), sprite_list.end(), sprite));
 }
 
-void Group::remove(Sprite* sprite)
+void Group::remove(GameObject* sprite)
 {
     //if (!has(sprite)) return;
     sprite->groups.erase(std::remove(sprite->groups.begin(), sprite->groups.end(), this));
     _remove(sprite);
 }
 
-void Group::remove(std::vector<Sprite*> sprite)
+void Group::remove(std::vector<GameObject*> sprite)
 {
     for (int i=0; i<(int)sprite.size(); ++i)
         _remove(sprite[i]);
@@ -99,18 +99,18 @@ void Group::clear()
         remove(sprite_list[i]);
 }
 
-std::vector<Sprite*> Group::sprites()
+std::vector<GameObject*> Group::sprites()
 {
     return sprite_list;
 }
 
-Sprite* Group::get(int index)
+GameObject* Group::get(int index)
 {
     if (index >= (int)sprite_list.size() or !sprite_list.size())
         return NULL;
     return sprite_list[index];
 }
-Sprite* Group::operator[](int index)
+GameObject* Group::operator[](int index)
 {
     return get(index);
 }
@@ -121,12 +121,12 @@ void Group::update()
         sprite_list[i]->update();
 }
 
-std::vector<Sprite*> Group::sprites_colliding_with(Sprite* sprite, bool _kill)
+std::vector<GameObject*> Group::sprites_colliding_with(GameObject* sprite, bool _kill)
 {
-    std::vector<Sprite*> ret;
+    std::vector<GameObject*> ret;
     if (sprite)
     {
-        Sprite* cur_sprite(NULL);
+        GameObject* cur_sprite(NULL);
 
         for (int i=0; i<(int)sprite_list.size(); ++i)
         {
@@ -145,7 +145,7 @@ std::vector<Sprite*> Group::sprites_colliding_with(Sprite* sprite, bool _kill)
     return ret;
 }
 
-Sprite* Group::first_sprite_colliding_with(Sprite* sprite)
+GameObject* Group::first_sprite_colliding_with(GameObject* sprite)
 {
     if (sprite)
     {
@@ -157,23 +157,23 @@ Sprite* Group::first_sprite_colliding_with(Sprite* sprite)
     }
     return NULL;
 }
-Sprite* Group::first_sprite_colliding_with(SDL_Rect rect)
+GameObject* Group::first_sprite_colliding_with(SDL_Rect rect)
 {
-    Sprite s(rect);
+    GameObject s(rect);
     return first_sprite_colliding_with(&s);
 }
-Sprite* Group::first_sprite_colliding_with(int x, int y)
+GameObject* Group::first_sprite_colliding_with(int x, int y)
 {
     SDL_Rect r = {Sint16(x), Sint16(y)};
     return first_sprite_colliding_with(r);
 }
 
-std::map< Sprite*, std::vector<Sprite*> > Group::collide_with(Group* group, bool _kill, bool __kill)
+std::map< GameObject*, std::vector<GameObject*> > Group::collide_with(Group* group, bool _kill, bool __kill)
 {
     int i, j;
-    std::map< Sprite*, std::vector<Sprite*> > ret;
-    std::vector<Sprite*> add_in_map;
-    Sprite *s1(NULL), *s2(NULL);
+    std::map< GameObject*, std::vector<GameObject*> > ret;
+    std::vector<GameObject*> add_in_map;
+    GameObject *s1(NULL), *s2(NULL);
 
     for (i=0; i<(int)sprite_list.size(); ++i)
     {
