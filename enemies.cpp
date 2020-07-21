@@ -377,7 +377,7 @@ void Mushroom::update()
 }
 
 Trunk::Trunk(Map* m, int _x, int _y, GameObject* cible, Group* bullets_group):
-    Shot("Trunk", m, _x, _y, 64, 32, cible, bullets_group)
+    Shooter("Trunk", m, _x, _y, 64, 32, cible, bullets_group)
 {
     load_images(std::vector<std::string>(1, "Attack"));
 }
@@ -432,7 +432,7 @@ void Trunk::update()
 }
 
 Plant::Plant(Map* m, int _x, int _y, GameObject* cible, Group* bullets_group):
-    Shot("Plant", m, _x, _y, 44, 42, cible, bullets_group)
+    Shooter("Plant", m, _x, _y, 44, 42, cible, bullets_group)
 {}
 
 void Plant::update()

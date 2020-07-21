@@ -5,6 +5,7 @@
 #include "base/group.h"
 #include <cmath>
 #include <map>
+#include <tmx.h>
 
 class Level: public Map
 {
@@ -14,7 +15,7 @@ public:
 
     /// Pour inserer les objets dans le jeu
     /// A enlever quand la conception de cette
-    /// classe sera termin�e.
+    /// classe sera terminée.
     void add_enemies(GameObject*);
     void add_item(GameObject*);
     void add_traps(GameObject*);
@@ -24,8 +25,13 @@ public:
     void update();
     bool collision_with(GameObject*);
 
+    void load_objects();
+
     Group bullets;
+
 private:
+    void setup_creators();
+
     class Poutre: public GameObject
     {
     public:
@@ -49,10 +55,7 @@ private:
     Group traps;
     std::map<std::string, Group> items;
 
-    std::map< std::string, std::vector<SDL_Rect> > enemies_pos;
-    std::map< std::string, std::vector<SDL_Rect> > traps_pos;
-    std::map< std::string, std::map< std::string, std::vector<SDL_Rect> > > items_pos;
-
+    void __load_objects(tmx_layer*);
 };
 
 #endif

@@ -15,9 +15,9 @@ class Enemy : public With_mass
 {
 public:
     /**
-    * @param Les trois premiers parametres sont les parametres de base de la classe With_mass.
-    * @param name : nom du personnage
-    * @param les deux derniers sont la taille du personnage
+    * \param Les trois premiers parametres sont les parametres de base de la classe With_mass.
+    * \param name : nom du personnage
+    * \param les deux derniers sont la taille du personnage
     */
     Enemy(Map* ,int ,int ,const std::string& ,int ,int);
     virtual ~Enemy();
@@ -42,10 +42,10 @@ protected:
 };
 
 /** Classe de base pour les enemies utilisant quelconque projectile dans le jeu*/
-class Shot: public Enemy
+class Shooter: public Enemy
 {
 public:
-    Shot(const std::string&, Map*, int, int, int, int, GameObject*, Group*);
+    Shooter(const std::string&, Map*, int, int, int, int, GameObject*, Group*);
     void draw(SDL_Surface*);
 
 protected:

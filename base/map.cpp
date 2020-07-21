@@ -1,71 +1,146 @@
 #include <SDL_image.h>
-#include <fstream>
-#include <sstream>
-#include <utility>
-#include <algorithm>
-#include <SDL_rotozoom.h>
-#include "map.h"
 #include "app.h"
-#include "func_tool.h"
+#include "group.h"
+#include "creator.h"
+#include "map.h"
 
-SDL_Rect Map::camera = {0, 0, 0, 0};
+SDL_Rect Map::camera = {0};
 
-Map::Map(const std::string& map_file_name, SDL_Rect* rect):
-    Loader(map_file_name)
+Map::Map(const std::string& map_file_name, SDL_Rect* viewport_rect):
+    viewport(viewport_rect)
 {
-    sprites.resize(m_map.size());
-    for (int i=0; i<(int)m_map.size(); ++i)
-        sprites[i].resize(m_map[i].size(), NULL);
+    std::cout << "Loading the game map... " << std::endl;
 
-    IMG_Init(IMG_INIT_PNG);
-
-    if (rect)
-        viewport = rect;
-
-    else
+    std::cout << "Loading ressources... " << std::endl;
+    if (!viewport)
     {
         viewport = new SDL_Rect;
-        viewport->x = 0;
-        viewport->y = 0;
-        int ww, wh;
-        App::instance->window_size(&ww, &wh);
-        viewport->w = ww;
-        viewport->h = wh;
+        viewport->x = viewport->y = 0;
+        int w, h;
+        App::instance->window_size(&w, &h);
+        viewport->w = w;
+        viewport->h = h;
     }
-    init_tilesets();
-    for (int i=0; i<(int)m_tileset.size(); ++i)
-        for (int j=0; j<(int)tileset[i]->m_names.size(); ++j)
-            names.push_back(tileset[i]->m_names[j]);
 
-    std::cout << "map created successfully\n";
-}
+    // set callback functions
+    tmx_img_load_func = (void* (*)(const char*))IMG_Load;
+    tmx_img_free_func = (void (*)(void*))SDL_FreeSurface;
 
-Map::~Map() { Group::clear_buffer(); }
-
-void Map::init_tilesets()
-{
-    for (int i=0; i<(int)m_tileset.size(); ++i)
+    m_map = tmx_load(map_file_name.c_str());
+    if (!m_map)
     {
-        std::cout << m_tileset[i] << std::endl;
-        Tileset* t = new Tileset(m_tileset[i].substr(0, m_tileset[i].size()-4));
-        original_spritesheet.push_back(IMG_Load(m_tileset[i].c_str()));
-        t->tile_x = t->surface->w/tile_w;
-        t->tile_y = t->surface->h/tile_h;
-        tileset.push_back(t);
-        if (i == 0)
-            intervals.push_back(std::pair<int, int>(1, t->tile_x*t->tile_y));
-        else
-            intervals.push_back(std::pair<int, int>(intervals[i-1].second+1, intervals[i-1].second+t->tile_x*t->tile_y));
+        std::cerr << tmx_strerr() << std::endl;
+        exit(1);
+    }
+
+    world_x = m_map->width;
+    world_y = m_map->height;
+    tile_w = m_map->tile_width;
+    tile_h = m_map->tile_height;
+
+    std::cout << "Creating colliders... " << std::endl;
+    tmx_layer* ground(get_layer("ground"));
+    if (!ground)
+    {
+        std::cerr << "Ground layer not found!" << std::endl;
+        exit(1);
+    }
+    for (int i=0; i <(int)world_y; ++i)
+    {
+        sprites.push_back(std::vector<GameObject*>());
+        for (int j = 0; j <(int)world_x; ++j)
+        {
+            GameObject* sprite(NULL);
+            uint32_t gid(ground->content.gids[i*world_x+j]);
+            tmx_tile* tile(m_map->tiles[gid]);
+            if (tile)
+            {
+                SDL_Rect r = {
+                    (Sint16)(j*tile_w), (Sint16)(i*tile_h),
+                    (Uint16)tile_w, (Uint16)tile_h
+
+                };
+                sprite = new GameObject(r);
+            }
+            sprites[i].push_back(sprite);
+        }
+    }
+
+    std::cout << "Map created!" << std::endl;
+}
+
+Map::~Map()
+{
+    ObjectFactory::destroy();
+    Group::clear_buffer();
+    tmx_map_free(m_map);
+}
+void Map::draw_all_layers(tmx_layer* layer, SDL_Surface* screen)
+{
+    SDL_Rect p;
+    while (layer != NULL)
+    {
+        switch (layer->type)
+        {
+        case L_GROUP:
+            draw_all_layers(layer->content.group_head, screen);
+            break;
+        case L_LAYER:
+            draw_tiles(layer->content.gids, screen);
+            break;
+        case L_IMAGE:
+            p.x = layer->offsetx;
+            p.y = layer->offsety;
+            SDL_BlitSurface((SDL_Surface*)layer->content.image->resource_image,
+                            NULL, screen, &p);
+            break;
+        default:
+            break;
+        }
+        layer = layer->next;
     }
 }
 
-void Map::draw(SDL_Surface* screen, bool layer_by_layer)
+void Map::draw_tiles(uint32_t* gids, SDL_Surface* screen)
 {
-    if (layer_by_layer)
-        for (int i=0; i<(int)layers.size(); ++i)
-            draw_layer(screen, layers[i]);
-    else
-        draw_layer(screen, m_map);
+    int x_min = viewport->y / tile_h,
+        x_max = (viewport->y+viewport->h) / tile_h,
+        y_min = viewport->x / tile_w,
+        y_max = (viewport->x+viewport->w) / tile_w;
+
+    for (int i = x_min; i <= x_max; ++i)
+    {
+        for (int j = y_min; j <= y_max; ++j)
+        {
+            if (i<0 or i>=(int)world_y or j<0 or j>=(int)world_x)
+                continue;
+            unsigned int gid(gids[i*world_x+j] & TMX_FLIP_BITS_REMOVAL);
+            tmx_tile* tile(m_map->tiles[gid]);
+            if (tile)
+            {
+                tmx_image* spritesheet(tile->image);
+                tmx_tileset* tileset(tile->tileset);
+                SDL_Rect subrect = {
+                    (Sint16)tile->ul_x, (Sint16)tile->ul_y,
+                    (Uint16)tileset->tile_width, (Uint16)tileset->tile_height
+                }, dest = {
+                    (Sint16)(j*tileset->tile_width), (Sint16)(i*tileset->tile_height)
+                };
+                dest.x -= viewport->x;
+                dest.y -= viewport->y;
+
+                SDL_Surface* image = (SDL_Surface*)(spritesheet?spritesheet->resource_image:tileset->image->resource_image);
+                unsigned int flags(gid & ~TMX_FLIP_BITS_REMOVAL);
+                /* TODO : manage flags */
+                SDL_BlitSurface(image, &subrect, screen, &dest);
+            }
+        }
+    }
+}
+
+void Map::draw(SDL_Surface* screen)
+{
+    draw_all_layers(m_map->ly_head, screen);
     draw_sprites(screen);
 }
 
@@ -81,146 +156,11 @@ void Map::update()
     for (int i=x_min; i<=x_max; ++i)
         for (int j=y_min; j<=y_max ;++j)
         {
-            if (!((0<=i and i<world_y) and (0<=j and j<world_x)))
+            if (!((0<=i and i<(int)world_y) and (0<=j and j<(int)world_x)))
                 continue;
             if (sprites[i][j])
                 sprites[i][j]->update();
         }
-}
-
-void Map::scale(float zoom)
-{
-    if (zoom <= 0)
-        return;
-
-    for (int i=0; i<(int)tileset.size(); ++i)
-        tileset[i]->surface = rotozoomSurface(original_spritesheet[i], 0, zoom, true);
-    tile_w *= zoom;
-    tile_h *= zoom;
-    std::cout << "tile size : " << tile_w << ", " << tile_h << std::endl;
-    std::cout << "GameObjectsheets size : \n";
-    for (int i=0; i<(int)tileset.size(); ++i)
-        std::cout << tileset[i]->surface->w << ", " << tileset[i]->surface->h << std::endl;
-}
-
-void Map::move(int x_offset, int y_offset)
-{
-    viewport->x += (Sint16)x_offset;
-    viewport->y += (Sint16)y_offset;
-    clamp_shift_coords();
-}
-
-int Map::get_xshift() { return viewport->x; }
-int Map::get_yshift() { return viewport->y; }
-int Map::get_tile_w() { return tile_w; }
-int Map::get_tile_h() { return tile_h; }
-SDL_Rect* Map::get_viewport() { return viewport; }
-SDL_Surface* Map::get_spritesheet(const std::string& name)
-{
-    int index;
-    for (index = 0; index < (int)m_tileset.size(); ++index)
-        if (m_tileset[index].find(name) != name.npos)
-            break;
-    if (index == (int)m_tileset.size())
-        return NULL;
-    return original_spritesheet[index];
-}
-std::string Map::get_tile(int x, int y, int layer_index)
-{
-    std::vector< std::vector<int> > layer((layer_index<0 or layer_index>=(int)layers.size())?m_map:layers[layer_index]);
-    int i(y/tile_h), j(x/tile_w);
-    if (i<0 or j<0 or i>=world_y or j>=world_x)
-        return "blank";
-
-    int nbr(layer[i][j]);
-    if (!nbr)
-        return "blank";
-    return names[nbr-1];
-}
-int Map::get_tile_nbr(int x, int y, int layer_index)
-{
-    std::vector< std::vector<int> > layer((layer_index<0 or layer_index>=(int)layers.size())?m_map:layers[layer_index]);
-    int i(y/tile_h), j(x/tile_w);
-    if (i<0 or j<0 or i>=world_y or j>=world_x)
-        return 0;
-    return layer[i][j];
-}
-std::pair<int, int> Map::get_tile_coordinate(const std::string& tile_name)
-{
-    std::pair<int, int> ret;
-    ret.first  = -1;
-    ret.second = -1;
-    int index_in_names(0);
-    while (names[index_in_names] != tile_name and index_in_names < (int)names.size())
-        index_in_names++;
-    if (index_in_names == (int)names.size())
-        return ret;
-
-    int index_in_intervals(0);
-    while (intervals[index_in_intervals].first>index_in_names or index_in_names>intervals[index_in_intervals].second)
-        index_in_intervals++;
-
-    int index_in_tileset(index_in_names+1 - intervals[index_in_intervals].first);
-    ret.first = index_in_tileset%tileset[index_in_intervals]->tile_x;
-    ret.second = index_in_tileset/tileset[index_in_intervals]->tile_x;
-    return ret;
-}
-int Map::get_tile_index(const std::string& tile_name)
-{
-    int index_in_names(0);
-    while (names[index_in_names] != tile_name and index_in_names < (int)names.size())
-        index_in_names++;
-    if (index_in_names == (int)names.size())
-        return 0;
-    return index_in_names;
-}
-
-void Map::draw_layer(SDL_Surface* screen, std::vector< std::vector<int> > layer, bool drawing_decor)
-{
-    int i, j;
-    int x_min = viewport->y / tile_h,
-        x_max = (viewport->y+viewport->h) / tile_h,
-        y_min = viewport->x / tile_w,
-        y_max = (viewport->x+viewport->w) / tile_w;
-
-    SDL_Rect dest, pos;
-    dest.w = tile_w;
-    dest.h = tile_h;
-
-    for (i=x_min; i<=x_max; ++i)
-        for (j=y_min; j<=y_max; ++j)
-        {
-            if (!((0<=i and i<world_y) and (0<=j and j<world_x)))
-                continue;
-            pos.x = j*tile_w - viewport->x;
-            pos.y = i*tile_h - viewport->y;
-            int nbr(layer[i][j]);
-            if (!nbr) continue;
-
-            if (drawing_decor and !is_decor(names[layer[i][j]-1]))
-                    continue;
-
-            int k(0);
-            while (intervals[k].first > nbr or nbr > intervals[k].second)
-                k++;
-            nbr -= intervals[k].first;
-
-            dest.x = (Sint16)(nbr%tileset[k]->tile_x)*tile_w;
-            dest.y = (Sint16)(nbr/tileset[k]->tile_x)*tile_h;
-
-            SDL_BlitSurface(tileset[k]->surface, &dest, screen, &pos);
-        }
-}
-
-
-void Map::draw_decor(SDL_Surface* screen)
-{
-    // override
-}
-
-void Map::draw_decor(SDL_Surface* screen, const std::vector< std::vector<int> >& layer)
-{
-    draw_layer(screen, layer, true);
 }
 
 void Map::draw_sprites(SDL_Surface* screen)
@@ -233,11 +173,18 @@ void Map::draw_sprites(SDL_Surface* screen)
     for (int i=x_min; i<=x_max; ++i)
         for (int j=y_min; j<=y_max ;++j)
         {
-            if (!((0<=i and i<world_y) and (0<=j and j<world_x)))
+            if (!((0<=i and i<(int)world_y) and (0<=j and j<(int)world_x)))
                 continue;
             if (sprites[i][j])
                 sprites[i][j]->draw(screen);
         }
+}
+
+void Map::move(int x_offset, int y_offset)
+{
+    viewport->x += (Sint16)x_offset;
+    viewport->y += (Sint16)y_offset;
+    clamp_shift_coords();
 }
 
 bool Map::collision_with(GameObject* sprite)
@@ -248,21 +195,22 @@ bool Map::collision_with(GameObject* sprite)
         y(sprite->get_y()),
         right(sprite->get_right()),
         bottom(sprite->get_bottom());
-    if (((world_x-1)*tile_w<=x or x<=0) or ((world_y-1)*tile_h<=y or y<=0))
+    int bx((world_x-1)*tile_w), by((world_y-1)*tile_h);
+    if ((bx<=x or x<=0) or (by<=y or y<=0))
         return true;
 
     int x_min = y/tile_h,
         x_max = bottom/tile_h,
         y_min = x/tile_w,
         y_max = right/tile_w;
-    if ((x_min<0 or y_min<0) or (y_max>=world_x or x_max>=world_y))
+    if ((x_min<0 or y_min<0) or (y_max>=(int)world_x or x_max>=(int)world_y))
         return true;
 
     for (int i=x_min; i<=x_max; ++i)
         for (int j=y_min; j<=y_max ;++j)
         {
             cur_sprite = sprites[i][j];
-            if (cur_sprite == sprite or !m_map[i][j])
+            if (cur_sprite == sprite or !get_tile_nbr(j, i, false))
                 continue;
             if (cur_sprite)
                 if (cur_sprite->collide_with(sprite) and
@@ -272,15 +220,37 @@ bool Map::collision_with(GameObject* sprite)
     return false;
 }
 
-bool Map::groups_collide_with(GameObject* sprite)
+int Map::get_tile_nbr(int x, int y, bool pixel, std::string name)
 {
-    // override
-    return false;
+    tmx_layer* layer = get_layer(name);
+    if (!layer)
+        return 0;
+
+    int i(y), j(x);
+    if (pixel)
+    {
+        i /= tile_h;
+        j /= tile_w;
+    }
+    if (i<0 or j<0 or i>=(int)world_y or j>=(int)world_x)
+        return 0;
+
+    return layer->content.gids[i*world_x+j];
 }
 
-bool Map::sprites_collide(GameObject* sprite, GameObject* cur_sprite)
+int Map::get_xshift() { return viewport->x; }
+int Map::get_yshift() { return viewport->y; }
+int Map::get_tile_w() { return tile_w; }
+int Map::get_tile_h() { return tile_h; }
+SDL_Rect* Map::get_viewport() { return viewport; }
+
+void Map::clamp_shift_coords()
 {
-    return true;
+    int bx(world_x*tile_w), by(world_y*tile_h);
+    if (viewport->x < 0) viewport->x = 0;
+    if (viewport->y < 0) viewport->y = 0;
+    if (viewport->x+viewport->w >= bx) viewport->x = bx-viewport->w;
+    if (viewport->y+viewport->h >= by) viewport->y = by-viewport->h;
 }
 
 void Map::center_on(GameObject* sprite)
@@ -290,14 +260,6 @@ void Map::center_on(GameObject* sprite)
     viewport->x = (Sint16)(sprite->get_centerx() - viewport->w/2.);
     viewport->y = (Sint16)(sprite->get_centery() - viewport->h/2.);
     clamp_shift_coords();
-}
-
-void Map::clamp_shift_coords()
-{
-    if (viewport->x < 0) viewport->x = 0;
-    if (viewport->y < 0) viewport->y = 0;
-    if (viewport->x+viewport->w >= world_x*tile_w) viewport->x = world_x*tile_w-viewport->w;
-    if (viewport->y+viewport->h >= world_y*tile_h) viewport->y = world_y*tile_h-viewport->h;
 }
 
 void Map::center_on(GameObject* sprite, SDL_Rect limit)
@@ -320,35 +282,20 @@ void Map::center_on(GameObject* sprite, SDL_Rect limit)
     clamp_shift_coords();
 }
 
-void Map::set(int x, int y, int value)
+tmx_layer* Map::get_layer(const std::string& name)
 {
-    if (x>=world_y or y>=world_x)
-        return;
-    m_map[x][y] = value;
-}
-
-void Map::clear(int x, int y)
-{
-    delete sprites[x][y];
-    sprites[x][y] = NULL;
-    for (int i=0; i<(int)layers.size(); ++i)
-        layers[i][x][y] = 0;
-    m_map[x][y] = 0;
-}
-
-void Map::reset_spritesheet(int index)
-{
-    if (index >= 0)
+    tmx_layer* ret(m_map->ly_head);
+    while (ret)
     {
-        tileset[index]->surface = original_spritesheet[index];
-        return;
+        if (std::string(ret->name) == name)
+            break;
+        ret = ret->next;
     }
-    for (int i=0; i<(int)tileset.size(); ++i)
-        tileset[i]->surface = original_spritesheet[i];
+    return ret;
 }
 
-bool Map::is_decor(const std::string& name)
+bool Map::sprites_collide(GameObject* sprite, GameObject* cur_sprite)
 {
     // override
-    return false;
+    return true;
 }

@@ -126,7 +126,7 @@ SDL_Surface* Enemy::get_surface()
     return ret;
 }
 
-Shot::Shot(const std::string& name, Map* m, int _x, int _y,
+Shooter::Shooter(const std::string& name, Map* m, int _x, int _y,
            int w, int h, GameObject* cible, Group* bullets_group):
     Enemy(m, _x, _y, name, w, h),
     target(cible), bullets(bullets_group)
@@ -134,13 +134,13 @@ Shot::Shot(const std::string& name, Map* m, int _x, int _y,
     load_images(std::vector<std::string>(1, "Attack"));
 }
 
-void Shot::fire()
+void Shooter::fire()
 {
     if (Bullet::allow_fire())
         bullets->add(new Bullet(get_type(), m_map, x, y, direction));
 }
 
-void Shot::draw(SDL_Surface* screen)
+void Shooter::draw(SDL_Surface* screen)
 {
     Enemy::draw(screen);
     bullets->draw(screen);

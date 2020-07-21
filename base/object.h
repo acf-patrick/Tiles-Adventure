@@ -13,6 +13,7 @@ class Group;
 class GameObject
 {
 public:
+
     GameObject(SDL_Surface* surface = NULL);
     GameObject(SDL_Rect);
     virtual ~GameObject();

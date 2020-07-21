@@ -3,6 +3,9 @@
 
 #include <SDL_rotozoom.h>
 #include <SDL_image.h>
+#include "base/creator.h"
+#include "base/func_tool.h"
+#include "player.h"
 #include "enemy.h"
 
 class AngryPig: public Enemy
@@ -12,6 +15,15 @@ public:
     void bump(const std::string& flag = "");
     bool collide_with(GameObject*);
     void update();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new AngryPig((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 };
 
 class Bunny : public Enemy
@@ -19,6 +31,15 @@ class Bunny : public Enemy
 public:
     Bunny(Map*, int, int);
     void update();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Bunny((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 };
 
 class Chicken : public Enemy
@@ -26,6 +47,15 @@ class Chicken : public Enemy
 public:
     Chicken(Map*, int, int);
     virtual void update();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Chicken((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 };
 
 class Chameleon: public Enemy
@@ -37,6 +67,14 @@ public:
     SDL_Surface* get_surface();
     bool collide_with(GameObject*);
 
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Chameleon((Map*)getParameter("game map"), _x, _y, (GameObject*)getParameter("Player"));
+        }
+    };
 private:
     GameObject* target;
     SDL_Rect img_rect;
@@ -47,6 +85,15 @@ class Duck: public Enemy
 public:
     Duck(Map*, int, int);
     void update();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Duck((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 };
 
 class Ghost: public Enemy
@@ -56,6 +103,14 @@ public:
     void draw(SDL_Surface*);
     void update();
 
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Ghost((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 private:
     bool visible;
 };
@@ -65,14 +120,34 @@ class Mushroom: public Enemy
 public:
     Mushroom(Map*, int, int);
     void update();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Mushroom((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 };
 
-class Plant: public Shot
+class Plant: public Shooter
 {
 public:
     Plant(Map*, int, int, GameObject*, Group*);
     void update();
 
+    class Creator: public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Plant((Map*)getParameter("game map"),
+                              _x, _y,
+                              (GameObject*)getParameter("Player"),
+                             (Group*)getParameter("bullets group"));
+        }
+    };
 };
 
 class Rino: public Enemy
@@ -81,6 +156,14 @@ public:
     Rino(Map* ,int, int, GameObject*);
     void update();
 
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Rino((Map*)getParameter("game map"), _x, _y, (GameObject*)getParameter("Player"));
+        }
+    };
 private:
     bool charge;
     GameObject* target;
@@ -93,6 +176,14 @@ public:
     void update();
     SDL_Surface* get_surface();
 
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Slime((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 protected:
     void update_image();
 };
@@ -154,6 +245,15 @@ public:
     void update();
     void draw(SDL_Surface*);
 
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Skull((Map*)getParameter("game map"), _x, _y, (GameObject*)getParameter("Player"));
+        }
+    };
+
 private:
     bool charge;
     GameObject* target;
@@ -162,11 +262,20 @@ private:
     Timer particle_timer;
 };
 
-class Trunk: public Shot
+class Trunk: public Shooter
 {
 public:
     Trunk(Map*, int, int, GameObject*, Group*);
     void update();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Trunk((Map*)getParameter("game map"), _x, _y, (GameObject*)getParameter("Player"), (Group*)getParameter("bullets group"));
+        }
+    };
 };
 
 class Turtle: public Enemy
@@ -174,6 +283,15 @@ class Turtle: public Enemy
 public:
     Turtle(Map*, int, int);
     void update();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Turtle((Map*)getParameter("game map"), _x, _y);
+        }
+    };
 };
 
 #endif

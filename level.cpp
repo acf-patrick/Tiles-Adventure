@@ -1,78 +1,52 @@
-#include <fstream>
 #include <sstream>
-#include <SFML/Graphics.hpp>
-#include "fruits.h"
+#include "base/func_tool.h"
+#include "base/creator.h"
 #include "level.h"
+#include "checkpoints.h"
+#include "enemies.h"
+#include "fruits.h"
 #include "traps.h"
 
 typedef std::map< std::string, std::vector<SDL_Rect> >::iterator tab_iterator;
 
-Level::Level(): Map("map.txt")
+void Level::load_objects() { __load_objects(m_map->ly_head); }
+
+Level::Level(): Map("maps/runner.tmx")
 {
-    for (int i = 0; i<world_y; ++i)
-        for (int j=0; j<world_x; ++j)
-            if (m_map[i][j])
-            {
-                SDL_Rect r = {Sint16(j*tile_w), Sint16(i*tile_h), tile_w, tile_h};
-                if ((0<=i and i<=2) and (17<=j and j<=19))
-                    sprites[i][j] = new Poutre(r.x, r.y);
-                else
-                    sprites[i][j] = new GameObject(r);
-            }
+    setup_creators();
+    for (int i = 0; i<(int)world_y; ++i)
+        for (int j=0; j<(int)world_x; ++j)
+            if (get_tile_nbr(i, j, false) and
+               (0<=i and i<=2) and (17<=j and j<=19))
+                sprites[i][j] = new Poutre(j*tile_w, i*tile_h);
 }
 
 Level::~Level()
 {
-    std::ofstream file("level.acf");
-
-    file << "Enemies\n{\n";
-    for (tab_iterator it=enemies_pos.begin();
-        it != enemies_pos.end(); ++it)
-    {
-        file << '\t' << it->first << "\n\t{\n";
-        for (int i=0; i<(int)it->second.size(); ++i)
-        {
-            file << "\t\t" << it->second[i].x << ", " << it->second[i].y << std::endl;
-        }
-        file << "\t}\n";
-    }
-    file << "}\n";
-
-    file << "Items\n{\n";
-    for (std::map< std::string, std::map< std::string, std::vector<SDL_Rect> > >::iterator i=items_pos.begin();
-        i != items_pos.end(); ++i)
-    {
-        file << '\t' << i->first << "\n\t{\n";
-        for (tab_iterator it=i->second.begin(); it!=i->second.end(); ++it)
-        {
-            file << "\t\t" << it->first << "\n\t\t{\n";
-            for (int k=0; k<(int)it->second.size(); ++k)
-                file << "\t\t\t" << it->second[k].x << ", " << it->second[k].y << '\n';
-            file << "\t\t}\n";
-        }
-        file << "\t}\n";
-    }
-    file << "}\n";
-
-    file << "Traps\n{\n";
-    for (tab_iterator it=traps_pos.begin();
-        it != traps_pos.end(); ++it)
-    {
-        file << '\t' << it->first << "\n\t{\n";
-        for (int i=0; i<(int)it->second.size(); ++i)
-        {
-            file << "\t\t" << it->second[i].x << ", " << it->second[i].y << std::endl;
-        }
-        file << "\t}\n";
-    }
-    file << "}\n";
     Basic_fan::destroy_bubbles();
+}
+
+void Level::setup_creators()
+{
+    /* create factory */
+
+    ObjectFactory::registre_creator("Plant", new Plant::Creator());
+    ObjectFactory::registre_creator("Skull", new Skull::Creator());
+    ObjectFactory::registre_creator("AngryPig", new AngryPig::Creator());
+
+    ObjectFactory::registre_creator("End", new End::Creator());
+    ObjectFactory::registre_creator("Start", new Start::Creator());
+    ObjectFactory::registre_creator("Checkpoint", new Checkpoint::Creator());
+
+    /* setting parameters */
+    ObjectCreator::addToParameters(this, "game map");
+    ObjectCreator::addToParameters(&bullets, "bullets group");
+    ObjectCreator::addToParameters(viewport, "game viewport");
 }
 
 void Level::add_enemies(GameObject* enemy)
 {
     enemies.add(enemy);
-    enemies_pos[enemy->get_type()].push_back(enemy->get_rect());
 }
 void Level::add_item(GameObject* item)
 {
@@ -82,12 +56,10 @@ void Level::add_item(GameObject* item)
         item->set_y(((item->get_y())/tile_w)*tile_w);
     }
     items[item->get_ancestor()].add(item);
-    items_pos[item->get_ancestor()][item->get_type()].push_back(item->get_rect());
 }
 void Level::add_traps(GameObject* trap)
 {
     traps.add(trap);
-    traps_pos[trap->get_type()].push_back(trap->get_rect());
 }
 
 void Level::delete_sprite_at(int x, int y)
@@ -232,4 +204,26 @@ void Level::remove_enemy(GameObject* enemy)
     enemy->bump();
     enemies.remove(enemy);
     dying.add(enemy);
+}
+
+void Level::__load_objects(tmx_layer* layer)
+{
+    while (layer)
+    {
+        if (layer->type == L_GROUP)
+            __load_objects(layer->content.group_head);
+        else if (layer->type == L_OBJGR)
+        {
+            for (tmx_object* object = layer->content.objgr->head;
+                 object; object = object->next)
+            {
+                std::string lname(layer->name), otype(object->type);
+                if (lname == "Checkpoints")
+                    add_item(ObjectFactory::create(otype, object->x, object->y-object->height));
+                else
+                    add_enemies(ObjectFactory::create(otype, object->x, object->y-object->height));
+            }
+        }
+        layer = layer->next;
+    }
 }

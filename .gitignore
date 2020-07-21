@@ -1,7 +1,7 @@
 bin/
-images/Dust Particles/
-images/Terrain/sans-titre.tmx
-level*
 obj/
-*.py
 tiles Adventure*
+images/Dust Particles/
+level*
+*.py
+*.tsx

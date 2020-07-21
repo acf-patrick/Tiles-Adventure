@@ -77,9 +77,7 @@ private:
 class Fan: public Basic_fan
 {
 public:
-    /**
-    * @param s : indique la direction où le ventilateur va souffler
-    */
+    /// \param s : indique la direction où le ventilateur va souffler
     Fan(SDL_Rect*, int, int, GameObject*, int s = Bubbles::DROITE);
     void update();
     void draw(SDL_Surface*);
