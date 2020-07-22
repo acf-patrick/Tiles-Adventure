@@ -2,10 +2,9 @@
 #include "base/func_tool.h"
 #include "base/creator.h"
 #include "level.h"
-#include "checkpoints.h"
 #include "enemies.h"
-#include "fruits.h"
 #include "traps.h"
+#include "items.h"
 
 typedef std::map< std::string, std::vector<SDL_Rect> >::iterator tab_iterator;
 
@@ -30,18 +29,34 @@ void Level::setup_creators()
 {
     /* create factory */
 
-    ObjectFactory::registre_creator("Plant", new Plant::Creator());
-    ObjectFactory::registre_creator("Skull", new Skull::Creator());
-    ObjectFactory::registre_creator("AngryPig", new AngryPig::Creator());
+    ObjectFactory::registre_creator("AngryPig", new AngryPig::Creator);
+    ObjectFactory::registre_creator("Bunny", new Bunny::Creator);
+    ObjectFactory::registre_creator("Chicken", new Chicken::Creator);
+    ObjectFactory::registre_creator("Chameleon", new Chameleon::Creator);
+    ObjectFactory::registre_creator("Duck", new Duck::Creator);
+    ObjectFactory::registre_creator("Ghost", new Ghost::Creator);
+    ObjectFactory::registre_creator("Mushroom", new Mushroom::Creator);
+    ObjectFactory::registre_creator("Plant", new Plant::Creator);
+    ObjectFactory::registre_creator("Rino", new Rino::Creator);
+    ObjectFactory::registre_creator("Slime", new Slime::Creator);
+    ObjectFactory::registre_creator("Skull", new Skull::Creator);
+    ObjectFactory::registre_creator("Trunk", new Trunk::Creator);
+    ObjectFactory::registre_creator("Turtle", new Turtle::Creator);
 
-    ObjectFactory::registre_creator("End", new End::Creator());
-    ObjectFactory::registre_creator("Start", new Start::Creator());
-    ObjectFactory::registre_creator("Checkpoint", new Checkpoint::Creator());
+    ObjectFactory::registre_creator("End", new End::Creator);
+    ObjectFactory::registre_creator("Box", new Box::Creator);
+    ObjectFactory::registre_creator("Start", new Start::Creator);
+    ObjectFactory::registre_creator("Fruits", new Fruit::Creator);
+    ObjectFactory::registre_creator("Checkpoint", new Checkpoint::Creator);
 
-    /* setting parameters */
+    ObjectFactory::registre_creator("Arrow", new Arrow::Creator);
+    ObjectFactory::registre_creator("Falling_platform", new Falling_platform::Creator);
+    ObjectFactory::registre_creator("Fan", new Fan::Creator);
+
+    /* set up parameters */
     ObjectCreator::addToParameters(this, "game map");
-    ObjectCreator::addToParameters(&bullets, "bullets group");
     ObjectCreator::addToParameters(viewport, "game viewport");
+    ObjectCreator::addToParameters(&bullets, "bullets group");
 }
 
 void Level::add_enemies(GameObject* enemy)
@@ -50,11 +65,13 @@ void Level::add_enemies(GameObject* enemy)
 }
 void Level::add_item(GameObject* item)
 {
+/*
     if (item->is("Checkpoints"))
     {
         item->set_x(((item->get_x())/tile_w)*tile_w);
         item->set_y(((item->get_y())/tile_w)*tile_w);
     }
+*/
     items[item->get_ancestor()].add(item);
 }
 void Level::add_traps(GameObject* trap)
@@ -99,31 +116,30 @@ void Level::update()
 
 void Level::draw(SDL_Surface* screen)
 {
+    for (std::map<std::string ,Group>::iterator it=items.begin();
+        it != items.end(); ++it)
+        it->second.draw(screen);
     traps.draw(screen);
     Basic_fan::draw_bubbles(screen);
     Map::draw(screen);
     enemies.draw(screen);
     dying.draw(screen);
     bullets.draw(screen);
-    for (std::map<std::string ,Group>::iterator it=items.begin();
-        it != items.end(); ++it)
-        it->second.draw(screen);
 }
 
 bool Level::collision_with(GameObject* sprite)
 {
     if (sprite->is("Player"))
     {
+        GameObject* trap = traps.first_sprite_colliding_with(sprite);
         GameObject* enemy = enemies.first_sprite_colliding_with(sprite);
         GameObject* bullet = bullets.first_sprite_colliding_with(sprite);
-        GameObject* trap = traps.first_sprite_colliding_with(sprite);
+        GameObject* box = items["Boxes"].first_sprite_colliding_with(sprite);
         GameObject* fruit = items["Fruits"].first_sprite_colliding_with(sprite);
         GameObject* checkpoint = items["Checkpoints"].first_sprite_colliding_with(sprite);
-        GameObject* box = items["Boxes"].first_sprite_colliding_with(sprite);
         if (enemy)
         {
-            // Spikes out
-            if (enemy->is("Turtle") and enemy->check_up)
+            if (enemy->is("Turtle") and enemy->check_up /* i.e Spikes out */)
                 sprite->bump("die");
             else
             {
@@ -135,7 +151,6 @@ bool Level::collision_with(GameObject* sprite)
                     sprite->bump();
                     remove_enemy(enemy);
                 }
-                // l'enemie lui tombe dessus
                 else
                     sprite->bump("die");
             }
@@ -210,6 +225,7 @@ void Level::__load_objects(tmx_layer* layer)
 {
     while (layer)
     {
+        ObjectCreator::addToParameters(layer, "current layer");
         if (layer->type == L_GROUP)
             __load_objects(layer->content.group_head);
         else if (layer->type == L_OBJGR)
@@ -217,11 +233,16 @@ void Level::__load_objects(tmx_layer* layer)
             for (tmx_object* object = layer->content.objgr->head;
                  object; object = object->next)
             {
-                std::string lname(layer->name), otype(object->type);
-                if (lname == "Checkpoints")
-                    add_item(ObjectFactory::create(otype, object->x, object->y-object->height));
-                else
-                    add_enemies(ObjectFactory::create(otype, object->x, object->y-object->height));
+                ObjectCreator::addToParameters(object, "current object");
+                int x(object->x), y(object->y - object->height);
+                GameObject* obj(ObjectFactory::create(tmx_get_property(layer->properties, "fruit")?"Fruits":std::string(layer->name), x, y));
+                std::string type(tmx_get_property(layer->properties, "type")->value.string);
+                if (type == "Enemies")
+                    add_enemies(obj);
+                else if (type == "Items")
+                    add_item(obj);
+                else if (type == "Traps")
+                    add_traps(obj);
             }
         }
         layer = layer->next;

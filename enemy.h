@@ -10,7 +10,7 @@
 #include <SDL.h>
 #include <map>
 
-/** Classe de base pour tous les enemmies dans dans le jeu */
+/// Classe de base pour tous les enemmies dans dans le jeu
 class Enemy : public With_mass
 {
 public:
@@ -41,7 +41,7 @@ protected:
     bool erase();
 };
 
-/** Classe de base pour les enemies utilisant quelconque projectile dans le jeu*/
+/// Classe de base pour les enemies utilisant quelconque projectile dans le jeu
 class Shooter: public Enemy
 {
 public:

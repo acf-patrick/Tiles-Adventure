@@ -3,10 +3,12 @@
 
 #include <map>
 #include <SDL.h>
+#include <tmx.h>
 #include <sstream>
 #include <SDL_image.h>
 #include "base/with_mass.h"
 #include "base/func_tool.h"
+#include "base/creator.h"
 #include "base/object.h"
 #include "base/timer.h"
 #include "base/map.h"
@@ -20,6 +22,15 @@ public:
     void draw(SDL_Surface*);
     void bump(const std::string& flag = "");
 
+    class Creator:  public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            tmx_properties* props(((tmx_layer*)getParameter("current layer"))->properties);
+            return new Box((Map*)getParameter("game map"), _x, _y, tmx_get_property(props, "numero")->value.integer);
+        }
+    };
 private:
     int numero;
     int cur_image;

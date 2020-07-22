@@ -237,13 +237,13 @@ void Basic_fan::destroy_bubbles()
     bubbles = NULL;
 }
 
-Fan::Fan(SDL_Rect* v, int _x, int _y, GameObject* cible, int s):
+Fan::Fan(SDL_Rect* v, int _x, int _y, GameObject* cible, int angle):
     Basic_fan(v, _x, _y),
     switch_timer(randint(5, 10)),
     target(cible)
 {
     type.push_back("Fan");
-    sens = s;
+    sens = angle/90;
     s_off = rotateSurface90Degrees(IMG_Load("images/Traps/Fan/Off.png"), sens);
     Arrow::check_image_existence(s_off);
     s_on = rotateSurface90Degrees(IMG_Load("images/Traps/Fan/On (24x8).png"), sens);

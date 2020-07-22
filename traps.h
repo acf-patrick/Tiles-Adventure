@@ -3,6 +3,7 @@
 
 #include <SDL.h>
 #include "bubbles.h"
+#include "base/creator.h"
 #include "base/object.h"
 #include "base/timer.h"
 
@@ -17,6 +18,15 @@ public:
 
     static void check_image_existence(SDL_Surface*);
     static SDL_Rect* create_static_viewport();
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Arrow((SDL_Rect*)getParameter("game viewport"), _x, _y);
+        }
+    };
 
 private:
     SDL_Rect* viewport;
@@ -67,6 +77,14 @@ public:
     void bump(const std::string& flag = "");
     bool collide_with(GameObject*);
 
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Falling_platform((SDL_Rect*)getParameter("game viewport"), _x, _y);
+        }
+    };
 private:
     int y0;
     float y_vel, gravity;
@@ -77,11 +95,18 @@ private:
 class Fan: public Basic_fan
 {
 public:
-    /// \param s : indique la direction où le ventilateur va souffler
-    Fan(SDL_Rect*, int, int, GameObject*, int s = Bubbles::DROITE);
+    Fan(SDL_Rect*, int, int, GameObject*, int);
     void update();
     void draw(SDL_Surface*);
 
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Fan((SDL_Rect*)getParameter("game viewport"), _x, _y, (GameObject*)getParameter("Player"), ((tmx_object*)getParameter("current object"))->rotation);
+        }
+    };
 private:
     Chrono switch_timer;
     GameObject* target;
