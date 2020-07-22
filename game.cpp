@@ -3,8 +3,9 @@
 #include "player.h"
 #include "game.h"
 #include "show.h"
+#include <SDL_gfxPrimitives.h>
 
-Game::Game(): App("Tiles Adventure", 480, 360),
+Game::Game(): App("Tiles Adventure", 400, 460),
     bg_timer(10)
 {
     sprites.add(new Player(&map, 60, 50, keys, "Virtual Guy"));
@@ -21,6 +22,7 @@ Game::Game(): App("Tiles Adventure", 480, 360),
 }
 Game::~Game()
 {
+    SDL_FreeSurface(screen);
     delete bg; bg = NULL;
 }
 
@@ -61,6 +63,7 @@ void Game::draw()
     // rectangleColor(screen, camera.x, camera.y, camera.x+camera.w, camera.y+camera.h, 0xff);
     map.draw(screen);
     sprites.draw(screen);
+
     SDL_Flip(screen);
 }
 
@@ -73,7 +76,7 @@ void Game::update()
         return;
     bg->update();
     map.update();
-    map.center_on(sprites[0], Map::camera);
+    map.center_on(sprites[0]);//, Map::camera);
     if (bg_timer.out())
     {
         bg_timer.restart();

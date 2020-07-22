@@ -52,11 +52,10 @@ public:
     /// @param bool _kill : on retire les sprites trouvés du groupe si _kill vaut true
     std::vector<GameObject*> sprites_colliding_with(GameObject*, bool _kill = false);
 
-    /// Retourne le premier sprite trouvé ,qui entre en collision avec le sprite donné en paramètre
+    /// \brief Detect collision between the group and a game object or a rectangular shape or a single point
+    /// \return A pointer to the game object that collided with the object given as parameter
     GameObject* first_sprite_colliding_with(GameObject*);
-    // Rect
     GameObject* first_sprite_colliding_with(SDL_Rect);
-    // Point
     GameObject* first_sprite_colliding_with(int, int);
 
     /// @brief Teste la collision entre deux groupes de sprites

@@ -4,6 +4,7 @@
 #include <vector>
 #include <SDL.h>
 #include <tmx.h>
+#include "creator.h"
 #include "object.h"
 
 /// \brief This class manage many of a game map functionalities,
@@ -84,6 +85,8 @@ private:
     void draw_sprites(SDL_Surface*);
     void draw_all_layers(tmx_layer*, SDL_Surface*);
     void draw_tiles(uint32_t*, SDL_Surface*);
+
+friend class ObjectCreator;
 };
 
 

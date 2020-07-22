@@ -43,7 +43,8 @@ GameObject* ObjectFactory::create(const std::string& objectType, int _x, int _y)
     if (!creator)
     {
         std::cerr << objectType << " : Ce type n'a aucun génerateur d'objet!" << std::endl;
-        exit(1);
+        return NULL;
+        // exit(1);
     }
     return (*creator)(_x, _y);
 }
