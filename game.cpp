@@ -5,7 +5,7 @@
 #include "show.h"
 #include <SDL_gfxPrimitives.h>
 
-Game::Game(): App("Tiles Adventure", 400, 460),
+Game::Game(): App("Tiles Adventure", 600, 360),
     bg_timer(10)
 {
     sprites.add(new Player(&map, 60, 50, keys, "Virtual Guy"));

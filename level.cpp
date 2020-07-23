@@ -104,6 +104,7 @@ void Level::delete_sprite_at(int x, int y)
 
 void Level::update()
 {
+    clamp_shift_coords();
     enemies.update();
     traps.update();
     Basic_fan::update_bubbles(this);

@@ -103,10 +103,10 @@ void Map::draw_all_layers(tmx_layer* layer, SDL_Surface* screen)
 
 void Map::draw_tiles(uint32_t* gids, SDL_Surface* screen)
 {
-    int x_min = viewport->y / tile_h,
-        x_max = (viewport->y+viewport->h) / tile_h,
-        y_min = viewport->x / tile_w,
-        y_max = (viewport->x+viewport->w) / tile_w;
+    int x_min = viewport->y / (int)tile_h,
+        x_max = (viewport->y+viewport->h) / (int)tile_h,
+        y_min = viewport->x / (int)tile_w,
+        y_max = (viewport->x+viewport->w) / (int)tile_w;
 
     for (int i = x_min; i <= x_max; ++i)
     {
@@ -120,12 +120,11 @@ void Map::draw_tiles(uint32_t* gids, SDL_Surface* screen)
             {
                 tmx_image* spritesheet(tile->image);
                 tmx_tileset* tileset(tile->tileset);
+
                 SDL_Rect subrect = {
                     (Sint16)tile->ul_x, (Sint16)tile->ul_y,
                     (Uint16)tileset->tile_width, (Uint16)tileset->tile_height
-                }, dest = {
-                    (Sint16)(j*tileset->tile_width), (Sint16)(i*tileset->tile_height)
-                };
+                }, dest = { (Sint16)(j*tileset->tile_width), (Sint16)(i*tileset->tile_height) };
                 dest.x -= viewport->x;
                 dest.y -= viewport->y;
 
@@ -148,10 +147,10 @@ void Map::update()
 {
     clamp_shift_coords();
 
-    int x_min = viewport->y/tile_h,
-        x_max = (viewport->y + viewport->h)/tile_h,
-        y_min = viewport->x/tile_w,
-        y_max = (viewport->x + viewport->w)/tile_w;
+    int x_min = viewport->y/(int)tile_h,
+        x_max = (viewport->y + viewport->h)/(int)tile_h,
+        y_min = viewport->x/(int)tile_w,
+        y_max = (viewport->x + viewport->w)/(int)tile_w;
 
     for (int i=x_min; i<=x_max; ++i)
         for (int j=y_min; j<=y_max ;++j)
