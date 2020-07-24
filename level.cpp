@@ -56,7 +56,7 @@ void Level::setup_creators()
     ObjectFactory::registre_creator("Checkpoint", new Checkpoint::Creator);
 
     ObjectFactory::registre_creator("Arrow", new Arrow::Creator);
-    ObjectFactory::registre_creator("Falling_platform", new Falling_platform::Creator);
+    ObjectFactory::registre_creator("Falling platform", new Falling_platform::Creator);
     ObjectFactory::registre_creator("Fan", new Fan::Creator);
 
     /* set up parameters */
