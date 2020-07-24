@@ -3,6 +3,7 @@
 
 #include "base/map.h"
 #include "base/group.h"
+#include "base/func_tool.h"
 #include <cmath>
 #include <map>
 #include <tmx.h>
@@ -45,8 +46,7 @@ private:
         {
             if (!GameObject::collide_with(sprite))
                 return false;
-            return (std::abs(y-sprite->get_y()) <= 10 and
-                sprite->check_down);
+            return sprite->get_impulse()[1] > 0;
         }
     };
     void remove_enemy(GameObject*);

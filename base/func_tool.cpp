@@ -257,7 +257,7 @@ SDL_Rect* clip_rects(const SDL_Rect& rect1, const SDL_Rect& rect2)
     ret->w = Uint16(x1-x0);
     ret->h = Uint16(y1-y0);
 
-    return ret;
+    return (!ret->w or !ret->h)?NULL:ret;
 }
 
 bool isGrey(Uint8 color[3])

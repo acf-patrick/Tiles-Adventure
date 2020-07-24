@@ -45,7 +45,7 @@ std::string replace(const std::string&, const std::string&, const std::string&);
 std::string strip(const std::string&);
 std::vector<std::string> split(const std::string&, const std::string&);
 std::string join(const std::vector< std::string > &, const std::string&);
-
+SDL_Rect* clip_rects(const SDL_Rect&, const SDL_Rect&);
 /**
 Returns a random number in [a, b[
 */

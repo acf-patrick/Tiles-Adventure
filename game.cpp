@@ -5,7 +5,7 @@
 #include "show.h"
 #include <SDL_gfxPrimitives.h>
 
-Game::Game(): App("Tiles Adventure", 600, 360),
+Game::Game(): App("Tiles Adventure", 480, 360),
     bg_timer(10)
 {
     sprites.add(new Player(&map, 60, 50, keys, "Virtual Guy"));
@@ -22,7 +22,6 @@ Game::Game(): App("Tiles Adventure", 600, 360),
 }
 Game::~Game()
 {
-    SDL_FreeSurface(screen);
     delete bg; bg = NULL;
 }
 

@@ -15,9 +15,15 @@ Level::Level(): Map("maps/runner.tmx")
     setup_creators();
     for (int i = 0; i<(int)world_y; ++i)
         for (int j=0; j<(int)world_x; ++j)
-            if (get_tile_nbr(i, j, false) and
-               (0<=i and i<=2) and (17<=j and j<=19))
+        {
+            tmx_tile* tile(m_map->tiles[get_tile_nbr(j, i, false)]);
+            if (!tile)
+                continue;
+            if ((17 <= tile->id and tile->id <= 19) or
+                (39 <= tile->id and tile->id <= 41) or
+                (61 <= tile->id and tile->id <= 63))
                 sprites[i][j] = new Poutre(j*tile_w, i*tile_h);
+        }
 }
 
 Level::~Level()
