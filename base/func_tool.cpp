@@ -327,3 +327,13 @@ bool images_collide(int x1, int y1, SDL_Surface* s1, int x2, int y2, SDL_Surface
     }
     return false;
 }
+
+void apply_rotation(int cx, int cy, int angle, int* x, int *y)
+{
+    if (!x or !y)
+        return;
+    float alpha = M_PI/180 * angle;
+    int _x(*x), _y(*y);
+    *x = cx + (_x-cx)*std::cos(alpha) - (_y-cy)*std::sin(alpha);
+    *y = cy + (_x-cx)*std::sin(alpha) + (_y-cy)*std::cos(alpha);
+}

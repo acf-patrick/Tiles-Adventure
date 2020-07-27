@@ -58,6 +58,7 @@ void Level::setup_creators()
     ObjectFactory::registre_creator("Arrow", new Arrow::Creator);
     ObjectFactory::registre_creator("Falling platform", new Falling_platform::Creator);
     ObjectFactory::registre_creator("Fan", new Fan::Creator);
+    ObjectFactory::registre_creator("Spike", new Spike::Creator);
 
     /* set up parameters */
     ObjectCreator::addToParameters(this, "game map");
@@ -195,6 +196,8 @@ bool Level::collision_with(GameObject* sprite)
             }
         if (trap)
         {
+            if (trap->is("Spike"))
+                sprite->bump("die");
             if (sprite->check_down)
             {
                 if (trap->is("Arrow"))
@@ -241,6 +244,7 @@ void Level::__load_objects(tmx_layer* layer)
                  object; object = object->next)
             {
                 ObjectCreator::addToParameters(object, "current object");
+                /* object->y is the bottom left coordinate */
                 int x(object->x), y(object->y - object->height);
                 GameObject* obj(ObjectFactory::create(tmx_get_property(layer->properties, "fruit")?"Fruits":std::string(layer->name), x, y));
                 std::string type(tmx_get_property(layer->properties, "type")->value.string);

@@ -256,6 +256,8 @@ SDL_Surface* Player::get_surface()
 
 bool Player::collide_with(GameObject* sprite)
 {
+    if (!sprite)
+        return false;
     if (sprite->is("Enemy"))
     {
         // laisser la classe Chameleon gérer la collision

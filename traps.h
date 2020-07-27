@@ -16,7 +16,6 @@ public:
     void bump(const std::string& flag = "");
     void draw(SDL_Surface*);
 
-    static void check_image_existence(SDL_Surface*);
     static SDL_Rect* create_static_viewport();
 
     class Creator : public ObjectCreator
@@ -113,5 +112,25 @@ private:
     SDL_Rect field;
 };
 
+class Spike: public GameObject
+{
+public:
+    Spike(SDL_Rect*, int, int, int);
+    void draw(SDL_Surface*);
+    SDL_Surface* get_surface();
+    bool collide_with(GameObject*);
+
+    class Creator : public ObjectCreator
+    {
+    public:
+        GameObject* operator()(int _x, int _y)
+        {
+            return new Spike((SDL_Rect*)getParameter("game viewport"), _x, _y, ((tmx_object*)getParameter("current object"))->rotation);
+        }
+    };
+
+private:
+    SDL_Rect* viewport;
+};
 
 #endif // TRAPS_H

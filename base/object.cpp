@@ -160,3 +160,13 @@ void GameObject::draw(SDL_Surface* screen)
 }
 
 void GameObject::remember(Group* group) { groups.push_back(group); }
+
+
+void GameObject::check_image_existence(SDL_Surface* surface)
+{
+    if (!surface)
+    {
+        std::cerr << SDL_GetError();
+        exit(EXIT_FAILURE);
+    }
+}

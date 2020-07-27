@@ -1,6 +1,7 @@
 #include <SDL_image.h>
 #include <SDL_rotozoom.h>
 #include <SDL_gfxPrimitives.h>
+#include <SDL_rotozoom.h>
 #include "base/app.h"
 #include "base/map.h"
 #include "base/func_tool.h"
@@ -66,15 +67,6 @@ void Arrow::bump(const std::string& flag)
     }
 }
 
-void Arrow::check_image_existence(SDL_Surface* surface)
-{
-    if (!surface)
-    {
-        std::cerr << IMG_GetError();
-        exit(EXIT_FAILURE);
-    }
-}
-
 SDL_Rect* Arrow::create_static_viewport()
 {
     SDL_Rect *ret = new SDL_Rect;
@@ -100,9 +92,9 @@ Falling_platform::Falling_platform(SDL_Rect* v, int _x, int _y):
     rect.w = 32;
     rect.h = 10;
     s_off = IMG_Load("images/Traps/Falling Platforms/Off.png");
-    Arrow::check_image_existence(s_off);
+    check_image_existence(s_off);
     s_on = IMG_Load("images/Traps/Falling Platforms/On (32x10).png");
-    Arrow::check_image_existence(s_on);
+    check_image_existence(s_on);
 }
 
 void Falling_platform::update()
@@ -244,12 +236,20 @@ Fan::Fan(SDL_Rect* v, int _x, int _y, GameObject* cible, int angle):
 {
     type.push_back("Fan");
     sens = angle/90;
-    s_off = rotateSurface90Degrees(IMG_Load("images/Traps/Fan/Off.png"), sens);
-    Arrow::check_image_existence(s_off);
+    SDL_Surface* tmp(IMG_Load("images/Traps/Fan/Off.png"));
+    check_image_existence(tmp);
+    y += tmp->h;
+    int cx(x+.5*tmp->w) ,cy(y-.5*tmp->h);
+    apply_rotation(x, y, angle, &cx, &cy);
+
+    s_off = rotateSurface90Degrees(tmp, sens);
     s_on = rotateSurface90Degrees(IMG_Load("images/Traps/Fan/On (24x8).png"), sens);
-    Arrow::check_image_existence(s_on);
+    check_image_existence(s_on);
+
     rect.w = s_off->w;
     rect.h = s_off->h;
+    x = cx - .5*rect.w;
+    y = cy - .5*rect.h;
     min_tar = 200;
     max_tar = 300;
     field.x = x;
@@ -327,4 +327,52 @@ void Fan::draw(SDL_Surface* screen)
     pos.y = field.y-viewport->y;
     if (!m_static and With_mass::showBoundingBox)
         rectangleRGBA(screen, pos.x, pos.y, pos.x+field.w, pos.y+field.h, 0, 0, 222, 255);
+}
+
+Spike::Spike(SDL_Rect* v, int _x, int _y, int angle):
+    viewport(v)
+{
+    type.push_back("Spike");
+    SDL_Surface* tmp(IMG_Load("images/Traps/Spikes/Idle.png"));
+    check_image_existence(tmp);
+    x = _x;
+    y = _y + tmp->h;
+    _x += .5*tmp->w;
+    _y += .5*tmp->h;
+    apply_rotation(x, y, angle, &_x, &_y);
+
+    image = rotozoomSurface(tmp, angle, 1, true);
+    rect.w = image->w;
+    rect.h = image->h;
+    x = _x - .5*rect.w;
+    y = _y - .5*rect.h;
+}
+
+void Spike::draw(SDL_Surface* screen)
+{
+    SDL_Rect pos = { (Sint16)(x-viewport->x), (Sint16)(y-viewport->y) };
+    SDL_BlitSurface(image, NULL, screen, &pos);
+}
+
+SDL_Surface* Spike::get_surface()
+{
+    SDL_Surface* ret = SDL_CreateRGBSurface(SDL_HWSURFACE, rect.w, rect.h, 32,
+                        image->format->Rmask, image->format->Gmask, image->format->Bmask, image->format->Amask);
+    SDL_FillRect(ret, NULL, SDL_MapRGB(ret->format, 100, 100, 100));
+    SDL_BlitSurface(image, NULL, ret, 0);
+    return ret;
+}
+
+bool Spike::collide_with(GameObject* sprite)
+{
+    if (!sprite)
+        return false;
+    if (!sprite->is("Player"))
+        return false;
+    SDL_Surface* s1 = get_surface(), *s2 = sprite->get_surface();
+    bool ret( images_collide(x-viewport->x, y-viewport->y, s1,
+                sprite->get_x()-viewport->x, sprite->get_y()-viewport->y, s2) );
+    SDL_FreeSurface(s1);
+    SDL_FreeSurface(s2);
+    return ret;
 }

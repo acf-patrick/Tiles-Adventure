@@ -1,5 +1,5 @@
-#ifndef SPRITE_H
-#define SPRITE_H
+#ifndef OBJECT_H
+#define OBJECT_H
 
 #include <iostream>
 #include <vector>
@@ -72,6 +72,8 @@ public:
     std::string get_type();
     std::string get_ancestor();
     bool is(const std::string&);
+
+    static void check_image_existence(SDL_Surface*);
 
     // attribut utilisé pour faciliter la géstion des collisions
     bool check_horizontal;

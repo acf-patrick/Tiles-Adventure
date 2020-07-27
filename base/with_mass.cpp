@@ -27,6 +27,15 @@ void With_mass::draw(SDL_Surface* screen)
 
 void With_mass::show_boundingBox(SDL_Surface* screen)
 {
+    Uint32 color;
+    if (is("Enemy"))
+        color = 0xcd4f4f;
+    else if (is("Player"))
+        color = 0xffffff;
+    else if (is("Bullet"))
+        color = 0x0;
+    else
+        color = 0x5a5fc0;
     if (!showBoundingBox)
         return;
     int xs((!m_map)?0:m_map->get_xshift()), ys((!m_map)?0:m_map->get_yshift());
@@ -34,7 +43,7 @@ void With_mass::show_boundingBox(SDL_Surface* screen)
         y1 = y-ys;
     int x2 = x1 + rect.w,
         y2 = y1 + rect.h;
-    rectangleColor(screen, x1, y1, x2, y2, 0xffffff);
+    rectangleColor(screen, x1, y1, x2, y2, color);
 }
 
 void With_mass::set_map(Map* m) { m_map = m; }
