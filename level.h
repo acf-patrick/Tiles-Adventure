@@ -8,6 +8,17 @@
 #include <map>
 #include <tmx.h>
 
+class RestrictedGroup : public Group
+{
+public:
+    RestrictedGroup(SDL_Rect*);
+    void update();
+
+private:
+    std::vector<bool> first;
+    SDL_Rect* viewport;
+};
+
 class Level: public Map
 {
 public:
@@ -26,11 +37,14 @@ public:
     void update();
     bool collision_with(GameObject*);
 
+    void center_on(GameObject*);
+
     void load_objects();
 
     Group bullets;
 
 private:
+
     void setup_creators();
 
     class Poutre: public GameObject
@@ -51,6 +65,7 @@ private:
     };
     void remove_enemy(GameObject*);
 
+    bool earthquake;
     Group enemies, dying;
     Group traps;
     std::map<std::string, Group> items;

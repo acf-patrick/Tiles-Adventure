@@ -65,6 +65,7 @@ public:
     void update();
     void draw(SDL_Surface*);
     SDL_Surface* get_surface();
+    void bump(const std::string&);
     bool collide_with(GameObject*);
 
     class Creator : public ObjectCreator

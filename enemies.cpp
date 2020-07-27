@@ -21,7 +21,7 @@ void Chicken::update()
     if (state == "Run")
     {
         int s(direction?1:-1);
-        x_vel = s*2;
+        x_vel = s*3;
         x += 2*s;
         int _x = direction?get_right():(x);
         if (!m_map->get_tile_nbr(_x, get_bottom()) or m_map->collision_with(this))
@@ -187,6 +187,12 @@ SDL_Surface* Chameleon::get_surface()
     SDL_Surface* ret(Enemy::get_surface());
     rect.w = 38;
     return ret;
+}
+
+void Chameleon::bump(const std::string& flag)
+{
+    if (GameObject::collide_with(target))
+        Enemy::bump(flag);
 }
 
 void Chameleon::draw(SDL_Surface* screen)

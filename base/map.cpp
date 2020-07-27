@@ -3,6 +3,7 @@
 #include "group.h"
 #include "creator.h"
 #include "map.h"
+#include "func_tool.h"
 
 SDL_Rect Map::camera = {0};
 

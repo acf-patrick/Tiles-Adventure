@@ -10,7 +10,7 @@ typedef std::map< std::string, std::vector<SDL_Rect> >::iterator tab_iterator;
 
 void Level::load_objects() { __load_objects(m_map->ly_head); }
 
-Level::Level(): Map("maps/runner.tmx")
+Level::Level(): Map("maps/runner.tmx"), earthquake(false)
 {
     setup_creators();
     for (int i = 0; i<(int)world_y; ++i)
@@ -244,7 +244,7 @@ void Level::__load_objects(tmx_layer* layer)
                  object; object = object->next)
             {
                 ObjectCreator::addToParameters(object, "current object");
-                /* object->y is the bottom left coordinate */
+                /* object->y is the vertical bottom left coordinate */
                 int x(object->x), y(object->y - object->height);
                 GameObject* obj(ObjectFactory::create(tmx_get_property(layer->properties, "fruit")?"Fruits":std::string(layer->name), x, y));
                 std::string type(tmx_get_property(layer->properties, "type")->value.string);
@@ -258,4 +258,24 @@ void Level::__load_objects(tmx_layer* layer)
         }
         layer = layer->next;
     }
+}
+
+void Level::center_on(GameObject* sprite)
+{
+    static int s(1);
+    if (earthquake)
+    {
+        viewport->y += s;
+        s *= -1;
+    }
+    else
+        Map::center_on(sprite);
+}
+
+RestrictedGroup::RestrictedGroup(SDL_Rect* v) : viewport(v)
+{}
+
+void RestrictedGroup::update()
+{
+
 }

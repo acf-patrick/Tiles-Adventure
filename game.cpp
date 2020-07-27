@@ -75,7 +75,7 @@ void Game::update()
         return;
     bg->update();
     map.update();
-    map.center_on(sprites[0]);//, Map::camera);
+    map.center_on(sprites[0]);// , Map::camera);
     if (bg_timer.out())
     {
         bg_timer.restart();

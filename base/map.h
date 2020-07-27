@@ -39,10 +39,10 @@ public:
     virtual bool groups_collide_with(GameObject*);
 */
     /// \brief Focus on a game object
-    void center_on(GameObject*);
+    virtual void center_on(GameObject*);
 
     /// \brief Focus on a game object. Maintain the object inside a restricted rectangle.
-    void center_on(GameObject*, SDL_Rect);
+    virtual void center_on(GameObject*, SDL_Rect);
 
     /* getters */
     int get_xshift();
