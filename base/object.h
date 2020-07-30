@@ -18,7 +18,7 @@ public:
     GameObject(SDL_Rect);
     virtual ~GameObject();
 
-    /// Demande si le sprite appartient au moins à un groupe
+    /// Le sprite appartient au moins à un groupe si retourne true
     bool alive();
 
     /// Enleve le sprite de tous les groupes qui l'a contenu

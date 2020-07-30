@@ -344,7 +344,7 @@ void Duck::update()
     x -= 2*s;
 
     if (state == "Jump Anticipation" and
-            cur_image >= images[direction][state]->w/rect.w)
+        cur_image >= images[direction][state]->w/rect.w)
     {
         state = "Jump";
         y_vel = -7;

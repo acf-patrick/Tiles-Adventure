@@ -37,7 +37,7 @@ public:
     void update();
     bool collision_with(GameObject*);
 
-    void center_on(GameObject*);
+    void center_on(GameObject*, SDL_Rect);
 
     void load_objects();
 

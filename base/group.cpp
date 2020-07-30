@@ -7,7 +7,7 @@ Group::~Group()
 {
     for (int i=0; i<(int)sprite_list.size(); ++i)
     {
-        buffer.erase(std::remove(buffer.begin(), buffer.end(), sprite_list[i]));
+        buffer.erase(std::find(buffer.begin(), buffer.end(), sprite_list[i]));
         delete sprite_list[i];
         sprite_list[i] = NULL;
     }
@@ -77,13 +77,17 @@ bool Group::has(std::vector<GameObject*> sprites)
 
 void Group::_remove(GameObject* sprite)
 {
-    sprite_list.erase(std::remove(sprite_list.begin(), sprite_list.end(), sprite));
+    std::vector<GameObject*>::iterator it = std::find(sprite_list.begin(), sprite_list.end(), sprite);
+    if (it != sprite_list.end())
+        sprite_list.erase(it);
 }
 
 void Group::remove(GameObject* sprite)
 {
     //if (!has(sprite)) return;
-    sprite->groups.erase(std::remove(sprite->groups.begin(), sprite->groups.end(), this));
+    std::vector<Group*>::iterator it = std::find(sprite->groups.begin(), sprite->groups.end(), this);
+    if (it != sprite->groups.end())
+        sprite->groups.erase(it);
     _remove(sprite);
 }
 

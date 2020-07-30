@@ -137,6 +137,11 @@ void Level::draw(SDL_Surface* screen)
 
 bool Level::collision_with(GameObject* sprite)
 {
+    if (dying.has(sprite))
+    {
+        remove_enemy(sprite);
+        return false;
+    }
     if (sprite->is("Player"))
     {
         GameObject* trap = traps.first_sprite_colliding_with(sprite);
@@ -173,6 +178,7 @@ bool Level::collision_with(GameObject* sprite)
                 std::stringstream oss;
                 oss << sprite->get_impulse()[1];
                 box->bump(oss.str());
+                viewport->y += 6;
                 if (!items["Boxes"].has(box))
                 {
                     std::string name[] = { "Apple", "Bananas", "Cherries", "Kiwi",
@@ -213,13 +219,14 @@ bool Level::collision_with(GameObject* sprite)
         {
             GameObject* bullet = bullets.first_sprite_colliding_with(sprite);
             if (bullet)
-            {
-                bullet->bump();
-                if (sprite->is("AngryPig"))
-                    sprite->bump("shotted");
-                else
-                    remove_enemy(sprite);
-            }
+                if (bullet->is("Bullet"))
+                {
+                    bullet->bump();
+                    if (sprite->is("AngryPig"))
+                        sprite->bump("shotted");
+                    else
+                        remove_enemy(sprite);
+                }
         }
     return Map::collision_with(sprite);
 }
@@ -260,16 +267,16 @@ void Level::__load_objects(tmx_layer* layer)
     }
 }
 
-void Level::center_on(GameObject* sprite)
-{
-    static int s(1);
+void Level::center_on(GameObject* sprite, SDL_Rect limit)
+{/*
+    static int s(6);
     if (earthquake)
     {
         viewport->y += s;
         s *= -1;
     }
     else
-        Map::center_on(sprite);
+        */Map::center_on(sprite);
 }
 
 RestrictedGroup::RestrictedGroup(SDL_Rect* v) : viewport(v)

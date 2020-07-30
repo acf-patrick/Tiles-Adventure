@@ -89,10 +89,7 @@ void __button__::update()
             {
                 if (event->type == SDL_MOUSEBUTTONUP)
                     if (state == CLICKED)
-                    {
-                        event->type = SDL_USEREVENT;
                         action();
-                    }
                 state = HOVER;
             }
         }

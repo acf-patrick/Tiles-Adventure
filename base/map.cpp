@@ -257,8 +257,15 @@ void Map::center_on(GameObject* sprite)
 {
     if (!sprite)
         return;
+    /*
+    if (viewport->x + 0.5*viewport->w != sprite->get_centerx())
+        viewport->x += sgn(sprite->get_centerx() - viewport->x - 0.5*viewport->w);
+    if (viewport->y + 0.5*viewport->h != sprite->get_centery())
+        viewport->y += sgn(sprite->get_centery() - viewport->y  - 0.5*viewport->h);
+    */
     viewport->x = (Sint16)(sprite->get_centerx() - viewport->w/2.);
     viewport->y = (Sint16)(sprite->get_centery() - viewport->h/2.);
+
     clamp_shift_coords();
 }
 

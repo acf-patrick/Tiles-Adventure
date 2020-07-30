@@ -90,7 +90,7 @@ void Enemy::update_image()
     image = images[direction][state];
     if (timer.get_elapsed_ms() >= 50)
     {
-        cur_image = (cur_image+1);
+        cur_image++;
         timer.restart();
     }
 }

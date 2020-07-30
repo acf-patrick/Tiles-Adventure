@@ -21,7 +21,7 @@ App::App(std::string app_title, int w, int h):
     SDL_Init(SDL_INIT_VIDEO);
     SDL_putenv("SDL_VIDEO_CENTERED=1");
 
-    screen = SDL_SetVideoMode( w, h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF );
+    screen = SDL_SetVideoMode( w, h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF |SDL_NOFRAME );
     if (!screen)
     {
         std::cerr << SDL_GetError();
@@ -77,7 +77,10 @@ void App::update_events()
     case SDL_KEYDOWN:
         keys[event.key.keysym.sym] = true;
         if (keys[SDLK_ESCAPE])
+        {
+            keys[SDLK_ESCAPE] = false;
             end();
+        }
         break;
     case SDL_KEYUP:
         keys[event.key.keysym.sym] = false;
