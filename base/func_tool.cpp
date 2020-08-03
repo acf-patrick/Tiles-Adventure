@@ -7,6 +7,10 @@
 #include "func_tool.h"
 #include "timer.h"
 
+#ifndef M_PI
+#define M_PI	3.1415926535897932384626433832795
+#endif
+
 std::string replace(const std::string& chaine, const std::string& substring, const std::string& new_substring)
 {
     int pos(chaine.find(substring));

@@ -7,10 +7,7 @@
 Enemy::Enemy(Map* m, int _x, int _y, const std::string& name, int w, int h):
     With_mass(m, _x, _y)
 {
-    std::vector<std::string> key;
-    key.push_back("Idle");
-    key.push_back("Run");
-    key.push_back("Hit");
+    std::vector<std::string> key = { "Idle", "Run", "Hit" };
     cur_image = 0;
     delay = 3;
     state = "Idle";
