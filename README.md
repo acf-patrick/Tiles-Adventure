@@ -9,7 +9,13 @@ I used [Tiled](https://www.mapeditor.org/) for the map creation and objects posi
  	- zlib-1.2.3 to decompress tmx file. <em>Optional</em>, because the map file can be exported uncompressed.
 
 ## Screenshots
-![scene 1](images/screenshots/01.png)
-![scene 2](images/screenshots/02.png)
-![scene 3](images/screenshots/03.png)
-![scene 4](images/screenshots/04.png)
+<table>
+	<tr>
+		<td><img src="images/screenshots/01.png" style="display : inline-box; box-shadow: 2px 2px 4px black;"/></td>
+		<td><img src="images/screenshots/02.png" style="display : inline-box; box-shadow: 2px 2px 4px black;"/></td>
+	</tr>
+	<tr>
+		<td><img src="images/screenshots/03.png" style="display : inline-box; box-shadow: 2px 2px 4px black;"/></td>
+		<td><img src="images/screenshots/04.png" style="display : inline-box; box-shadow: 2px 2px 4px black;"/></td>
+	</tr>
+</table>

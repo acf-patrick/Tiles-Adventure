@@ -42,9 +42,7 @@ Bunny::Bunny(Map* m, int _x, int _y):
     Enemy(m, _x, _y, "Bunny", 34, 44)
 {
     gravity *= .5;
-    std::vector<std::string> key;
-    key.push_back("Jump");
-    key.push_back("Fall");
+    std::vector<std::string> key = { "Jump", "Fall" };
     load_images(key);
 }
 
@@ -288,10 +286,7 @@ bool Chameleon::collide_with(GameObject* sprite)
 Duck::Duck(Map* m, int _x, int _y):
     Enemy(m, _x, _y, "Duck", 36, 36)
 {
-    std::vector<std::string> key;
-    key.push_back("Jump Anticipation");
-    key.push_back("Fall");
-    key.push_back("Jump");
+    std::vector<std::string> key = { "Jump Anticipation", "Fall", "Jump" };
     state = "Fall";
     gravity *= 0.75;
     load_images(key);
@@ -565,11 +560,7 @@ void Rino::update()
 Turtle::Turtle(Map* m, int _x, int _y):
     Enemy(m, _x, _y, "Turtle", 44, 26)
 {
-    std::vector<std::string> keys;
-    keys.push_back("Idle 1"); // Spikes are out
-    keys.push_back("Idle 2"); // Spikes are in
-    keys.push_back("Spikes in");
-    keys.push_back("Spikes out");
+    std::vector<std::string> keys = { "Idle 1", "Idle 2", "Spikes in", "Spikes out" };
     load_images(keys);
     SDL_FreeSurface(images[1]["Spikes in"]);
     SDL_FreeSurface(images[1]["Spikes out"]);
@@ -625,11 +616,7 @@ Skull::Skull(Map* m, int _x, int _y, GameObject* cible):
     Enemy(m, _x, _y, "Skull", 52, 54),
     charge(false), target(cible)
 {
-    std::vector<std::string> keys;
-    keys.push_back("Hit Wall 1");
-    keys.push_back("Hit Wall 2");
-    keys.push_back("Idle 1");
-    keys.push_back("Idle 2");
+    std::vector<std::string> keys = { "Hit Wall 1", "Hit Wall 2", "Idle 1", "Idle 2" };
     load_images(keys);
 
     std::swap(images[0], images[1]);
@@ -750,9 +737,7 @@ Slime::Slime(Map* m, int _x, int _y):
     type.push_back("Slime");
     rect.w = 44;
     rect.h = 30;
-    std::vector<std::string> keys;
-    keys.push_back("Hit");
-    keys.push_back("Idle-Run");
+    std::vector<std::string> keys = { "Hit", "Idle-Run" };
     load_images(keys);
 }
 
@@ -786,9 +771,7 @@ Ghost::Ghost(Map* m, int _x, int _y):
     Enemy(m, _x, _y, "Ghost", 44, 30),
     visible(false)
 {
-    std::vector<std::string> keys;
-    keys.push_back("Appear");
-    keys.push_back("Desappear");
+    std::vector<std::string> keys = { "Appear", "Desappear" };
     state = "Appear";
     load_images(keys);
 }
