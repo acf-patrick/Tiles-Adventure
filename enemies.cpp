@@ -249,8 +249,6 @@ void Chameleon::update()
         bool collision(m_map->collision_with(this));
         if (bound or collision)
         {
-            if (collision)
-                std::cout << "here\n";
             x_vel *= -1;
             direction = !direction;
             image = images[direction][state];

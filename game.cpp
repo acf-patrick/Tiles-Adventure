@@ -4,10 +4,12 @@
 #include "game.h"
 #include "show.h"
 #include <SDL_gfxPrimitives.h>
+#include <SDL_image.h>
 
 Game::Game(): App("Tiles Adventure", 480, 360),
     bg_timer(10)
 {
+    IMG_Init(IMG_INIT_PNG);
     sprites.add(new Player(&map, 60, 50, keys, "Virtual Guy"));
 
     bg = new Background;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <SDL.h>
 
 Tileset::Tileset(const std::string& file_name)
 {
