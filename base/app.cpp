@@ -21,7 +21,7 @@ App::App(std::string app_title, int w, int h):
     SDL_Init(SDL_INIT_VIDEO);
     SDL_putenv("SDL_VIDEO_CENTERED=1");
 
-    screen = SDL_SetVideoMode( w, h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF |SDL_NOFRAME );
+    screen = SDL_SetVideoMode( w, h, 32, SDL_HWSURFACE | SDL_DOUBLEBUF );
     if (!screen)
     {
         std::cerr << SDL_GetError();

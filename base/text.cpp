@@ -88,10 +88,14 @@ void Text::setFont(const std::string& font_name, int textSize)
         fontName = font_name;
         font = f;
     }
-    else if (!font)
+    else
     {
-        std::cerr << TTF_GetError();
-        exit(EXIT_FAILURE);
+        std::cerr << TTF_GetError() << std::endl;
+        if (!font)
+        {
+            std::cerr << TTF_GetError();
+            exit(EXIT_FAILURE);
+        }
     }
     set(color, text);
 }
