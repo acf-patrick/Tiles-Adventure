@@ -1,7 +1,11 @@
 #ifndef WITH_MASS_H
 #define WITH_MASS_H
 
+<<<<<<< HEAD
 #include <SDL/SDL.h>
+=======
+#include <SDL.h>
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
 #include "object.h"
 #include "map.h"
 

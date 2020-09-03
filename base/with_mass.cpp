@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 #include <SDL/SDL_gfxPrimitives.h>
+=======
+#include <SDL_gfxPrimitives.h>
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
 #include "with_mass.h"
 #include "func_tool.h"
 

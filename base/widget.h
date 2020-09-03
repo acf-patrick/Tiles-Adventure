@@ -1,12 +1,21 @@
 #ifndef WIDGET_H
 #define WIDGET_H
 
+<<<<<<< HEAD
 #include <SDL/SDL.h>
 #include "object.h"
 #include "text.h"
 #include "app.h"
 
 // les fonctionnalit√©s d'un boutton sont encapsul√©s dans cette classe
+=======
+#include "object.h"
+#include "text.h"
+#include "app.h"
+#include <SDL.h>
+
+// les fonctionnalitÈs d'un boutton sont encapsulÈs dans cette classe
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
 class __button__: public GameObject
 {
 public:

@@ -1,9 +1,15 @@
 #ifndef MAP_H
 #define MAP_H
 
+<<<<<<< HEAD
 #include <SDL/SDL.h>
 #include <tmx/tmx.h>
 #include <vector>
+=======
+#include <vector>
+#include <SDL.h>
+#include <tmx.h>
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
 #include "creator.h"
 #include "object.h"
 

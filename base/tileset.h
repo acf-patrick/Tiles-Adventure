@@ -1,8 +1,13 @@
 #ifndef TILESET_H
 #define TILESET_H
 
+<<<<<<< HEAD
 #include <SDL/SDL.h>
 #include <string>
+=======
+#include <string>
+#include <SDL.h>
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
 #include <vector>
 
 /**

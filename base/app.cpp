@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 #include <SDL/SDL.h>
 #include <SDL/SDL_ttf.h>
+=======
+#include <SDL.h>
+#include <SDL_ttf.h>
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
 #include "app.h"
 #include "func_tool.h"
 #include "widget.h"
