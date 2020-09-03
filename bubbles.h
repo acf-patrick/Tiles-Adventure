@@ -4,7 +4,7 @@
 #include <SDL/SDL.h>
 #include "base/object.h"
 
-/** Bulles crÃ©es lorsque les ventilos se mettent en marche */
+/** Bulles crées lorsque les ventilos se mettent en marche */
 class Bubbles: public GameObject
 {
 public:
@@ -26,7 +26,11 @@ private:
     float x_vel, y_vel, acc;
 
     // la bulle rebondit quand elle atteint
+<<<<<<< HEAD
     // la position indiquÃ©e par ces paramÃ¨tres
+=======
+    // la position indiquée par ces paramètres
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
     int l_bound, u_bound;
 
     int target;

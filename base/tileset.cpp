@@ -31,7 +31,11 @@ Tileset::~Tileset()
     surface = NULL;
 }
 
+<<<<<<< HEAD
 /*SDL_Rect* Tileset::get(int index)
+=======
+SDL_Rect* Tileset::get(int index)
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
 {
     SDL_Rect* ret(NULL);
     if (index < 0 or index >= tile_x*tile_y)
@@ -42,4 +46,8 @@ Tileset::~Tileset()
     ret->w = m_tilew;
     ret->h = m_tileh;
     return ret;
+<<<<<<< HEAD
 }*/
+=======
+}
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c

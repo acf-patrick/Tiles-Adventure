@@ -3,9 +3,9 @@
 
 #include <map>
 #include <SDL/SDL.h>
+#include <SDL/SDL_image.h>
 #include <tmx/tmx.h>
 #include <sstream>
-#include <SDL/SDL_image.h>
 #include "base/with_mass.h"
 #include "base/func_tool.h"
 #include "base/creator.h"
