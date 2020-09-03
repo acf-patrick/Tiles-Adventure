@@ -1,4 +1,4 @@
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include <fstream>
 #include <sstream>
 #include <numeric>
@@ -125,7 +125,7 @@ bool seg_n_seg_collide(int a1_x, int a1_y, int b1_x, int b1_y, int a2_x, int a2_
         a2 = 0;
     b2 = a2_y - a2*a2_x;
 
-    // les deux ségments sont parallèles
+    // les deux sÃ©gments sont parallÃ¨les
     if (a1 == a2)
         return false;
 

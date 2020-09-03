@@ -1,10 +1,10 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
+#include <SDL/SDL.h>
 #include <iostream>
 #include <vector>
 #include <map>
-#include <SDL.h>
 #include "group.h"
 
 class Group;

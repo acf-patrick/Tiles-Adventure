@@ -1,10 +1,10 @@
+#include <SDL/SDL_image.h>
+#include <SDL/SDL.h>
 #include "tileset.h"
 #include "func_tool.h"
-#include <SDL_image.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <SDL.h>
 
 Tileset::Tileset(const std::string& file_name)
 {
@@ -31,7 +31,7 @@ Tileset::~Tileset()
     surface = NULL;
 }
 
-SDL_Rect* Tileset::get(int index)
+/*SDL_Rect* Tileset::get(int index)
 {
     SDL_Rect* ret(NULL);
     if (index < 0 or index >= tile_x*tile_y)
@@ -42,4 +42,4 @@ SDL_Rect* Tileset::get(int index)
     ret->w = m_tilew;
     ret->h = m_tileh;
     return ret;
-}
+}*/

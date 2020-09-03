@@ -1,10 +1,10 @@
 #ifndef BUBBLES_H
 #define BUBBLES_H
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "base/object.h"
 
-/** Bulles crées lorsque les ventilos se mettent en marche */
+/** Bulles crÃ©es lorsque les ventilos se mettent en marche */
 class Bubbles: public GameObject
 {
 public:
@@ -26,7 +26,7 @@ private:
     float x_vel, y_vel, acc;
 
     // la bulle rebondit quand elle atteint
-    // la position indiquée par ces paramètres
+    // la position indiquÃ©e par ces paramÃ¨tres
     int l_bound, u_bound;
 
     int target;

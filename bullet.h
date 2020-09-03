@@ -1,9 +1,9 @@
 #ifndef BULLET_H
 #define BULLET_H
 
+#include <SDL/SDL_image.h>
 #include "base/with_mass.h"
 #include "base/timer.h"
-#include <SDL_image.h>
 #include "base/map.h"
 
 class Bullet: public With_mass

@@ -1,6 +1,6 @@
-bin/
-obj/
-tiles Adventure*
+Debug/
+Release/
+Tiles-Adventure.*
 images/Dust Particles/
 level*
 *.py

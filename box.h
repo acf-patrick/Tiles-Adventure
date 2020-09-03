@@ -2,10 +2,10 @@
 #define BOX_H
 
 #include <map>
-#include <SDL.h>
-#include <tmx.h>
+#include <SDL/SDL.h>
+#include <tmx/tmx.h>
 #include <sstream>
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include "base/with_mass.h"
 #include "base/func_tool.h"
 #include "base/creator.h"

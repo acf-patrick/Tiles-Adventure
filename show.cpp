@@ -1,4 +1,4 @@
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include "base/func_tool.h"
 #include "show.h"
 

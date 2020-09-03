@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "object.h"
 
 class GameObject;

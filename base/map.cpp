@@ -1,5 +1,5 @@
-#include <SDL_image.h>
-#include <tmx.h>
+#include <SDL/SDL_image.h>
+#include <tmx/tmx.h>
 #include "app.h"
 #include "group.h"
 #include "creator.h"

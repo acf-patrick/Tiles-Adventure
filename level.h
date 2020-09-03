@@ -6,7 +6,7 @@
 #include "base/func_tool.h"
 #include <cmath>
 #include <map>
-#include <tmx.h>
+#include <tmx/tmx.h>
 
 class RestrictedGroup : public Group
 {

@@ -1,4 +1,4 @@
-#include <SDL_gfxPrimitives.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include "with_mass.h"
 #include "func_tool.h"
 

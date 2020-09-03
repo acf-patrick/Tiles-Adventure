@@ -1,4 +1,4 @@
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include <ctime>
 #include "base/app.h"
 #include "background.h"

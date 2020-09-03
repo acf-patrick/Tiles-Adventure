@@ -5,7 +5,7 @@
 #include "base/creator.h"
 #include "base/timer.h"
 #include "base/map.h"
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 class Fruit: public With_mass
 {

@@ -1,8 +1,8 @@
 #ifndef FUNC_TOOL
 #define FUNC_TOOL
 
+#include <SDL/SDL.h>
 #include <iostream>
-#include <SDL.h>
 #include <string>
 #include <vector>
 

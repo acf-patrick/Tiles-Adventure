@@ -1,7 +1,7 @@
 #include "base/func_tool.h"
 #include "checkpoints.h"
 #include "base/app.h"
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include <sstream>
 
 Checkpoints::Checkpoints(const std::string& name, int _x, int _y, SDL_Rect* v):

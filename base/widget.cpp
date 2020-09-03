@@ -1,4 +1,4 @@
-#include <SDL_gfxPrimitives.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include "func_tool.h"
 #include "widget.h"
 
@@ -125,12 +125,12 @@ void __button__::set_text(const std::string& t)
 
 Confirm::Confirm(const std::string& text): result(-1)
 {
-    /* création des composants */
+    /* crÃ©ation des composants */
     message = new Text(text, 255, 255, 255, "fonts/Supercell-magic_5", NULL, 15, 0, 0);
     ok = new Ok(this);
     cancel = new Cancel(this);
 
-    /* définition des tailles et de la position de l'objet */
+    /* dÃ©finition des tailles et de la position de l'objet */
     SDL_Rect msg_rect(message->get_rect()), ok_rect(ok->get_rect());
     rect.w = 2*(ok_rect.w+20);
     int diff(0.5*(msg_rect.w-rect.w));
@@ -153,7 +153,7 @@ Confirm::Confirm(const std::string& text): result(-1)
     image = createSurface(rect.w, rect.h);
     roundedBoxColor(image, 0, 0, rect.w, rect.h, 10, 0xa8a8aa);
 
-    /* convertion en coordonnées globales */
+    /* convertion en coordonnÃ©es globales */
     ok->move(x, y);
     cancel->move(x, y);
     message->move(x, y);

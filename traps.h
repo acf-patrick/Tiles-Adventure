@@ -1,7 +1,7 @@
 #ifndef TRAPS_H
 #define TRAPS_H
 
-#include <SDL.h>
+#include <SDL/SDL.h>
 #include "bubbles.h"
 #include "base/creator.h"
 #include "base/object.h"

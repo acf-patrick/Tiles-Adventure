@@ -1,5 +1,5 @@
 #include "base/func_tool.h"
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include <sstream>
 #include "bullet.h"
 #include "enemy.h"

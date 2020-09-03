@@ -3,7 +3,7 @@
 
 #include "base/timer.h"
 #include "base/object.h"
-#include <SDL.h>
+#include <SDL/SDL.h>
 
 class Show: public GameObject
 {

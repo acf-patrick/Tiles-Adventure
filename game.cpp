@@ -3,8 +3,8 @@
 #include "player.h"
 #include "game.h"
 #include "show.h"
-#include <SDL_gfxPrimitives.h>
-#include <SDL_image.h>
+#include <SDL/SDL_gfxPrimitives.h>
+#include <SDL/SDL_image.h>
 
 Game::Game(): App("Tiles Adventure", 480, 360),
     bg_timer(10)

@@ -4,7 +4,7 @@
 #include <map>
 #include <string>
 #include <sstream>
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include "show.h"
 #include "base/with_mass.h"
 #include "base/map.h"

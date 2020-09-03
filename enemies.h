@@ -1,8 +1,8 @@
 #ifndef ENEMIES_H
 #define ENEMIES_H
 
-#include <SDL_rotozoom.h>
-#include <SDL_image.h>
+#include <SDL/SDL_rotozoom.h>
+#include <SDL/SDL_image.h>
 #include "base/creator.h"
 #include "base/func_tool.h"
 #include "player.h"

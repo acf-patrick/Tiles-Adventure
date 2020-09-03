@@ -6,8 +6,8 @@
 #include "base/timer.h"
 #include "base/group.h"
 #include "base/map.h"
+#include <SDL/SDL.h>
 #include <vector>
-#include <SDL.h>
 #include <map>
 
 /// Classe de base pour tous les enemmies dans dans le jeu

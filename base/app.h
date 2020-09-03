@@ -1,9 +1,9 @@
 #ifndef APP_H
 #define APP_H
 
+#include <SDL/SDL.h>
 #include <iostream>
 #include <vector>
-#include <SDL.h>
 
 /// Template
 class App

@@ -1,7 +1,7 @@
 #include "base/func_tool.h"
-#include <SDL_image.h>
+#include <SDL/SDL_image.h>
 #include <algorithm>
-#include <SDL_gfxPrimitives.h>
+#include <SDL/SDL_gfxPrimitives.h>
 #include <ctime>
 #include <cmath>
 #include "enemies.h"

@@ -4,8 +4,8 @@
 #include "base/object.h"
 #include "base/creator.h"
 #include "base/timer.h"
+#include <SDL/SDL.h>
 #include <vector>
-#include <SDL.h>
 #include <map>
 
 class Checkpoints : public GameObject

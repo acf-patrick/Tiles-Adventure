@@ -1,7 +1,7 @@
-#include <SDL_image.h>
-#include <SDL_rotozoom.h>
-#include <SDL_gfxPrimitives.h>
-#include <SDL_rotozoom.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL_rotozoom.h>
+#include <SDL/SDL_gfxPrimitives.h>
+#include <SDL/SDL_rotozoom.h>
 #include "base/app.h"
 #include "base/map.h"
 #include "base/func_tool.h"

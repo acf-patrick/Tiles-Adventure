@@ -1,5 +1,5 @@
-#include <SDL_image.h>
-#include <SDL.h>
+#include <SDL/SDL_image.h>
+#include <SDL/SDL.h>
 #include "base/func_tool.h"
 #include "bullet.h"
 
