@@ -1,6 +1,18 @@
+<<<<<<< HEAD
 Debug/
 Release/
 Tiles-Adventure.*
+=======
+<<<<<<< HEAD
+Debug/
+Release/
+Tiles-Adventure.*
+=======
+bin/
+obj/
+tiles Adventure*
+>>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
+>>>>>>> 4b5d9e2a18710d8adeb46cef4b78cf1dfef78802
 images/Dust Particles/
 level*
 *.py

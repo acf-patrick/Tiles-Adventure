@@ -126,9 +126,15 @@ bool seg_n_seg_collide(int a1_x, int a1_y, int b1_x, int b1_y, int a2_x, int a2_
     b2 = a2_y - a2*a2_x;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     // les deux sÃ©gments sont parallÃ¨les
 =======
     // les deux ségments sont parallèles
+=======
+    // les deux ségments sont parallèles
+=======
+    // les deux s�gments sont parall�les
+>>>>>>> 4b5d9e2a18710d8adeb46cef4b78cf1dfef78802
 >>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
     if (a1 == a2)
         return false;

@@ -126,18 +126,30 @@ void __button__::set_text(const std::string& t)
 Confirm::Confirm(const std::string& text): result(-1)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
     /* crÃ©ation des composants */
 =======
     /* création des composants */
+=======
+    /* création des composants */
+=======
+    /* cr�ation des composants */
+>>>>>>> 4b5d9e2a18710d8adeb46cef4b78cf1dfef78802
 >>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
     message = new Text(text, 255, 255, 255, "fonts/Supercell-magic_5", NULL, 15, 0, 0);
     ok = new Ok(this);
     cancel = new Cancel(this);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /* dÃ©finition des tailles et de la position de l'objet */
 =======
     /* définition des tailles et de la position de l'objet */
+=======
+    /* définition des tailles et de la position de l'objet */
+=======
+    /* d�finition des tailles et de la position de l'objet */
+>>>>>>> 4b5d9e2a18710d8adeb46cef4b78cf1dfef78802
 >>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
     SDL_Rect msg_rect(message->get_rect()), ok_rect(ok->get_rect());
     rect.w = 2*(ok_rect.w+20);
@@ -162,9 +174,15 @@ Confirm::Confirm(const std::string& text): result(-1)
     roundedBoxColor(image, 0, 0, rect.w, rect.h, 10, 0xa8a8aa);
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     /* convertion en coordonnÃ©es globales */
 =======
     /* convertion en coordonnées globales */
+=======
+    /* convertion en coordonnées globales */
+=======
+    /* convertion en coordonn�es globales */
+>>>>>>> 4b5d9e2a18710d8adeb46cef4b78cf1dfef78802
 >>>>>>> 495eb918d6ae1f887b19d2afaa37aeac42acb24c
     ok->move(x, y);
     cancel->move(x, y);

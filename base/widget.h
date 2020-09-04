@@ -6,7 +6,7 @@
 #include "text.h"
 #include "app.h"
 
-// les fonctionnalitÃ©s d'un boutton sont encapsulÃ©s dans cette classe
+// les fonctionnalités d'un boutton sont encapsulés dans cette classe
 class __button__: public GameObject
 {
 public:
